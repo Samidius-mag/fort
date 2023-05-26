@@ -18,8 +18,8 @@ const bb = BollingerBands.calculate({ values: close, period: 20, stdDev: 2 }).ma
   middle: parseFloat(band.middle.toFixed(2)),
   lower: parseFloat(band.lower.toFixed(2)),
 }));
-const adx = ADX.calculate({ close, high, low, period: 14 }).map(value => parseFloat.value);
-//const obv = OBV.calculate({ close, volume }).map(value => parseFloat);
+//const adx = ADX.calculate({ close, high, low, period: 14 }).map(value => parseFloat.value);
+const obv = OBV.calculate({ close, volume }).map(value => parseFloat.value);
 //const psar = PSAR.calculate({ high, low, step: 0.02, max: 0.2 }).map(value => parseFloat);
 //const wma = WMA.calculate({ values: close, period: 20 }).map(value => parseFloat);
 
@@ -27,7 +27,7 @@ console.log('RSI:', rsi);
 console.log('EMA:', ema);
 console.log('ROC:', roc);
 console.log('Bollinger Bands:', bb);
-console.log('ADX:', adx);
-//console.log('OBV:', obv);
+//console.log('ADX:', adx);
+console.log('OBV:', obv);
 //console.log('PSAR:', psar);
 //console.log('WMA:', wma);
