@@ -1,107 +1,67 @@
 const fs = require('fs');
-const { RSI, EMA, ROC, BollingerBands, ADX, OBV, PSAR, WMA } = require('technicalindicators');
+const technicalIndicators = require('technicalindicators');
 
-const rawPriceData = fs.readFileSync('price.json');
-const priceData = JSON.parse(rawPriceData);
+const rawData = fs.readFileSync('price.json');
+const data = JSON.parse(rawData);
 
-const rawIndicatorsData = fs.readFileSync('indres.json');
-const indicatorsData = JSON.parse(rawIndicatorsData);
+const rawIndicators = fs.readFileSync('indres.json');
+const indicators = JSON.parse(rawIndicators);
 
-const rawPatternsData = fs.readFileSync('pattres.json');
-const patternsData = JSON.parse(rawPatternsData);
+const close = data.map(candle => candle.close);
+const high = data.map(candle => candle.high);
+const low = data.map(candle => candle.low);
 
-const currentPrice = priceData[priceData.length - 1].close;
+const currentPrice = close[close.length - 1];
 
-// Текущий тренд
-const ema12 = EMA.calculate({ period: 12, values: priceData.map(candle => candle.close) });
-const ema24 = EMA.calculate({ period: 24, values: priceData.map(candle => candle.close) });
-const currentTrend = ema12[ema12.length - 1] > ema24[ema24.length - 1] ? 'Восходящий' : 'Нисходящий';
+const trend = {
+  current: currentPrice > indicators.ema[indicators.ema.length - 1] ? 'up' : 'down',
+  global: close[0] > indicators.ema[indicators.ema.length - 1] ? 'up' : 'down',
+  '4h': close[close.length - 5] > indicators.ema[indicators.ema.length - 5] ? 'up' : 'down',
+  '12h': close[close.length - 13] > indicators.ema[indicators.ema.length - 13] ? 'up' : 'down',
+  '24h': close[close.length - 25] > indicators.ema[indicators.ema.length - 25] ? 'up' : 'down',
+};
 
-// Глобальный тренд
-const ema200 = EMA.calculate({ period: 200, values: priceData.map(candle => candle.close) });
-const globalTrend = ema200[ema200.length - 1] > currentPrice ? 'Нисходящий' : 'Восходящий';
+const supportResistance = {
+  current: {
+    support: technicalIndicators.PivotPoint.calculate({ high, low, close })[0].support1,
+    resistance: technicalIndicators.PivotPoint.calculate({ high, low, close })[0].resistance1,
+  },
+  '4h': {
+    support: technicalIndicators.PivotPoint.calculate({ high: high.slice(-20), low: low.slice(-20), close: close.slice(-20) })[0].support1,
+    resistance: technicalIndicators.PivotPoint.calculate({ high: high.slice(-20), low: low.slice(-20), close: close.slice(-20) })[0].resistance1,
+  },
+  '12h': {
+    support: technicalIndicators.PivotPoint.calculate({ high: high.slice(-60), low: low.slice(-60), close: close.slice(-60) })[0].support1,
+    resistance: technicalIndicators.PivotPoint.calculate({ high: high.slice(-60), low: low.slice(-60), close: close.slice(-60) })[0].resistance1,
+  },
+  '24h': {
+    support: technicalIndicators.PivotPoint.calculate({ high: high.slice(-120), low: low.slice(-120), close: close.slice(-120) })[0].support1,
+    resistance: technicalIndicators.PivotPoint.calculate({ high: high.slice(-120), low: low.slice(-120), close: close.slice(-120) })[0].resistance1,
+  },
+};
 
-// Уровни поддержки и сопротивления
-const bb = BollingerBands.calculate({ period: 20, stdDev: 2, values: priceData.map(candle => candle.close) });
-const currentBB = bb[bb.length - 1];
-const currentResistance = currentBB.upper;
-const currentSupport = currentBB.lower;
+const overboughtOversold = {
+  rsi: indicators.rsi[indicators.rsi.length - 1] > 70 ? 'overbought' : indicators.rsi[indicators.rsi.length - 1] < 30 ? 'oversold' : 'neutral',
+  roc: indicators.roc[indicators.roc.length - 1] > 10 ? 'overbought' : indicators.roc[indicators.roc.length - 1] < -10 ? 'oversold' : 'neutral',
+};
 
-const bb4h = BollingerBands.calculate({ period: 20, stdDev: 2, values: priceData.slice(-96).map(candle => candle.close) });
-const resistance4h = bb4h[bb4h.length - 1].upper;
-const support4h = bb4h[bb4h.length - 1].lower;
+const recommendations = {
+  buy: {
+    current: currentPrice < supportResistance.current.support ? { price: supportResistance.current.support, message: 'Buy at support level' } : { price: currentPrice, message: 'Buy at current price' },
+    '4h': currentPrice < supportResistance['4h'].support ? { price: supportResistance['4h'].support, message: 'Buy at 4h support level' } : { price: currentPrice, message: 'Buy at current price' },
+    '12h': currentPrice < supportResistance['12h'].support ? { price: supportResistance['12h'].support, message: 'Buy at 12h support level' } : { price: currentPrice, message: 'Buy at current price' },
+    '24h': currentPrice < supportResistance['24h'].support ? { price: supportResistance['24h'].support, message: 'Buy at 24h support level' } : { price: currentPrice, message: 'Buy at current price' },
+  },
+  sell: {
+    current: currentPrice > supportResistance.current.resistance ? { price: supportResistance.current.resistance, message: 'Sell at resistance level' } : { price: currentPrice, message: 'Sell at current price' },
+    '4h': currentPrice > supportResistance['4h'].resistance ? { price: supportResistance['4h'].resistance, message: 'Sell at 4h resistance level' } : { price: currentPrice, message: 'Sell at current price' },
+    '12h': currentPrice > supportResistance['12h'].resistance ? { price: supportResistance['12h'].resistance, message: 'Sell at 12h resistance level' } : { price: currentPrice, message: 'Sell at current price' },
+    '24h': currentPrice > supportResistance['24h'].resistance ? { price: supportResistance['24h'].resistance, message: 'Sell at 24h resistance level' } : { price: currentPrice, message: 'Sell at current price' },
+  },
+};
 
-const bb12h = BollingerBands.calculate({ period: 20, stdDev: 2, values: priceData.slice(-288).map(candle => candle.close) });
-const resistance12h = bb12h[bb12h.length - 1].upper;
-const support12h = bb12h[bb12h.length - 1].lower;
-
-const bb24h = BollingerBands.calculate({ period: 20, stdDev: 2, values: priceData.slice(-576).map(candle => candle.close) });
-const resistance24h = bb24h[bb24h.length - 1].upper;
-const support24h = bb24h[bb24h.length- 1].lower;
-
-// Перекупленность/перепроданность рынка
-const rsi14 = RSI.calculate({ period: 14, values: priceData.map(candle => candle.close) });
-const currentRSI = rsi14[rsi14.length - 1];
-const isOverbought = currentRSI > 70;
-const isOversold = currentRSI < 30;
-
-// Рекомендации с точками входа-выхода в сделку
-const roc12 = ROC.calculate({ period: 12, values: priceData.map(candle => candle.close) });
-const roc24 = ROC.calculate({ period: 24, values: priceData.map(candle => candle.close) });
-const currentROC = roc12[roc12.length - 1];
-const previousROC = roc24[roc24.length - 2];
-const isBullishDivergence = currentROC > previousROC;
-const isBearishDivergence = currentROC < previousROC;
-
-const adx14 = ADX.calculate({ period: 14, close: priceData.map(candle => candle.close), high: priceData.map(candle => candle.high), low: priceData.map(candle => candle.low) });
-const currentADX = adx14[adx14.length - 1];
-const isTrending = currentADX > 25;
-
-const obv = OBV.calculate({ close: priceData.map(candle => candle.close), volume: priceData.map(candle => candle.volume) });
-const currentOBV = obv[obv.length - 1];
-const previousOBV = obv[obv.length - 2];
-const isBullishOBVDivergence = currentOBV > previousOBV;
-const isBearishOBVDivergence = currentOBV < previousOBV;
-
-const psar = PSAR.calculate({ high: priceData.map(candle => candle.high), low: priceData.map(candle => candle.low) });
-const currentPSAR = psar[psar.length - 1];
-const isBullishPSAR = currentPrice > currentPSAR;
-const isBearishPSAR = currentPrice < currentPSAR;
-
-const wma5 = WMA.calculate({ period: 5, values: priceData.map(candle => candle.close) });
-const wma10 = WMA.calculate({ period: 10, values: priceData.map(candle => candle.close) });
-const currentWMA5 = wma5[wma5.length - 1];
-const currentWMA10 = wma10[wma10.length - 1];
-const isBullishWMA = currentWMA5 > currentWMA10;
-const isBearishWMA = currentWMA5 < currentWMA10;
-
-const entryPrice = currentPrice;
-const stopLossPrice = currentSupport;
-const takeProfitPrice = currentResistance;
-
-// Рекомендации о покупке и продаже
-let recommendation = '';
-if (currentTrend === 'Восходящий' && globalTrend === 'Восходящий' && !isOverbought && !isBearishDivergence && isBullishOBVDivergence && isBullishPSAR && isBullishWMA) {
-  recommendation = `Рекомендуется покупка по цене ${entryPrice}. Уровень стоп-лосса: ${stopLossPrice}. Уровень тейк-профита: ${takeProfitPrice}.`;
-} else if (currentTrend === 'Нисходящий' && globalTrend === 'Нисходящий' && !isOversold && !isBullishDivergence && isBearishOBVDivergence && isBearishPSAR && isBearishWMA) {
-  recommendation = `Рекомендуется продажа по цене ${entryPrice}. Уровень стоп-лосса: ${stopLossPrice}. Уровень тейк-профита: ${takeProfitPrice}.`;
-} else {
-  recommendation = 'Нет рекомендаций.';
-}
-
-console.log(`Текущая цена: ${currentPrice}`);
-console.log(`Текущий тренд: ${currentTrend}`);
-console.log(`Глобальный тренд: ${globalTrend}`);
-console.log(`Уровень поддержки (текущий): ${currentSupport}`);
-console.log(`Уровень сопротивления (текущий): ${currentResistance}`);
-console.log(`Уровень поддержки (4-часовой): ${support4h}`);
-console.log(`Уровень сопротивления (4-часовой): ${resistance4h}`);
-console.log(`Уровень поддержки (12-часовой): ${support12h}`);
-console.log(`Уровень сопротивления (12-часовой): ${resistance12h}`);
-console.log(`Уровень поддержки (24-часовой): ${support24h}`);
-console.log(`Уровень сопротивления (24-часовой): ${resistance24h}`);
-console.log(`Перекупленность рынка: ${isOverbought}`);
-console.log(`Перепроданность рынка: ${isOversold}`);
-console.log(`Рекомендация: ${recommendation}`);
-
-
+console.log(`Current price: ${currentPrice}`);
+console.log(`Trend: current - ${trend.current}, global - ${trend.global}, 4h - ${trend['4h']}, 12h - ${trend['12h']}, 24h - ${trend['24h']}`);
+console.log(`Support and resistance levels: current - support ${supportResistance.current.support}, resistance ${supportResistance.current.resistance}, 4h - support ${supportResistance['4h'].support}, resistance ${supportResistance['4h'].resistance}, 12h - support ${supportResistance['12h'].support}, resistance ${supportResistance['12h'].resistance}, 24h - support ${supportResistance['24h'].support}, resistance ${supportResistance['24h'].resistance}`);
+console.log(`Overbought/oversold: RSI - ${overboughtOversold.rsi}, ROC - ${overboughtOversold.roc}`);
+console.log(`Recommendations: Buy - ${recommendations.buy.current.message} (${recommendations.buy.current.price}), Sell - ${recommendations.sell.current.message} (${recommendations.sell.current.price})`);
