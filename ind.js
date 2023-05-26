@@ -4,35 +4,30 @@ const { RSI, EMA, ROC, BollingerBands, ADX, OBV, PSAR, WMA } = require('technica
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
 
-const rsiPeriod = 14;
-const emaPeriod = 20;
-const rocPeriod = 12;
-const bbPeriod = 20;
-const bbStdDev = 2;
-const adxPeriod = 14;
-const psarAccelerationFactor = 0.02;
-const psarMaxAccelerationFactor = 0.2;
-const wmaPeriod = 20;
+const close = data.map(candle => parseFloat(candle.close));
+const open = data.map(candle => parseFloat(candle.open));
+const high = data.map(candle => parseFloat(candle.high));
+const low = data.map(candle => parseFloat(candle.low));
+const volume = data.map(candle => parseFloat(candle.volume));
 
-const rsiValues = RSI.calculate({ period: rsiPeriod, values: data.map(candle => candle.close) });
-const emaValues = EMA.calculate({ period: emaPeriod, values: data.map(candle => candle.close) });
-const rocValues = ROC.calculate({ period: rocPeriod, values: data.map(candle => candle.close) });
-const bbValues = BollingerBands.calculate({ period: bbPeriod, stdDev: bbStdDev, values: data.map(candle => candle.close) });
-const adxValues = ADX.calculate({ period: adxPeriod, high: data.map(candle => candle.high), low: data.map(candle => candle.low), close: data.map(candle => candle.close) });
-const obvValues = OBV.calculate({ close: data.map(candle => candle.close), volume: data.map(candle => candle.volume) });
-const psarValues = PSAR.calculate({ accelerationFactor: psarAccelerationFactor, maxAccelerationFactor: psarMaxAccelerationFactor, high: data.map(candle => candle.high), low: data.map(candle => candle.low) });
-const wmaValues = WMA.calculate({ period: wmaPeriod, values: data.map(candle => candle.close) });
+const rsi = RSI.calculate({ values: close, period: 14 }).map(value => parseFloat(value.toFixed(2)));
+const ema = EMA.calculate({ values: close, period: 20 }).map(value => parseFloat(value.toFixed(2)));
+const roc = ROC.calculate({ values: close, period: 12 }).map(value => parseFloat(value.toFixed(2)));
+const bb = BollingerBands.calculate({ values: close, period: 20, stdDev: 2 }).map(band => ({
+  upper: parseFloat(band.upper.toFixed(2)),
+  middle: parseFloat(band.middle.toFixed(2)),
+  lower: parseFloat(band.lower.toFixed(2)),
+}));
+const adx = ADX.calculate({ close, high, low, period: 14 }).map(value => parseFloat(value.toFixed(2)));
+const obv = OBV.calculate({ close, volume }).map(value => parseFloat(value.toFixed(2)));
+const psar = PSAR.calculate({ high, low, step: 0.02, max: 0.2 }).map(value => parseFloat(value.toFixed(2)));
+const wma = WMA.calculate({ values: close, period: 20 }).map(value => parseFloat(value.toFixed(2)));
 
-const result = {
-  rsi: rsiValues,
-  ema: emaValues,
-  roc: rocValues,
-  bb: bbValues,
-  adx: adxValues,
-  obv: obvValues,
-  psar: psarValues,
-  wma: wmaValues,
-};
-
-fs.writeFileSync('indres.json', JSON.stringify(result));
-console.log('Indicators saved to indres.json');
+console.log('RSI:', rsi);
+console.log('EMA:', ema);
+console.log('ROC:', roc);
+console.log('Bollinger Bands:', bb);
+console.log('ADX:', adx);
+console.log('OBV:', obv);
+console.log('PSAR:', psar);
+console.log('WMA:', wma);
