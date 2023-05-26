@@ -1,12 +1,12 @@
 const fs = require('fs');
-const { bearishEngulfingPattern, bullishEngulfingPattern, doji, bullishHammer, bearishHammer } = require('technicalindicators');
+const { bearishengulfingpattern, bullishEngulfingPattern, doji, bullishHammer, bearishHammer } = require('technicalindicators');
 
 const rawData = fs.readFileSync('price.json');
 const candles = JSON.parse(rawData);
 
 const lastFiveCandles = candles.slice(-5);
 
-const bearishEngulfing = bearishEngulfingPattern(lastFiveCandles);
+const bearishEngulfing = bearishengulfingpattern(lastFiveCandles);
 const bullishEngulfing = bullishEngulfingPattern(lastFiveCandles);
 const dojiPattern = doji(lastFiveCandles);
 const bullishHammerPattern = bullishHammer(lastFiveCandles);
