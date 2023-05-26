@@ -19,7 +19,7 @@ const bb = BollingerBands.calculate({ values: close, period: 20, stdDev: 2 }).ma
   lower: parseFloat(band.lower.toFixed(2)),
 }));
 //const adx = ADX.calculate({ close, high, low, period: 14 }).map(value => parseFloat.value);
-const obv = OBV.calculate({ close, volume }).map(value => parseFloat.value);
+const obv = OBV.calculate({ close, volume }).map(value => parseFloat(value.toFixed(2)));
 //const psar = PSAR.calculate({ high, low, step: 0.02, max: 0.2 }).map(value => parseFloat);
 //const wma = WMA.calculate({ values: close, period: 20 }).map(value => parseFloat);
 
