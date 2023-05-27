@@ -38,6 +38,11 @@ console.log('12-часовой тренд:', trend['12h']);
 console.log('24-часовой тренд:', trend['24h']);
 console.log('Глобальный тренд:', trend.global);
 // Уровни поддержки и сопротивления
+
+if (currentPrice > supportResistance.current.support && currentPrice < supportResistance.current.resistance) {
+console.log('Текущая цена находится в зоне бокового движения');
+}
+
 const supportResistance = {
   current: {
     support: parseFloat(indRes.BollingerBands.lower[indRes.BollingerBands.lower.length - 1]).toFixed(2),
