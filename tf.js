@@ -1,101 +1,91 @@
-const fs = require('fs');
-const moment = require('moment');
 const tf = require('@tensorflow/tfjs');
-
-const priceData = require('./price.json');
-const indRes = require('./indres.json');
-const ind = require('./ind');
-
-// Загрузка модели нейросети
-async function loadModel() {
-  const model = await tf.loadLayersModel('file://./model/model.json');
-  return model;
-}
-
-// Подготовка данных для использования в нейросети
-function prepareData() {
+const fs = require('fs');
+const priceData = JSON.parse(fs.readFileSync('./price.json'));
+const indRes = JSON.parse(fs.readFileSync('./indres.json'));
+const { calculateSupportResistance, calculateOverboughtOversold, calculateEntryExitPoints, calculateRecommendation } = require('./logic');
+function prepareData(priceData, indRes) {
   const data = [];
 
-  // Добавление текущей цены
+  // Текущая цена
   const currentPrice = parseFloat(priceData[priceData.length - 1].close);
   data.push(currentPrice);
 
-  // Добавление тренда
+  // Тренд
   const trend = {
     current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : 'Нисходящий',
-    global: priceData[0].close > priceData[priceData.length - 1].close ? 'Нисходящий' : 'Восходящий',
-    '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'Восходящий' : 'Нисходящий',
-    '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
-    '24h': priceData[priceData.length - 1].close > priceData[priceData.length - 49].close ? 'Восходящий' : 'Нисходящий'
+    global: priceData[0].close > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : 'Нисходящий',
+    '4h': priceData[priceData.length - 5].close > indRes.EMA4[indRes.EMA4.length - 1] ? 'Восходящий' : 'Нисходящий',
+    '12h': priceData[priceData.length - 13].close > indRes.EMA12[indRes.EMA12.length - 1] ? 'Восходящий' : 'Нисходящий',
+    '24h': priceData[priceData.length - 25].close > indRes.EMA24[indRes.EMA24.length - 1] ? 'Восходящий' : 'Нисходящий',
   };
-  data.push(trend.current === 'Восходящий' ? 1 : 0);
-  data.push(trend.global === 'Восходящий' ? 1 : 0);
-  data.push(trend['4h'] === 'Восходящий' ? 1 : 0);
-  data.push(trend['12h'] === 'Восходящий' ? 1 : 0);
-  data.push(trend['24h'] === 'Восходящий' ? 1 : 0);
+  data.push(trend.current, trend.global, trend['4h'], trend['12h'], trend['24h']);
 
-  // Добавление уровней поддержки и сопротивления
-  const supportResistance = {
-    current: {
-      support: parseFloat(indRes.BollingerBands.lower[indRes.BollingerBands.lower.length - 1]),
-      resistance: parseFloat(indRes.BollingerBands.upper[indRes.BollingerBands.upper.length - 1])
-    },
-    '4h': {
-      support: parseFloat(Math.min(...priceData.slice(priceData.length - 7).map(candle => parseFloat(candle.low)))),
-      resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 7).map(candle => parseFloat(candle.high))))
-    },
-    '12h': {
-      support: parseFloat(Math.min(...priceData.slice(priceData.length - 25).map(candle => parseFloat(candle.low)))),
-      resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 25).map(candle => parseFloat(candle.high))))
-    },
-    '24h': {
-      support: parseFloat(Math.min(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.low)))),
-      resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.high))))
-    }
-  };
-  data.push((currentPrice - supportResistance.current.support) / (supportResistance.current.resistance - supportResistance.current.support));
-  data.push((currentPrice - supportResistance['4h'].support) / (supportResistance['4h'].resistance - supportResistance['4h'].support));
-  data.push((currentPrice - supportResistance['12h'].support) / (supportResistance['12h'].resistance - supportResistance['12h'].support));
-  data.push((currentPrice - supportResistance['24h'].support) / (supportResistance['24h'].resistance - supportResistance['24h'].support));
+  // Уровни поддержки и сопротивления
+  const supportResistance = calculateSupportResistance(priceData);
+  const currentSupportResistance = supportResistance[supportResistance.length - 1];
+  const supportResistance4h = supportResistance[supportResistance.length - 5];
+  const supportResistance12h = supportResistance[supportResistance.length - 13];
+  const supportResistance24h = supportResistance[supportResistance.length - 25];
+  data.push(currentPrice, currentSupportResistance.support, currentSupportResistance.resistance, supportResistance4h.support, supportResistance4h.resistance, supportResistance12h.support, supportResistance12h.resistance, supportResistance24h.support, supportResistance24h.resistance);
 
-  // Добавление перекупленности/перепроданности рынка
-  const overboughtOversold = {
-    RSI: {
-      current: indRes.RSI[indRes.RSI.length - 1],
-      overbought: 70,
-      oversold: 30
-    },
-    ROC: {
-      current: indRes.ROC[indRes.ROC.length - 1],
-      overbought: 10,
-      oversold: -10
-    }
-  };
-  data.push((overboughtOversold.RSI.current - overboughtOversold.RSI.oversold) / (overboughtOversold.RSI.overbought - overboughtOversold.RSI.oversold));
-  data.push((overboughtOversold.ROC.current - overboughtOversold.ROC.oversold) / (overboughtOversold.ROC.overbought - overboughtOversold.ROC.oversold));
+  // Перекупленность/перепроданность рынка
+  const overboughtOversold = calculateOverboughtOversold(priceData);
+  const currentOverboughtOversold = overboughtOversold[overboughtOversold.length - 1];
+  const overboughtOversold4h = overboughtOversold[overboughtOversold.length - 5];
+  const overboughtOversold12h = overboughtOversold[overboughtOversold.length - 13];
+  const overboughtOversold24h = overboughtOversold[overboughtOversold.length - 25];
+  data.push(currentOverboughtOversold, overboughtOversold4h, overboughtOversold12h, overboughtOversold24h);
 
-  return tf.tensor2d([data]);
+  // Рекомендации с точками входа-выхода в сделку
+  const entryExitPoints = calculateEntryExitPoints(priceData, indRes);
+  const currentEntryExitPoints = entryExitPoints[entryExitPoints.length - 1];
+  const entryExitPoints4h = entryExitPoints[entryExitPoints.length - 5];
+  const entryExitPoints12h = entryExitPoints[entryExitPoints.length - 13];
+  const entryExitPoints24h = entryExitPoints[entryExitPoints.length - 25];
+  data.push(currentEntryExitPoints.entry, currentEntryExitPoints.exit, entryExitPoints4h.entry, entryExitPoints4h.exit, entryExitPoints12h.entry, entryExitPoints12h.exit, entryExitPoints24h.entry, entryExitPoints24h.exit);
+
+  // Рекомендации о покупке и продаже
+  const recommendation = calculateRecommendation(priceData, indRes);
+  const currentRecommendation = recommendation[recommendation.length - 1];
+  const recommendation4h = recommendation[recommendation.length - 5];
+  const recommendation12h = recommendation[recommendation.length - 13];
+  const recommendation24h = recommendation[recommendation.length - 25];
+  data.push(currentRecommendation, recommendation4h, recommendation12h, recommendation24h);
+
+  return data;
 }
 
-// Получение результатов предсказания нейросети
-async function predict(model, data) {
-  const prediction = await model.predict(data).data();
-  return prediction;
+async function trainModel() {
+  const model = await tf.loadLayersModel('file://./model/model.json');
+
+  const xs = [];
+  const ys = [];
+
+  for (let i = 25; i < priceData.length; i++) {
+    const data = prepareData(priceData.slice(0, i), indRes);
+    const label = priceData[i].close > priceData[i - 1].close ? 1 : 0;
+
+    xs.push(data);
+    ys.push(label);
+  }
+
+  const xsTensor = tf.tensor2d(xs);
+  const ysTensor = tf.tensor1d(ys);
+
+  await model.fit(xsTensor, ysTensor, {
+    epochs: 10,
+    shuffle: true,
+  });
+
+  return model;
 }
 
-// Обработка результатов и вывод в консоль
-async function main() {
-  const model = await loadModel();
-  const data = prepareData();
-  const prediction = await predict(model, data);
+trainModel().then((model) => {
+  const data = prepareData(priceData, indRes);
+  const prediction = model.predict(tf.tensor2d([data])).dataSync()[0];
 
-  const buySell = prediction[0] > 0.5 ? 'Покупка' : 'Продажа';
-  const entryPrice = parseFloat(priceData[priceData.length - 1].close);
-  const exitPrice = buySell === 'Покупка' ? parseFloat(indRes.BollingerBands.upper[indRes.BollingerBands.upper.length - 1]) : parseFloat(indRes.BollingerBands.lower[indRes.BollingerBands.lower.length - 1]);
-
-  console.log('Рекомендация:', buySell);
-  console.log('Точка входа в сделку:', entryPrice);
-  console.log('Точка выхода из сделки:', exitPrice);
-}
-
-main();
+  console.log(`Текущий тренд: ${data[1]}`);
+  console.log(`Текущий уровень поддержки: ${data[4]}, текущий уровень сопротивления: ${data[5]}`);
+  console.log(`Рекомендация: ${data[21] === 1 ? 'Покупать' : 'Продавать'}`);
+  console.log(`Точки входа-выхода в сделку: Вход - ${data[22]}, Выход - ${data[23]}`);
+});
