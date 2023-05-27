@@ -24,20 +24,6 @@ console.log('Тренд восходящий');
 console.log('Тренд нисходящий');
 }
 
-// Определение боковика
-const obvData = indRes.OBV.slice(indRes.OBV.length - 50);
-const wma = (values, n) => {
-const weights = Array.from({ length: n }, (_, i) => i + 1);
-const numerator = values.slice(values.length - n).reduce((acc, val, i) => acc + val * weights[i], 0);
-const denominator = weights.reduce((acc, val) => acc + val, 0);
-return numerator / denominator;
-};
-const obvWma = wma(obvData, 45);
-const obvDiff = Math.abs(obvData[obvData.length - 1] - obvWma);
-const obvThreshold = obvWma * 0.05;
-const isSideways = obvDiff < obvThreshold;
-console.log('Текущее состояние рынка:', isSideways ? 'Боковик' : 'Не боковик');
-
 // Определение тренда
 const trend = {
   current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'Нисходящий' : 'Боковой',
@@ -148,5 +134,4 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.support);
   console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.resistance);
 }
- console.log('OBVDIFF:', obvDiff.toFixed(2));
-console.log('OBVTH:', obvThreshold.toFixed(2));
+
