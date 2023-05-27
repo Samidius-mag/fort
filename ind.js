@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { RSI, EMA, ROC, BollingerBands, ADX, OBV, PSAR, WMA } = require('technicalindicators');
+const { RSI, EMA, ROC, BollingerBands, OBV, PSAR, WMA } = require('technicalindicators');
 
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
@@ -18,16 +18,18 @@ const bb = BollingerBands.calculate({ values: close, period: 20, stdDev: 2 }).ma
   middle: parseFloat(band.middle.toFixed(2)),
   lower: parseFloat(band.lower.toFixed(2)),
 }));
-//const adx = ADX.calculate({ close, high, low, period: 14 }).map(value => parseFloat.value);
 const obv = OBV.calculate({ close, volume }).map(value => parseFloat(value.toFixed(2)));
 const psar = PSAR.calculate({ high, low, step: 0.02, max: 0.2 }).map(value => parseFloat(value.toFixed(2)));
 const wma = WMA.calculate({ values: close, period: 20 }).map(value => parseFloat(value.toFixed(2)));
 
-console.log('RSI:', rsi);
-console.log('EMA:', ema);
-console.log('ROC:', roc);
-console.log('Bollinger Bands:', bb);
-//console.log('ADX:', adx);
-console.log('OBV:', obv);
-console.log('PSAR:', psar);
-console.log('WMA:', wma);
+const result = {
+  rsi,
+  ema,
+  roc,
+  bb,
+  obv,
+  psar,
+  wma,
+};
+
+fs.writeFileSync('indres.js', JSON.stringify(result));
