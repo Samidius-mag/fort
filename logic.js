@@ -196,12 +196,12 @@ function getSupportResistance(candles, indicators) {
   const fourHoursResistance = fourHoursBB[indicators.BollingerBands.upper.length - 1];
 
   const twelveHoursBB = BollingerBands.calculate({ values: candles.slice(-13).map(candle => candle.close), period: 20, stdDev: 2 });
-  const twelveHoursSupport = twelveHoursBB[indicators.BollingerBands.length - 1].lower;
-  const twelveHoursResistance = twelveHoursBB[indicators.BollingerBands.length - 1].upper;
+  const twelveHoursSupport = twelveHoursBB[indicators.BollingerBands.lower.length - 1];
+  const twelveHoursResistance = twelveHoursBB[indicators.BollingerBands.upper.length - 1];
 
   const twentyFourHoursBB = BollingerBands.calculate({ values: candles.slice(-25).map(candle => candle.close), period: 20, stdDev: 2 });
-  const twentyFourHoursSupport = twentyFourHoursBB[indicators.BollingerBands.length - 1].lower;
-  const twentyFourHoursResistance = twentyFourHoursBB[indicators.BollingerBands.length - 1].upper;
+  const twentyFourHoursSupport = twentyFourHoursBB[indicators.BollingerBands.lower.length - 1];
+  const twentyFourHoursResistance = twentyFourHoursBB[indicators.BollingerBands.upper.length - 1];
 
   return {
     current: { support: currentSupport, resistance: currentResistance },
