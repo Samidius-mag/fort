@@ -1,6 +1,6 @@
 const indres = require('./indres');
 const price = require('./price.json');
-module.exports.getTrend = getTrend;
+
 
 
 const currentPrice = price.last_price;
