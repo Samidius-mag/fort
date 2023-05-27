@@ -34,7 +34,7 @@ const psarValues = PSAR.calculate({ high: priceData.map(candle => parseFloat(can
 const psar = psarValues.map(value => parseFloat(value.toFixed(2)));
 
 // WMA
-const wmaPeriod = 50;
+const wmaPeriod = 45;
 const wmaValues = WMA.calculate({ period: wmaPeriod, values: close });
 const wma = wmaValues.map(value => parseFloat(value.toFixed(2)));
 
