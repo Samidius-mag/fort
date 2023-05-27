@@ -188,8 +188,8 @@ function getTrend(candles, indicators) {
 function getSupportResistance(candles, indicators) {
   const currentPrice = candles[candles.length - 1].close;
   const currentBB = indicators.BollingerBands[indicators.BollingerBands.length - 1];
-  const currentSupport = currentBB.lower;
-  const currentResistance = currentBB.upper;
+  const currentSupport = currentBollingerBands.lower;
+  const currentResistance = currentBollingerBands.upper;
 
   const fourHoursBB = BollingerBands.calculate({ values: candles.slice(-5).map(candle => candle.close), period: 20, stdDev: 2 });
   const fourHoursSupport = fourHoursBB[fourHoursBB.length - 1].lower;
