@@ -2,9 +2,27 @@ const fs = require('fs');
 const moment = require('moment');
 const priceData = require('./price.json');
 const indRes = require('./indres.json');
+
 // Определение текущей цены
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
 console.log('Текущая цена:', currentPrice);
+
+// Определение изменения цены за последние 2 часа
+const twoHoursAgo = moment().subtract(2, 'hours');
+const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(twoHoursAgo));
+const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
+const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
+const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
+console.log('Изменение цены за последние 2 часа:', priceChange.toFixed(2) + '%');
+
+// Определение тренда
+if (Math.abs(priceChange) <= 0.3) {
+console.log('Тренд боковой');
+} else if (priceChange > 0) {
+console.log('Тренд восходящий');
+} else {
+console.log('Тренд нисходящий');
+}
 
 // Определение боковика
 const obvData = indRes.OBV.slice(indRes.OBV.length - 50);
