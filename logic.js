@@ -1,28 +1,24 @@
 const fs = require('fs');
 const moment = require('moment');
-
 const priceData = require('./price.json');
 const indRes = require('./indres.json');
-
 // Определение текущей цены
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
 console.log('Текущая цена:', currentPrice);
 
-
-//Определение боковика
-// Рассчитываем индикаторы
-const obv = indRes.OBV({ close: priceData.map(p => p.close)});
-const wma = indRes.WMA({ period: 50, values: priceData.map(p => p.close) });
-
-// Получаем последние значения индикаторов
-const lastObv = obv.getResult()[obv.getResult().length - 1];
-const lastWma = wma.getResult()[wma.getResult().length - 1];
-
-// Определяем боковой тренд
-const sideways = lastObv < lastWma * 1.02 && lastObv > lastWma * 0.98 ? 'Боковой' : 'Не боковой';
-
-console.log(sideways);
-
+// Определение боковика
+const obvData = indRes.OBV.slice(indRes.OBV.length - 50);
+const wma = (values, n) => {
+const weights = Array.from({ length: n }, (_, i) => i + 1);
+const numerator = values.slice(values.length - n).reduce((acc, val, i) => acc + val * weights[i], 0);
+const denominator = weights.reduce((acc, val) => acc + val, 0);
+return numerator / denominator;
+};
+const obvWma = wma(obvData, 10);
+const obvDiff = Math.abs(obvData[obvData.length - 1] - obvWma);
+const obvThreshold = obvWma * 0.05;
+const isSideways = obvDiff < obvThreshold;
+console.log('Текущее состояние рынка:', isSideways ? 'Боковик' : 'Не боковик');
 
 // Определение тренда
 const trend = {
@@ -31,8 +27,6 @@ const trend = {
   '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'Восходящий' : 'Нисходящий',
   '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
   '24h': priceData[priceData.length - 1].close > priceData[priceData.length - 49].close ? 'Восходящий' : 'Нисходящий',
-  
-
 };
 console.log('Текущий тренд:', trend.current);
 console.log('4-часовой тренд:', trend['4h']);
