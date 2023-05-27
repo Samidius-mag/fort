@@ -61,3 +61,4 @@ console.log('Buy/sell recommendation (1 hour):', buySellRecommendation);
 console.log('Buy/sell recommendation (last 4 hours):', last4BuySellRecommendation);
 console.log('Buy/sell recommendation (last 12 hours):', last12BuySellRecommendation);
 console.log('Buy/sell recommendation (last 24 hours):', last24BuySellRecommendation);
+module.exports.getTrend = getTrend;
