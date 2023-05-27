@@ -13,7 +13,7 @@ const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(
 const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
 const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
 const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
-console.log('Изменение цены за последние 2 часа:', priceChange.toFixed(2) + '%');
+console.log('Изменение цены за последний час:', priceChange.toFixed(2) + '%');
 
 // Определение тренда
 const trend = {
