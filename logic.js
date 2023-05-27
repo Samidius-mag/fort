@@ -10,7 +10,7 @@ console.log('Текущая цена:', currentPrice);
 
 // Определение тренда
 const trend = {
-  current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'Нисходящий' : 'Боковой'
+  current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'Нисходящий' : 'Боковой',
   global: priceData[0].close > priceData[priceData.length - 1].close ? 'Нисходящий' : 'Восходящий',
   '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'Восходящий' : 'Нисходящий',
   '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
