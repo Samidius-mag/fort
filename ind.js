@@ -32,4 +32,5 @@ const result = {
   wma,
 };
 
-fs.writeFileSync('indres.js', JSON.stringify(result));
+fs.writeFileSync('indres.json', JSON.stringify(result));
+console.log('Indicators saved to indres.json');
