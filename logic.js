@@ -23,11 +23,7 @@ const trend = {
   '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
   '24h': priceData[priceData.length - 1].close > priceData[priceData.length - 49].close ? 'Восходящий' : 'Нисходящий',
 };
-console.log('Текущий тренд:', trend.current);
-console.log('4-часовой тренд:', trend['4h']);
-console.log('12-часовой тренд:', trend['12h']);
-console.log('24-часовой тренд:', trend['24h']);
-console.log('Глобальный тренд:', trend.global);
+
 // Уровни поддержки и сопротивления
 
 
@@ -57,6 +53,11 @@ if (isSideways) {
 } else {
   console.log('Тренд вышел из бокового движения');
 }
+console.log('Текущий тренд:', trend.current);
+console.log('4-часовой тренд:', trend['4h']);
+console.log('12-часовой тренд:', trend['12h']);
+console.log('24-часовой тренд:', trend['24h']);
+console.log('Глобальный тренд:', trend.global);
 console.log('Текущая поддержка:', supportResistance.current.support);
 console.log('Текущее сопротивление:', supportResistance.current.resistance);
 console.log('Поддержка 4 часа:', supportResistance['4h'].support);
