@@ -56,14 +56,14 @@ const supportResistance = {
     resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.high)))).toFixed(2)
   }
 };
-console.log('Текущий уровень поддержки:', supportResistance.current.support);
-console.log('Текущий уровень сопротивления:', supportResistance.current.resistance);
-console.log('Уровень поддержки за последние 4 часа:', supportResistance['4h'].support);
-console.log('Уровень сопротивления за последние 4 часа:', supportResistance['4h'].resistance);
-console.log('Уровень поддержки за последние 12 часов:', supportResistance['12h'].support);
-console.log('Уровень сопротивления за последние 12 часов:', supportResistance['12h'].resistance);
-console.log('Уровень поддержки за последние 24 часа:', supportResistance['24h'].support);
-console.log('Уровень сопротивления за последние 24 часа:', supportResistance['24h'].resistance);
+console.log('Текущая поддержка:', supportResistance.current.support);
+console.log('Текущее сопротивление:', supportResistance.current.resistance);
+console.log('Поддержка 4 часа:', supportResistance['4h'].support);
+console.log('Сопротивление 4 часа:', supportResistance['4h'].resistance);
+console.log('Поддержка 12 часов:', supportResistance['12h'].support);
+console.log('Сопротивление 12 часов:', supportResistance['12h'].resistance);
+console.log('Поддержка 24 часа:', supportResistance['24h'].support);
+console.log('Сопротивление 24 часа:', supportResistance['24h'].resistance);
 
 // Перекупленность/перепроданность рынка
 const overboughtOversold = {
