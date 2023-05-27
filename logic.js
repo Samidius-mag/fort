@@ -11,7 +11,7 @@ console.log('Текущая цена:', currentPrice);
 
 //Определение боковика
 // Рассчитываем индикаторы
-const obv = new indRes.OBV({ close: priceData.map(p => p.close), volume: volumeData });
+const obv = new indRes.OBV({ close: priceData.map(p => p.close)});
 const wma = new indRes.WMA({ period: 50, values: priceData.map(p => p.close) });
 
 // Получаем последние значения индикаторов
