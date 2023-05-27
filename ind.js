@@ -10,12 +10,12 @@ const rsiValues = RSI.calculate({ period: rsiPeriod, values: close });
 const rsi = rsiValues.map(value => parseFloat(value.toFixed(2)));
 
 // EMA
-const emaPeriod = 20;
+const emaPeriod = 21;
 const emaValues = EMA.calculate({ period: emaPeriod, values: close });
 const ema = emaValues.map(value => parseFloat(value.toFixed(2)));
 
 // ROC
-const rocPeriod = 12;
+const rocPeriod = 21;
 const rocValues = ROC.calculate({ period: rocPeriod, values: close });
 const roc = rocValues.map(value => parseFloat(value.toFixed(2)));
 
