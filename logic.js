@@ -130,5 +130,5 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.support);
   console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.resistance);
 }
- console.log('OBVDIFF:', obvDiff);
-console.log('OBVTH:', obvThreshold);
+ console.log('OBVDIFF:', obvDiff.toFixed(2));
+console.log('OBVTH:', obvThreshold.toFixed(2));
