@@ -1,4 +1,4 @@
-/*const fs = require('fs');
+const fs = require('fs');
 const moment = require('moment');
 
 const priceData = require('./price.json');
@@ -119,7 +119,8 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.support);
   console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.resistance);
 }
-*/
+
+/*
 const fs = require('fs');
 const { RSI, EMA, ROC, BollingerBands, OBV, PSAR, WMA } = require('technicalindicators');
 
@@ -254,3 +255,4 @@ function getRecommendations(candles, indicators) {
 
   return { buy: buyRecommendation, sell: sellRecommendation, buyPrice, sellPrice };
 }
+*/
