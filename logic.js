@@ -1,64 +1,121 @@
-const indres = require('./indres');
-const price = require('./price.json');
+const fs = require('fs');
+const moment = require('moment');
 
+const priceData = require('./price.json');
+const indRes = require('./indres.json');
 
+// Определение текущей цены
+const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
+console.log('Текущая цена:', currentPrice);
 
-const currentPrice = price.last_price;
+// Определение тренда
+const trend = {
+  current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : 'Нисходящий',
+  global: priceData[0].close > priceData[priceData.length - 1].close ? 'Нисходящий' : 'Восходящий',
+  '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'Восходящий' : 'Нисходящий',
+  '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
+  '24h': priceData[priceData.length - 1].close > priceData[priceData.length - 49].close ? 'Восходящий' : 'Нисходящий'
+};
+console.log('Текущий тренд:', trend.current);
+console.log('Глобальный тренд:', trend.global);
+console.log('4-часовой тренд:', trend['4h']);
+console.log('12-часовой тренд:', trend['12h']);
+console.log('24-часовой тренд:', trend['24h']);
 
-const currentTrend = indres.getTrend(price, '1h');
-const globalTrend = indres.getTrend(price, '1d');
-const last4Trend = indres.getTrend(price, '4h');
-const last12Trend = indres.getTrend(price, '12h');
-const last24Trend = indres.getTrend(price, '1d');
+// Уровни поддержки и сопротивления
+const supportResistance = {
+  current: {
+    support: parseFloat(indRes.BollingerBands.lower[indRes.BollingerBands.lower.length - 1]).toFixed(2),
+    resistance: parseFloat(indRes.BollingerBands.upper[indRes.BollingerBands.upper.length - 1]).toFixed(2)
+  },
+  '4h': {
+    support: parseFloat(Math.min(...priceData.slice(priceData.length - 7).map(candle => parseFloat(candle.low)))).toFixed(2),
+    resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 7).map(candle => parseFloat(candle.high)))).toFixed(2)
+  },
+  '12h': {
+    support: parseFloat(Math.min(...priceData.slice(priceData.length - 25).map(candle => parseFloat(candle.low)))).toFixed(2),
+    resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 25).map(candle => parseFloat(candle.high)))).toFixed(2)
+  },
+  '24h': {
+    support: parseFloat(Math.min(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.low)))).toFixed(2),
+    resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.high)))).toFixed(2)
+  }
+};
+console.log('Текущий уровень поддержки:', supportResistance.current.support);
+console.log('Текущий уровень сопротивления:', supportResistance.current.resistance);
+console.log('Уровень поддержки за последние 4 часа:', supportResistance['4h'].support);
+console.log('Уровень сопротивления за последние 4 часа:', supportResistance['4h'].resistance);
+console.log('Уровень поддержки за последние 12 часов:', supportResistance['12h'].support);
+console.log('Уровень сопротивления за последние 12 часов:', supportResistance['12h'].resistance);
+console.log('Уровень поддержки за последние 24 часа:', supportResistance['24h'].support);
+console.log('Уровень сопротивления за последние 24 часа:', supportResistance['24h'].resistance);
 
-const currentSR = indres.getSupportResistance(price, '1h');
-const last4SR = indres.getSupportResistance(price, '4h');
-const last12SR = indres.getSupportResistance(price, '12h');
-const last24SR = indres.getSupportResistance(price, '1d');
+// Перекупленность/перепроданность рынка
+const overboughtOversold = {
+  RSI: {
+    current: indRes.RSI[indRes.RSI.length - 1],
+    overbought: 70,
+    oversold: 30
+  },
+  ROC: {
+    current: indRes.ROC[indRes.ROC.length - 1],
+    overbought: 10,
+    oversold: -10
+  }
+};
+console.log('RSI:', overboughtOversold.RSI.current);
+console.log('ROC:', overboughtOversold.ROC.current);
 
-const currentOS = indres.getOverboughtOversold(price, '1h');
-const last4OS = indres.getOverboughtOversold(price, '4h');
-const last12OS = indres.getOverboughtOversold(price, '12h');
-const last24OS = indres.getOverboughtOversold(price, '1d');
+if (overboughtOversold.RSI.current > overboughtOversold.RSI.overbought) {
+  console.log('Рынок перекуплен');
+} else if (overboughtOversold.RSI.current < overboughtOversold.RSI.oversold) {
+  console.log('Рынок перепродан');
+}
 
-const entryRecommendation = indres.getRecommendations(price, '1h', 'entry');
-const exitRecommendation = indres.getRecommendations(price, '1h', 'exit');
-const last4EntryRecommendation = indres.getRecommendations(price, '4h', 'entry');
-const last4ExitRecommendation = indres.getRecommendations(price, '4h', 'exit');
-const last12EntryRecommendation = indres.getRecommendations(price, '12h', 'entry');
-const last12ExitRecommendation = indres.getRecommendations(price, '12h', 'exit');
-const last24EntryRecommendation = indres.getRecommendations(price, '1d', 'entry');
-const last24ExitRecommendation = indres.getRecommendations(price, '1d', 'exit');
+if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
+  console.log('Рынок перекуплен');
+} else if (overboughtOversold.ROC.current < overboughtOversold.ROC.oversold) {
+  console.log('Рынок перепродан');
+}
 
-const buySellRecommendation = indres.getBuySellRecommendation(price, '1h');
-const last4BuySellRecommendation = indres.getBuySellRecommendation(price, '4h');
-const last12BuySellRecommendation = indres.getBuySellRecommendation(price, '12h');
-const last24BuySellRecommendation = indres.getBuySellRecommendation(price, '1d');
+// Рекомендации по покупке/продаже
+const buySell = {
+  RSI: {
+    buy: overboughtOversold.RSI.current < overboughtOversold.RSI.oversold,
+    sell: overboughtOversold.RSI.current > overboughtOversold.RSI.overbought
+  },
+  ROC: {
+    buy: overboughtOversold.ROC.current < overboughtOversold.ROC.oversold,
+    sell: overboughtOversold.ROC.current > overboughtOversold.ROC.overbought
+  }
+};
 
-console.log('Current price:', currentPrice);
-console.log('Current trend:', currentTrend);
-console.log('Global trend:', globalTrend);
-console.log('Last 4 hours trend:', last4Trend);
-console.log('Last 12 hours trend:', last12Trend);
-console.log('Last 24 hours trend:', last24Trend);
-console.log('Current support/resistance:', currentSR);
-console.log('Last 4 hours support/resistance:', last4SR);
-console.log('Last 12 hours support/resistance:', last12SR);
-console.log('Last 24 hours support/resistance:', last24SR);
-console.log('Current overbought/oversold:', currentOS);
-console.log('Last 4 hours overbought/oversold:', last4OS);
-console.log('Last 12 hours overbought/oversold:', last12OS);
-console.log('Last 24 hours overbought/oversold:', last24OS);
-console.log('Entry recommendation (1 hour):', entryRecommendation);
-console.log('Exit recommendation (1 hour):', exitRecommendation);
-console.log('Entry recommendation (last 4 hours):', last4EntryRecommendation);
-console.log('Exit recommendation (last 4 hours):', last4ExitRecommendation);
-console.log('Entry recommendation (last 12 hours):', last12EntryRecommendation);
-console.log('Exit recommendation (last 12 hours):', last12ExitRecommendation);
-console.log('Entry recommendation (last 24 hours):', last24EntryRecommendation);
-console.log('Exit recommendation (last 24 hours):', last24ExitRecommendation);
-console.log('Buy/sell recommendation (1 hour):', buySellRecommendation);
-console.log('Buy/sell recommendation (last 4 hours):', last4BuySellRecommendation);
-console.log('Buy/sell recommendation (last 12 hours):', last12BuySellRecommendation);
-console.log('Buy/sell recommendation (last 24 hours):', last24BuySellRecommendation);
-module.exports.getTrend = getTrend;
+if (buySell.RSI.buy && buySell.ROC.buy) {
+  console.log('Рекомендуется покупка');
+} else if (buySell.RSI.sell && buySell.ROC.sell) {
+  console.log('Рекомендуется продажа');
+}
+
+// Точки входа-выхода в сделку
+const entryExitPoints = {
+  buy: {
+    support: supportResistance.current.support,
+    resistance: supportResistance.current.resistance,
+    ema: indRes.EMA[indRes.EMA.length - 1],
+    psar: indRes.PSAR[indRes.PSAR.length - 1]
+  },
+  sell: {
+    support: supportResistance.current.support,
+    resistance: supportResistance.current.resistance,
+    ema: indRes.EMA[indRes.EMA.length - 1],
+    psar: indRes.PSAR[indRes.PSAR.length - 1]
+  }
+};
+
+if (buySell.RSI.buy && buySell.ROC.buy) {
+  console.log('Точка входа в сделку (покупка):', entryExitPoints.buy.resistance);
+  console.log('Точка выхода из сделки (продажа):', entryExitPoints.buy.support);
+} else if (buySell.RSI.sell && buySell.ROC.sell) {
+  console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.support);
+  console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.resistance);
+}
