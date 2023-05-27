@@ -8,6 +8,22 @@ const indRes = require('./indres.json');
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
 console.log('Текущая цена:', currentPrice);
 
+
+//Определение боковика
+// Рассчитываем индикаторы
+const obv = new indRes.OBV({ close: priceData.map(p => p.close), volume: volumeData });
+const wma = new indRes.WMA({ period: 50, values: priceData.map(p => p.close) });
+
+// Получаем последние значения индикаторов
+const lastObv = obv.getResult()[obv.getResult().length - 1];
+const lastWma = wma.getResult()[wma.getResult().length - 1];
+
+// Определяем боковой тренд
+const sideways = lastObv < lastWma * 1.02 && lastObv > lastWma * 0.98 ? 'Боковой' : 'Не боковой';
+
+console.log(sideways);
+
+
 // Определение тренда
 const trend = {
   current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'Нисходящий' : 'Боковой',
