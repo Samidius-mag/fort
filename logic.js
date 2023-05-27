@@ -187,7 +187,7 @@ function getTrend(candles, indicators) {
 
 function getSupportResistance(candles, indicators) {
   const currentPrice = candles[candles.length - 1].close;
-  const currentBB = indicators.bb[indicators.bb.length - 1];
+  const currentBB = indicators.BollingerBands[indicators.BollingerBands.length - 1];
   const currentSupport = currentBB.lower;
   const currentResistance = currentBB.upper;
 
@@ -212,7 +212,7 @@ function getSupportResistance(candles, indicators) {
 }
 
 function getOverboughtOversold(indicators) {
-  const currentRSI = indicators.rsi[indicators.rsi.length - 1];
+  const currentRSI = indicators.RSI[indicators.RSI.length - 1];
 
   if (currentRSI > 70) {
     return 'Рынок перекуплен';
@@ -225,11 +225,11 @@ function getOverboughtOversold(indicators) {
 
 function getRecommendations(candles, indicators) {
   const currentPrice = candles[candles.length - 1].close;
-  const currentSMA20 = indicators.ema[indicators.ema.length - 1];
-  const currentSMA50 = indicators.ema.slice(-50).reduce((sum, value) => sum + value, 0) / 50;
-  const currentSMA200 = indicators.ema.slice(-200).reduce((sum, value) => sum + value, 0) / 200;
-  const currentRSI = indicators.rsi[indicators.rsi.length - 1];
-  const currentOBV = indicators.obv[indicators.obv.length - 1];
+  const currentSMA20 = indicators.EMA[indicators.EMA.length - 1];
+  const currentSMA50 = indicators.EMA.slice(-50).reduce((sum, value) => sum + value, 0) / 50;
+  const currentSMA200 = indicators.EMA.slice(-200).reduce((sum, value) => sum + value, 0) / 200;
+  const currentRSI = indicators.RSI[indicators.rsi.length - 1];
+  const currentOBV = indicators.OBV[indicators.obv.length - 1];
 
   let buyRecommendation = '';
   let sellRecommendation = '';
