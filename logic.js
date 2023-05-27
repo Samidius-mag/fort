@@ -39,9 +39,7 @@ console.log('24-часовой тренд:', trend['24h']);
 console.log('Глобальный тренд:', trend.global);
 // Уровни поддержки и сопротивления
 
-if (currentPrice > supportResistance.current.support && currentPrice < supportResistance.current.resistance) {
-console.log('Текущая цена находится в зоне бокового движения');
-}
+
 
 const supportResistance = {
   current: {
@@ -59,7 +57,10 @@ const supportResistance = {
   '24h': {
     support: parseFloat(Math.min(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.low)))).toFixed(2),
     resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.high)))).toFixed(2)
-  }
+  },
+  if (currentPrice > supportResistance.current.support && currentPrice < supportResistance.current.resistance) {
+console.log('Текущая цена находится в зоне бокового движения');
+}
 };
 console.log('Текущая поддержка:', supportResistance.current.support);
 console.log('Текущее сопротивление:', supportResistance.current.resistance);
