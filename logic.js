@@ -16,15 +16,6 @@ const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
 console.log('Изменение цены за последние 2 часа:', priceChange.toFixed(2) + '%');
 
 // Определение тренда
-if (Math.abs(priceChange) <= 0.3) {
-console.log('Тренд боковой');
-} else if (priceChange > 0) {
-console.log('Тренд восходящий');
-} else {
-console.log('Тренд нисходящий');
-}
-
-// Определение тренда
 const trend = {
   current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'Нисходящий' : 'Боковой',
   global: priceData[0].close > priceData[priceData.length - 1].close ? 'Нисходящий' : 'Восходящий',
