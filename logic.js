@@ -14,7 +14,7 @@ const numerator = values.slice(values.length - n).reduce((acc, val, i) => acc + 
 const denominator = weights.reduce((acc, val) => acc + val, 0);
 return numerator / denominator;
 };
-const obvWma = wma(obvData, 10);
+const obvWma = wma(obvData, 45);
 const obvDiff = Math.abs(obvData[obvData.length - 1] - obvWma);
 const obvThreshold = obvWma * 0.05;
 const isSideways = obvDiff < obvThreshold;
