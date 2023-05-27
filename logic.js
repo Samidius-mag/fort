@@ -1,76 +1,61 @@
-const fs = require('fs');
+const indres = require('./indres');
+const price = require('./price.json');
 
-const rawData = fs.readFileSync('price.json');
-const priceData = JSON.parse(rawData);
+const currentPrice = price.last_price;
 
-const indData = require('./indres');
+const currentTrend = indres.getTrend(price, '1h');
+const globalTrend = indres.getTrend(price, '1d');
+const last4Trend = indres.getTrend(price, '4h');
+const last12Trend = indres.getTrend(price, '12h');
+const last24Trend = indres.getTrend(price, '1d');
 
-const currentPrice = parseFloat(priceData[priceData.length - 1].close);
+const currentSR = indres.getSupportResistance(price, '1h');
+const last4SR = indres.getSupportResistance(price, '4h');
+const last12SR = indres.getSupportResistance(price, '12h');
+const last24SR = indres.getSupportResistance(price, '1d');
 
-const currentEMA = indData.ema[indData.ema.length - 1];
-const currentTrend = currentPrice > currentEMA ? 'Восходящий' : 'Нисходящий';
+const currentOS = indres.getOverboughtOversold(price, '1h');
+const last4OS = indres.getOverboughtOversold(price, '4h');
+const last12OS = indres.getOverboughtOversold(price, '12h');
+const last24OS = indres.getOverboughtOversold(price, '1d');
 
-const globalEMA = indData.ema[indData.ema.length - 200];
-const globalTrend = currentPrice > globalEMA ? 'Восходящий' : 'Нисходящий';
+const entryRecommendation = indres.getRecommendations(price, '1h', 'entry');
+const exitRecommendation = indres.getRecommendations(price, '1h', 'exit');
+const last4EntryRecommendation = indres.getRecommendations(price, '4h', 'entry');
+const last4ExitRecommendation = indres.getRecommendations(price, '4h', 'exit');
+const last12EntryRecommendation = indres.getRecommendations(price, '12h', 'entry');
+const last12ExitRecommendation = indres.getRecommendations(price, '12h', 'exit');
+const last24EntryRecommendation = indres.getRecommendations(price, '1d', 'entry');
+const last24ExitRecommendation = indres.getRecommendations(price, '1d', 'exit');
 
-const currentBB = indData.bb[indData.bb.length - 1];
-const support = currentBB.lower;
-const resistance = currentBB.upper;
+const buySellRecommendation = indres.getBuySellRecommendation(price, '1h');
+const last4BuySellRecommendation = indres.getBuySellRecommendation(price, '4h');
+const last12BuySellRecommendation = indres.getBuySellRecommendation(price, '12h');
+const last24BuySellRecommendation = indres.getBuySellRecommendation(price, '1d');
 
-const last4Prices = priceData.slice(-4).map(candle => parseFloat(candle.close));
-const last4Max = Math.max(...last4Prices);
-const last4Min = Math.min(...last4Prices);
-const last4Support = last4Min - (last4Max - last4Min);
-const last4Resistance = last4Max + (last4Max - last4Min);
-
-const currentRSI = indData.rsi[indData.rsi.length - 1];
-const isOverbought = currentRSI > 70;
-const isOversold = currentRSI < 30;
-
-let entryRecommendation = '';
-if (currentPrice > resistance) {
-  entryRecommendation = 'Вход в сделку: продажа';
-} else if (currentPrice < support) {
-  entryRecommendation = 'Вход в сделку: покупка';
-} else if (currentTrend === 'Восходящий' && currentPrice > currentEMA) {
-  entryRecommendation = 'Вход в сделку: покупка';
-} else if (currentTrend === 'Нисходящий' && currentPrice < currentEMA) {
-  entryRecommendation = 'Вход в сделку: продажа';
-} else {
-  entryRecommendation = 'Не рекомендуется входить в сделку';
-}
-
-let exitRecommendation = '';
-if (currentPrice > resistance) {
-  exitRecommendation = 'Выход из сделки: продажа';
-} else if (currentPrice < support) {
-  exitRecommendation = 'Выход из сделки: покупка';
-} else {
-  exitRecommendation = 'Не рекомендуется выходить из сделки';
-}
-
-let buySellRecommendation = '';
-if (isOverbought) {
-  buySellRecommendation = 'Рекомендуется продажа';
-} else if (isOversold) {
-  buySellRecommendation = 'Рекомендуется покупка';
-} else {
-  buySellRecommendation = 'Не рекомендуется покупать или продавать';
-}
-
-const result = {
-  currentPrice: currentPrice,
-  //currentTrend: currentTrend,
-  //globalTrend: globalTrend,
-  //support: support,
-  //resistance: resistance,
-  //last4Support: last4Support,
-  //last4Resistance: last4Resistance,
-  //entryRecommendation: entryRecommendation,
-  //exitRecommendation: exitRecommendation,
-  //buySellRecommendation: buySellRecommendation,
-};
-
-console.log(result);
-
-fs.writeFileSync('logicres.js', JSON.stringify(result));
+console.log('Current price:', currentPrice);
+console.log('Current trend:', currentTrend);
+console.log('Global trend:', globalTrend);
+console.log('Last 4 hours trend:', last4Trend);
+console.log('Last 12 hours trend:', last12Trend);
+console.log('Last 24 hours trend:', last24Trend);
+console.log('Current support/resistance:', currentSR);
+console.log('Last 4 hours support/resistance:', last4SR);
+console.log('Last 12 hours support/resistance:', last12SR);
+console.log('Last 24 hours support/resistance:', last24SR);
+console.log('Current overbought/oversold:', currentOS);
+console.log('Last 4 hours overbought/oversold:', last4OS);
+console.log('Last 12 hours overbought/oversold:', last12OS);
+console.log('Last 24 hours overbought/oversold:', last24OS);
+console.log('Entry recommendation (1 hour):', entryRecommendation);
+console.log('Exit recommendation (1 hour):', exitRecommendation);
+console.log('Entry recommendation (last 4 hours):', last4EntryRecommendation);
+console.log('Exit recommendation (last 4 hours):', last4ExitRecommendation);
+console.log('Entry recommendation (last 12 hours):', last12EntryRecommendation);
+console.log('Exit recommendation (last 12 hours):', last12ExitRecommendation);
+console.log('Entry recommendation (last 24 hours):', last24EntryRecommendation);
+console.log('Exit recommendation (last 24 hours):', last24ExitRecommendation);
+console.log('Buy/sell recommendation (1 hour):', buySellRecommendation);
+console.log('Buy/sell recommendation (last 4 hours):', last4BuySellRecommendation);
+console.log('Buy/sell recommendation (last 12 hours):', last12BuySellRecommendation);
+console.log('Buy/sell recommendation (last 24 hours):', last24BuySellRecommendation);
