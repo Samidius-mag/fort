@@ -60,9 +60,9 @@ const supportResistance = {
   },
 };
 
-const sideway = (currentPrice > supportResistance.current.support && currentPrice < supportResistance.current.resistance) {
-console.log('Текущая цена находится в зоне бокового движения')
-};
+const sideway = (currentPrice > supportResistance.current.support && currentPrice < supportResistance.current.resistance);
+console.log('Текущая цена находится в зоне бокового движения');
+
 console.log('Текущая поддержка:', supportResistance.current.support);
 console.log('Текущее сопротивление:', supportResistance.current.resistance);
 console.log('Поддержка 4 часа:', supportResistance['4h'].support);
