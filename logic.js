@@ -228,8 +228,8 @@ function getRecommendations(candles, indicators) {
   const currentSMA20 = indicators.EMA[indicators.EMA.length - 1];
   const currentSMA50 = indicators.EMA.slice(-50).reduce((sum, value) => sum + value, 0) / 50;
   const currentSMA200 = indicators.EMA.slice(-200).reduce((sum, value) => sum + value, 0) / 200;
-  const currentRSI = indicators.RSI[indicators.rsi.length - 1];
-  const currentOBV = indicators.OBV[indicators.obv.length - 1];
+  const currentRSI = indicators.RSI[indicators.RSI.length - 1];
+  const currentOBV = indicators.OBV[indicators.OBV.length - 1];
 
   let buyRecommendation = '';
   let sellRecommendation = '';
