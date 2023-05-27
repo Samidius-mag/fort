@@ -60,15 +60,15 @@ if (isOverbought) {
 
 const result = {
   currentPrice: currentPrice,
-  currentTrend: currentTrend,
-  globalTrend: globalTrend,
-  support: support,
-  resistance: resistance,
-  last4Support: last4Support,
-  last4Resistance: last4Resistance,
-  entryRecommendation: entryRecommendation,
-  exitRecommendation: exitRecommendation,
-  buySellRecommendation: buySellRecommendation,
+  //currentTrend: currentTrend,
+  //globalTrend: globalTrend,
+  //support: support,
+  //resistance: resistance,
+  //last4Support: last4Support,
+  //last4Resistance: last4Resistance,
+  //entryRecommendation: entryRecommendation,
+  //exitRecommendation: exitRecommendation,
+  //buySellRecommendation: buySellRecommendation,
 };
 
 console.log(result);
