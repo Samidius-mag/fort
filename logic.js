@@ -166,15 +166,15 @@ fs.readFile('price.json', 'utf8', (err, data) => {
 
 function getTrend(candles, indicators) {
   const currentPrice = candles[candles.length - 1].close;
-  const currentSMA20 = indicators.ema[indicators.ema.length - 1];
-  const currentSMA50 = indicators.ema.slice(-50).reduce((sum, value) => sum + value, 0) / 50;
-  const currentSMA200 = indicators.ema.slice(-200).reduce((sum, value) => sum + value, 0) / 200;
+  const currentSMA20 = indicators.EMA[indicators.EMA.length - 1];
+  const currentSMA50 = indicators.EMA.slice(-50).reduce((sum, value) => sum + value, 0) / 50;
+  const currentSMA200 = indicators.EMA.slice(-200).reduce((sum, value) => sum + value, 0) / 200;
 
   const currentTrend = currentPrice > currentSMA20 ? 'Восходящий' : 'Нисходящий';
   const globalTrend = currentPrice > currentSMA200 ? 'Восходящий' : 'Нисходящий';
-  const fourHoursTrend = candles[candles.length - 5].close > indicators.ema.slice(-5)[0] ? 'Восходящий' : 'Нисходящий';
-  const twelveHoursTrend = candles[candles.length - 13].close > indicators.ema.slice(-13)[0] ? 'Восходящий' : 'Нисходящий';
-  const twentyFourHoursTrend = candles[candles.length - 25].close > indicators.ema.slice(-25)[0] ? 'Восходящий' : 'Нисходящий';
+  const fourHoursTrend = candles[candles.length - 5].close > indicators.EMA.slice(-5)[0] ? 'Восходящий' : 'Нисходящий';
+  const twelveHoursTrend = candles[candles.length - 13].close > indicators.EMA.slice(-13)[0] ? 'Восходящий' : 'Нисходящий';
+  const twentyFourHoursTrend = candles[candles.length - 25].close > indicators.EMA.slice(-25)[0] ? 'Восходящий' : 'Нисходящий';
 
   return {
     current: currentTrend,
