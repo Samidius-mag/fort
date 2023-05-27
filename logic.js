@@ -192,16 +192,16 @@ function getSupportResistance(candles, indicators) {
   const currentResistance = indicators.BollingerBands.upper;
 
   const fourHoursBB = BollingerBands.calculate({ values: candles.slice(-5).map(candle => candle.close), period: 20, stdDev: 2 });
-  const fourHoursSupport = fourHoursBB[fourHoursBB.length - 1].lower;
-  const fourHoursResistance = fourHoursBB[fourHoursBB.length - 1].upper;
+  const fourHoursSupport = fourHoursBB[indicators.BollingerBands.length - 1].lower;
+  const fourHoursResistance = fourHoursBB[indicators.BollingerBands.length - 1].upper;
 
   const twelveHoursBB = BollingerBands.calculate({ values: candles.slice(-13).map(candle => candle.close), period: 20, stdDev: 2 });
-  const twelveHoursSupport = twelveHoursBB[twelveHoursBB.length - 1].lower;
-  const twelveHoursResistance = twelveHoursBB[twelveHoursBB.length - 1].upper;
+  const twelveHoursSupport = twelveHoursBB[indicators.BollingerBands.length - 1].lower;
+  const twelveHoursResistance = twelveHoursBB[indicators.BollingerBands.length - 1].upper;
 
   const twentyFourHoursBB = BollingerBands.calculate({ values: candles.slice(-25).map(candle => candle.close), period: 20, stdDev: 2 });
-  const twentyFourHoursSupport = twentyFourHoursBB[twentyFourHoursBB.length - 1].lower;
-  const twentyFourHoursResistance = twentyFourHoursBB[twentyFourHoursBB.length - 1].upper;
+  const twentyFourHoursSupport = twentyFourHoursBB[indicators.BollingerBands.length - 1].lower;
+  const twentyFourHoursResistance = twentyFourHoursBB[indicators.BollingerBands.length - 1].upper;
 
   return {
     current: { support: currentSupport, resistance: currentResistance },
