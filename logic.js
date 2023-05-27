@@ -1,90 +1,76 @@
 const fs = require('fs');
-const { RSI, EMA, ROC, BollingerBands, ADX, OBV, PSAR, WMA } = require('technicalindicators');
 
 const rawData = fs.readFileSync('price.json');
-const data = JSON.parse(rawData);
+const priceData = JSON.parse(rawData);
 
-const indData = fs.readFileSync('indres.json');
-const indicators = JSON.parse(indData);
+const indData = require('./indres');
 
-const currentPrice = data[data.length - 1].close;
+const currentPrice = parseFloat(priceData[priceData.length - 1].close);
 
-// Определение текущего тренда
-const ema20 = indicators.ema[indicators.ema.length - 1];
-const ema50 = EMA.calculate({ period: 50, values: data.map(candle => candle.close) })[data.length - 1];
-const ema200 = EMA.calculate({ period: 200, values: data.map(candle => candle.close) })[data.length - 1];
+const currentEMA = indData.ema[indData.ema.length - 1];
+const currentTrend = currentPrice > currentEMA ? 'Восходящий' : 'Нисходящий';
 
-let currentTrend = '';
-if (currentPrice > ema20 && ema20 > ema50 && ema50 > ema200) {
-  currentTrend = 'Восходящий';
-} else if (currentPrice < ema20 && ema20 < ema50 && ema50 < ema200) {
-  currentTrend = 'Нисходящий';
+const globalEMA = indData.ema[indData.ema.length - 200];
+const globalTrend = currentPrice > globalEMA ? 'Восходящий' : 'Нисходящий';
+
+const currentBB = indData.bb[indData.bb.length - 1];
+const support = currentBB.lower;
+const resistance = currentBB.upper;
+
+const last4Prices = priceData.slice(-4).map(candle => parseFloat(candle.close));
+const last4Max = Math.max(...last4Prices);
+const last4Min = Math.min(...last4Prices);
+const last4Support = last4Min - (last4Max - last4Min);
+const last4Resistance = last4Max + (last4Max - last4Min);
+
+const currentRSI = indData.rsi[indData.rsi.length - 1];
+const isOverbought = currentRSI > 70;
+const isOversold = currentRSI < 30;
+
+let entryRecommendation = '';
+if (currentPrice > resistance) {
+  entryRecommendation = 'Вход в сделку: продажа';
+} else if (currentPrice < support) {
+  entryRecommendation = 'Вход в сделку: покупка';
+} else if (currentTrend === 'Восходящий' && currentPrice > currentEMA) {
+  entryRecommendation = 'Вход в сделку: покупка';
+} else if (currentTrend === 'Нисходящий' && currentPrice < currentEMA) {
+  entryRecommendation = 'Вход в сделку: продажа';
 } else {
-  currentTrend = 'Боковой';
+  entryRecommendation = 'Не рекомендуется входить в сделку';
 }
 
-// Определение глобального тренда
-const ema200Daily = EMA.calculate({ period: 200, values: data.slice(-24 * 60).map(candle => candle.close) })[0];
-const globalTrend = currentPrice > ema200Daily ? 'Восходящий' : 'Нисходящий';
-
-// Определение уровней поддержки и сопротивления
-const support1 = indicators.bb[indicators.bb.length - 1].lower;
-const support2 = indicators.bb[indicators.bb.length - 1].lower - (indicators.bb[indicators.bb.length - 1].upper - indicators.bb[indicators.bb.length - 1].lower) / 2;
-const resistance1 = indicators.bb[indicators.bb.length - 1].upper;
-const resistance2 = indicators.bb[indicators.bb.length - 1].upper + (indicators.bb[indicators.bb.length - 1].upper - indicators.bb[indicators.bb.length - 1].lower) / 2;
-
-const support4h = indicators.bb[indicators.bb.length - 7].lower;
-const support12h = indicators.bb[indicators.bb.length - 25].lower;
-const support24h = indicators.bb[indicators.bb.length - 49].lower;
-const resistance4h = indicators.bb[indicators.bb.length - 7].upper;
-const resistance12h = indicators.bb[indicators.bb.length - 25].upper;
-const resistance24h = indicators.bb[indicators.bb.length - 49].upper;
-
-// Определение перекупленности/перепроданности рынка
-const rsi14 = indicators.rsi[indicators.rsi.length - 1];
-let marketState = '';
-if (rsi14 > 70) {
-  marketState = 'Перекуплен';
-} else if (rsi14 < 30) {
-  marketState = 'Перепродан';
+let exitRecommendation = '';
+if (currentPrice > resistance) {
+  exitRecommendation = 'Выход из сделки: продажа';
+} else if (currentPrice < support) {
+  exitRecommendation = 'Выход из сделки: покупка';
 } else {
-  marketState = 'Нормальное состояние';
+  exitRecommendation = 'Не рекомендуется выходить из сделки';
 }
 
-// Определение рекомендаций с точками входа-выхода в сделку
-let recommendation = '';
-let entryPrice = 0;
-let exitPrice = 0;
-if (currentPrice < support1) {
-  recommendation = 'Покупать';
-  entryPrice = currentPrice;
-  exitPrice = resistance1;
-} else if (currentPrice > resistance1) {
-  recommendation = 'Продавать';
-  entryPrice = currentPrice;
-  exitPrice = support1;
-} else {
-  recommendation = 'Ждать';
-}
-
-// Определение рекомендаций о покупке и продаже
 let buySellRecommendation = '';
-if (currentPrice < ema20 && ema20 < ema50 && ema50 < ema200) {
-  buySellRecommendation = 'Покупать';
-} else if (currentPrice > ema20 && ema20 > ema50 && ema50 > ema200) {
-  buySellRecommendation = 'Продавать';
+if (isOverbought) {
+  buySellRecommendation = 'Рекомендуется продажа';
+} else if (isOversold) {
+  buySellRecommendation = 'Рекомендуется покупка';
 } else {
-  buySellRecommendation = 'Ждать';
+  buySellRecommendation = 'Не рекомендуется покупать или продавать';
 }
 
-console.log(`Текущая цена: ${currentPrice}`);
-console.log(`Текущий тренд: ${currentTrend}`);
-console.log(`Глобальный тренд: ${globalTrend}`);
-console.log(`Уровни поддержки: ${support1.toFixed(2)}, ${support2.toFixed(2)}`);
-console.log(`Уровни сопротивления: ${resistance1.toFixed(2)}, ${resistance2.toFixed(2)}`);
-console.log(`Уровни поддержки и сопротивления за последние 4 часа: ${support4h.toFixed(2)}, ${resistance4h.toFixed(2)}`);
-console.log(`Уровни поддержки и сопротивления за последние 12 часов: ${support12h.toFixed(2)}, ${resistance12h.toFixed(2)}`);
-console.log(`Уровни поддержки и сопротивления за последние 24 часа: ${support24h.toFixed(2)}, ${resistance24h.toFixed(2)}`);
-console.log(`Состояние рынка: ${marketState}`);
-console.log(`Рекомендация с точками входа-выхода в сделку: ${recommendation} (вход: ${entryPrice.toFixed(2)}, выход: ${exitPrice.toFixed(2)})`);
-console.log(`Рекомендация о покупке и продаже: ${buySellRecommendation}`);
+const result = {
+  currentPrice,
+  currentTrend,
+  globalTrend,
+  support,
+  resistance,
+  last4Support,
+  last4Resistance,
+  entryRecommendation,
+  exitRecommendation,
+  buySellRecommendation,
+};
+
+console.log(result);
+
+fs.writeFileSync('logicres.js', JSON.stringify(result));
