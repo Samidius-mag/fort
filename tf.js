@@ -31,7 +31,7 @@ model.add(tf.layers.dense({ units: 1 }));
 
 // Шаг 4: Обучение модели на обучающей выборке
 model.compile({ loss: 'meanSquaredError', optimizer: 'adam' });
-model.fit(tf.tensor2d(xTrain), tf.tensor1d(yTrain), { epochs: 100 });
+model.fit(tf.expandDims(tf.tensor2d(xTrain), 0), tf.tensor1d(yTrain), { epochs: 100 });
 
 // Шаг 5: Оценка качества модели на тестовой выборке
 const yPred = model.predict(tf.tensor2d(xTest)).dataSync();
