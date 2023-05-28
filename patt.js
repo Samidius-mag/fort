@@ -10,14 +10,14 @@ const input = {
   close: data.map(candle => candle.close),
   volume: data.map(candle => candle.volume),
 };
-
+/*
 const lastCandle = {
   open: input.open[input.open.length - 2],
   high: input.high[input.high.length - 2],
   low: input.low[input.low.length - 2],
   close: input.close[input.close.length - 2],
 };
-
+*/
 const resultTop = tweezertop(input);
 const resultBottom = tweezerbottom(input);
 const resultDoji = doji([lastCandle]);
