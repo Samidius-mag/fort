@@ -9,8 +9,11 @@ const data = JSON.parse(rawData).map(candle => ({
   volume: parseFloat(candle.volume),
 }));
 
-const rawData = fs.readFileSync('indres.json');
-const data = JSON.parse(rawData).map(item => ({
+const rawIndicators = fs.readFileSync('indres.json');
+const indicators = JSON.parse(rawIndicators);
+
+// Преобразование даты и значения индикатора
+const data = indicators.map(item => ({
   date: new Date(item.date),
   value: parseFloat(item.value),
 }));
