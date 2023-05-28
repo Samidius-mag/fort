@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { CandlestickFinder } = require('technicalindicators');
 
-class TweezerTop extends CandlestickFinder {
+class TweezerTop extends technicalindicators.CandlestickFinder {
   constructor() {
     super();
     this.requiredCount = 5;
@@ -20,7 +20,7 @@ class TweezerTop extends CandlestickFinder {
   }
 }
 
-class TweezerBottom extends CandlestickFinder {
+class TweezerBottom extends technicalindicators.CandlestickFinder {
   constructor() {
     super();
     this.requiredCount = 5;
