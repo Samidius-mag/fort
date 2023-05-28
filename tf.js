@@ -7,7 +7,7 @@ const input = [
   indRes.RSI.slice(0, -24),
   indRes.EMA.slice(0, -24),
   indRes.ROC.slice(0, -24),
-  indRes.BollingerBands.slice(0, -24),
+  //indRes.BollingerBands.slice(0, -24),
   //indRes.BollingerBands.slice(band => band.lower).slice(0, -24),
   indRes.OBV.slice(0, -24),
   indRes.WMA.slice(0, -24),
