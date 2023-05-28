@@ -2,7 +2,7 @@ const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 
 const rawData = fs.readFileSync('indres.json');
-const data = JSON.parse(rawData).map(candle => ({
+const data = JSON.parse(rawData).slice(candle => ({
   RSI: parseFloat(candle.RSI),
   EMA: parseFloat(candle.EMA),
   ROC: parseFloat(candle.ROC),
@@ -14,7 +14,7 @@ const data = JSON.parse(rawData).map(candle => ({
 const prices = data.slice(candle => candle.RSI);
 const minPrice = Math.min(...prices);
 const maxPrice = Math.max(...prices);
-const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - minPrice));
+const normalizedPrices = prices.slice(price => (price - minPrice) / (maxPrice - minPrice));
 
 const windowSize = 720;
 const input = [];
