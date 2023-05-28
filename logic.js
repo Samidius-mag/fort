@@ -131,11 +131,11 @@ const entryExitPoints = {
 
 if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Точка входа в сделку (покупка):', entryExitPoints.buy.support);
-  console.log('Точка выхода из сделки (продажа):', entryExitPoints.buy.resistance);
-  console.log('Стоп - лосс (покупка):', supportResistance['24h'].support)
+  console.log('Точка выхода из сделки:', entryExitPoints.buy.resistance);
+  console.log('Стоп - лосс:', supportResistance['24h'].support)
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.resistance);
-  console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.support);
-console.log('Стоп - лосс (покупка):', supportResistance['24h'].resistance)
+  console.log('Точка выхода из сделки:', entryExitPoints.sell.support);
+console.log('Стоп - лосс:', supportResistance['24h'].resistance)
 }
 
