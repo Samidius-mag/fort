@@ -18,11 +18,17 @@ const combinedData = data.map((candle, index) => ({
   ...indresData[index],
 }));
 
+const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - minPrice));
+
+const input = [];
+const output = [];
+
 for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
-  const inputWindow = combinedData.slice(i, i + windowSize);
+  const inputWindow = normalizedPrices.slice(i, i + windowSize);
   const outputWindow = normalizedPrices.slice(i + windowSize, i + windowSize + 1);
   input.push(inputWindow);
   output.push(outputWindow);
+}
 }
 const model = tf.sequential();
 model.add(tf.layers.dense({ units: 64, inputShape: [windowSize, 8], activation: 'relu' }));
