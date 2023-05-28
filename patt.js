@@ -16,12 +16,12 @@ console.log(`Is Bullish Hammer: ${isBullishHammer}`);
 
 const candle1 = data[data.length - 2];
 
-const bodyLength = Math.abs(candle1.open - candle1.close);
-const upperShadowLength = candle1.high - Math.max(candle1.open, candle1.close);
-const lowerShadowLength = Math.min(candle1.open, candle1.close) - candle1.low;
+const bodyLength1 = Math.abs(candle1.open - candle1.close);
+const upperShadowLength1 = candle1.high - Math.max(candle1.open, candle1.close);
+const lowerShadowLength1 = Math.min(candle1.open, candle1.close) - candle1.low;
 
-const isBearishHammer = bodyLength < lowerShadowLength &&
-  bodyLength <= candle1.high / 3 &&
-  upperShadowLength <= bodyLength / 2;
+const isBearishHammer = bodyLength1 < lowerShadowLength1 &&
+  bodyLength1 <= candle1.high / 3 &&
+  upperShadowLength1 <= bodyLength1 / 2;
 
 console.log(`Is Bearish Hammer: ${isBearishHammer}`);
