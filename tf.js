@@ -1,48 +1,43 @@
-async function run() {
-  const tf = require('@tensorflow/tfjs-node');
-  const { calculateRecommendation, calculateEntryExitPoints } = require('./logic');
+// Шаг 1: Загрузка данных
+const data = require('./indres.json');
+const indicators = Object.keys(data);
+const values = Object.values(data);
+const timeSteps = values[0].length;
 
-  const priceData = require('./price.json');
-  const indResData = require('./indres.json');
-
-  const priceTensor = tf.tensor(priceData);
-  const indResTensor = tf.tensor(indResData);
-
-  const model = tf.sequential();
-
-  model.add(tf.layers.dense({ units: 64, inputShape: [priceData.length, indResData.length], activation: 'relu' }));
-  model.add(tf.layers.flatten());
-  model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 16, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 8, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 4, activation: 'softmax' }));
-
-  model.compile({ optimizer: 'adam', loss: 'categoricalCrossentropy', metrics: ['accuracy'] });
-
-  const epochs = 100;
-  const batchSize = 32;
-
-  const xTrain = priceTensor;
-  const yTrain = indResTensor;
-
-  await model.fit(xTrain, yTrain, {
-    batchSize,
-    epochs,
-    shuffle: true,
-    callbacks: tf.node.tensorBoard('./logs')
-  });
-
-  const predictions = model.predict(priceTensor);
-
-  const recommendation = calculateRecommendation(priceData, predictions.arraySync());
-  const currentRecommendation = recommendation[recommendation.length - 1];
-  const entryExitPoints = calculateEntryExitPoints(priceData, predictions.arraySync());
-  const currentEntryExitPoints = entryExitPoints[entryExitPoints.length - 1];
-
-  console.log(`Текущий тренд: ${currentRecommendation.trend}`);
-  console.log(`Текущий уровень поддержки: ${currentRecommendation.support}, текущий уровень сопротивления: ${currentRecommendation.resistance}`);
-  console.log(`Рекомендация: ${currentRecommendation.recommendation}`);
-  console.log(`Точки входа-выхода в сделку: Вход - ${currentEntryExitPoints.entry}, Выход - ${currentEntryExitPoints.exit}`);
+// Преобразование данных в формат, который может быть использован для обучения нейросети
+const input = [];
+const output = [];
+for (let i = 0; i < timeSteps - 1; i++) {
+  const x = [];
+  for (let j = 0; j < indicators.length; j++) {
+    x.push(values[j][i]);
+  }
+  input.push(x);
+  output.push(values[0][i + 1]);
 }
 
-run();
+// Шаг 2: Разделение данных на обучающую и тестовую выборки
+const splitIndex = Math.floor(input.length * 0.8);
+const xTrain = input.slice(0, splitIndex);
+const yTrain = output.slice(0, splitIndex);
+const xTest = input.slice(splitIndex);
+const yTest = output.slice(splitIndex);
+
+// Шаг 3: Создание модели нейросети
+const model = tf.sequential();
+model.add(tf.layers.lstm({ units: 64, inputShape: [indicators.length] }));
+model.add(tf.layers.dense({ units: 1 }));
+
+// Шаг 4: Обучение модели на обучающей выборке
+model.compile({ loss: 'meanSquaredError', optimizer: 'adam' });
+model.fit(tf.tensor2d(xTrain), tf.tensor1d(yTrain), { epochs: 100 });
+
+// Шаг 5: Оценка качества модели на тестовой выборке
+const yPred = model.predict(tf.tensor2d(xTest)).dataSync();
+const mae = tf.metrics.meanAbsoluteError(tf.tensor1d(yTest), tf.tensor1d(yPred)).dataSync();
+console.log(`MAE: ${mae}`);
+
+// Шаг 6: Использование обученной модели для предсказания будущей цены
+const newX = [values.map(v => v[timeSteps - 1])];
+const newY = model.predict(tf.tensor2d(newX)).dataSync();
+console.log(`Predicted price: ${newY[0]}`);
