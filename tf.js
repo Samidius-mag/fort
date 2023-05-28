@@ -1,6 +1,5 @@
 const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
-
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData).map(candle => ({
   open: parseFloat(candle.open),
@@ -10,63 +9,106 @@ const data = JSON.parse(rawData).map(candle => ({
   volume: parseFloat(candle.volume),
 }));
 
-const indresRawData = fs.readFileSync('indres.json');
-const indresData = JSON.parse(indresRawData);
+const rawIndicators = fs.readFileSync('indres.json');
+const indicators = JSON.parse(rawIndicators);
 
-const combinedData = data.map((candle, index) => ({
+// Объединение данных
+const mergedData = data.map((candle, index) => ({
   ...candle,
-  ...indresData[index],
+  ...indicators[index],
 }));
 
-
-const prices = data.map(candle => candle.close);
+// Подготовка данных
+const prices = mergedData.map(candle => candle.close);
 const minPrice = Math.min(...prices);
 const maxPrice = Math.max(...prices);
 const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - minPrice));
 
+const windowSize = 720;
 const input = [];
 const output = [];
-const windowSize = 10;
-for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
-  const inputWindow = normalizedPrices.slice(i, i + windowSize);
-  const outputWindow = normalizedPrices.slice(i + windowSize, i + windowSize + 1);
-  input.push(inputWindow);
-  output.push(outputWindow);
 
+// Дополнительный код для формирования входных и выходных данных
+
+Для формирования входных и выходных данных, можно использовать следующий код:
+
+for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
+  const window = normalizedPrices.slice(i, i + windowSize);
+  const targetIndex = i + windowSize;
+
+  input.push([
+    ...window,
+    mergedData[targetIndex].RSI,
+    mergedData[targetIndex].EMA,
+    mergedData[targetIndex].ROC,
+    mergedData[targetIndex].BollingerBands,
+    mergedData[targetIndex].OBV,
+    mergedData[targetIndex].PSAR,
+    mergedData[targetIndex].WMA,
+  ]);
+
+  const futurePrice1h = normalizedPrices[targetIndex + 1];
+  const futurePrice4h = normalizedPrices[targetIndex + 4];
+  const futurePrice12h = normalizedPrices[targetIndex + 12];
+  const futurePrice24h = normalizedPrices[targetIndex + 24];
+
+  output.push([
+    futurePrice1h,
+    futurePrice4h,
+    futurePrice12h,
+    futurePrice24h,
+  ]);
 }
 
-// Преобразуем данные в тензоры
-const input = tf.tensor(inputData).reshape([-1, windowSize, 1]);
-const output = tf.tensor(outputData).reshape([-1, 1]);
+// Обучение нейросети
 
+Для обучения нейросети, можно использовать следующий код:
 
 const model = tf.sequential();
-model.add(tf.layers.dense({ units: 64, inputShape: [windowSize, 8], activation: 'relu' }));
-model.add(tf.layers.flatten());
-model.add(tf.layers.dense({ units: 1, activation: 'linear' }));
-model.compile({ optimizer: 'adam', loss: 'meanSquaredError' });
 
-const xs = tf.tensor(input);
-const ys = tf.tensor(output);
+model.add(tf.layers.dense({
+  inputShape: [windowSize + 7],
+  units: 64,
+  activation: 'relu',
+}));
 
-model.fit(xs, ys, { epochs: 50 }).then(() => {
-  // Прогноз цены на следующие 1, 4, 12 и 24 часа
-  const lastWindow = combinedData.slice(-windowSize);
-  const normalizedLastWindow = lastWindow.map(candle => ({
-    open: (candle.open - minPrice) / (maxPrice - minPrice),
-    high: (candle.high - minPrice) / (maxPrice - minPrice),
-    low: (candle.low - minPrice) / (maxPrice - minPrice),
-    close: (candle.close - minPrice) / (maxPrice - minPrice),
-    volume: candle.volume,
-    ...candle.indres,
-  }));
-  const inputTensor = tf.tensor([normalizedLastWindow]);
-  const prediction1h = model.predict(inputTensor).dataSync()[0] * (maxPrice - minPrice) + minPrice;
-  const prediction4h = model.predict(inputTensor.reshape([1, windowSize * 4, 8])).dataSync()[0] * (maxPrice - minPrice) + minPrice;
-  const prediction12h = model.predict(inputTensor.reshape([1, windowSize * 12, 8])).dataSync()[0] * (maxPrice - minPrice) + minPrice;
-  const prediction24h = model.predict(inputTensor.reshape([1, windowSize * 24, 8])).dataSync()[0] * (maxPrice - minPrice) + minPrice;
-  console.log(`Прогноз цены на следующие 1 час: ${prediction1h}`);
-  console.log(`Прогноз цены на следующие 4 часа: ${prediction4h}`);
-  console.log(`Прогноз цены на следующие 12 часов: ${prediction12h}`);
-  console.log(`Прогноз цены на следующие 24 часа: ${prediction24h}`);
+model.add(tf.layers.dense({
+  units: 4,
+  activation: 'linear',
+}));
+
+model.compile({
+  optimizer: tf.train.adam(),
+  loss: 'meanSquaredError',
+});
+
+const xs = tf.tensor2d(input);
+const ys = tf.tensor2d(output);
+
+model.fit(xs, ys, {
+  epochs: 100,
+  shuffle: true,
+  validationSplit: 0.2,
+}).then(() => {
+  // Получение прогнозов
+  const lastWindow = normalizedPrices.slice(-windowSize);
+  const lastIndicators = mergedData.slice(-1)[0];
+
+  const input = [
+    ...lastWindow,
+    lastIndicators.RSI,
+    lastIndicators.EMA,
+    lastIndicators.ROC,
+    lastIndicators.BollingerBands,
+    lastIndicators.OBV,
+    lastIndicators.PSAR,
+    lastIndicators.WMA,
+  ];
+
+  const prediction = model.predict(tf.tensor2d([input]));
+  const predictionData = prediction.dataSync();
+
+  const denormalizedPrediction = predictionData.map(price => price * (maxPrice - minPrice) + minPrice);
+
+  console.log('Прогноз цены на следующие 1, 4, 12 и 24 часа:', denormalizedPrediction);
 });
