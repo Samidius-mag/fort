@@ -13,16 +13,16 @@ const rawIndicators = fs.readFileSync('indres.json');
 const indicators = JSON.parse(rawIndicators);
 
 // Преобразование даты и значения индикатора
-const data = indicators.map(item => ({
+const cleanIndicators = indicators.map(item => ({
   date: new Date(item.date),
   value: parseFloat(item.value),
 }));
 
 // Замена NaN на среднее значение по столбцу
-const values = data.map(item => item.value).filter(value => !isNaN(value));
+const values = cleanIndicators.map(item => item.value).filter(value => !isNaN(value));
 const meanValue = values.reduce((sum, value) => sum + value, 0) / values.length;
 
-const cleanData = data.map(item => ({
+const cleanData = cleanIndicators.map(item => ({
   date: item.date,
   value: isNaN(item.value) ? meanValue : item.value,
 }));
