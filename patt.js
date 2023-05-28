@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { tweezertop, tweezerbottom, doji, bullishhammer, bearishhammer } = require('technicalindicators');
+const { tweezertop, tweezerbottom, doji } = require('technicalindicators');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
@@ -21,11 +21,11 @@ const lastCandle = {
 const resultTop = tweezertop(input);
 const resultBottom = tweezerbottom(input);
 const resultDoji = doji(input);
-const resultBullishInvertedHammer = bullishhammer(input);
-const resultBearishInvertedHammer = bearishhammer(input);
+//const resultBullishInvertedHammer = bullishhammer(input);
+//const resultBearishInvertedHammer = bearishhammer(input);
 
 console.log(`Tweezer Top patterns found: ${resultTop.length}`);
 console.log(`Tweezer Bottom patterns found: ${resultBottom.length}`);
 console.log(`Doji patterns found: ${resultDoji.length}`);
-console.log(`Bullish Inverted Hammer patterns found: ${resultBullishInvertedHammer.length}`);
-console.log(`Bearish Inverted Hammer patterns found: ${resultBearishInvertedHammer.length}`);
+//console.log(`Bullish Inverted Hammer patterns found: ${resultBullishInvertedHammer.length}`);
+//console.log(`Bearish Inverted Hammer patterns found: ${resultBearishInvertedHammer.length}`);
