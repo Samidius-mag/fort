@@ -17,21 +17,17 @@ const output = prices.slice(24);
 const model = tf.sequential();
 model.add(tf.layers.dense({ units: 64, inputShape: [input.length], activation: 'relu' }));
 model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
-model.add(tf.layers.dense({ units: 4, activation: 'softmax' }));
-model.compile({ optimizer: 'adam', loss: 'categoricalCrossentropy', metrics: ['accuracy'] });
+model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy', metrics: ['accuracy'] });
 
 const xs = tf.tensor2d(input);
-const ys = tf.oneHot(tf.tensor1d(output.map(price => {
+const ys = tf.tensor2d(output.map(price => {
   if (price > prices[prices.length - 25]) {
-    return 0;
-  } else if (price > prices[prices.length - 25] * 0.995) {
     return 1;
-  } else if (price > prices[prices.length - 25] * 0.99) {
-    return 2;
   } else {
-    return 3;
+    return 0;
   }
-}), 'int32'), 4);
+}));
 
 (async () => {
   await model.fit(xs, ys, { epochs: 100 });
