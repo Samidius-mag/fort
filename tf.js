@@ -1,44 +1,122 @@
-// Шаг 1: Загрузка данных
-const tf = require('@tensorflow/tfjs');
-const data = require('./indres.json');
-const indicators = Object.keys(data);
-const values = Object.values(data);
-const timeSteps = values[0].length;
+const tf = require('@tensorflow/tfjs-node');
+const fs = require('fs');
 
-// Преобразование данных в формат, который может быть использован для обучения нейросети
+const rawData = fs.readFileSync('price.json');
+const data = JSON.parse(rawData).map(candle => ({
+  open: parseFloat(candle.open),
+  high: parseFloat(candle.high),
+  low: parseFloat(candle.low),
+  close: parseFloat(candle.close),
+  volume: parseFloat(candle.volume),
+}));
+
+// Подготовка данных
+const prices = data.map(candle => candle.close);
+const minPrice = Math.min(...prices);
+const maxPrice = Math.max(...prices);
+const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - minPrice));
+
+const windowSize = 720;
 const input = [];
 const output = [];
-for (let i = 0; i < timeSteps - 1; i++) {
-  const x = [];
-  for (let j = 0; j < indicators.length; j++) {
-    x.push(values[j][i]);
-  }
-  input.push(x);
-  output.push(values[0][i + 1]);
+
+for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
+  const window = normalizedPrices.slice(i, i + windowSize);
+  input.push(window);
+  output.push(normalizedPrices[i + windowSize]);
 }
 
-// Шаг 2: Разделение данных на обучающую и тестовую выборки
-const splitIndex = Math.floor(input.length * 0.8);
-const xTrain = input.slice(0, splitIndex);
-const yTrain = output.slice(0, splitIndex);
-const xTest = input.slice(splitIndex);
-const yTest = output.slice(splitIndex);
+const inputTensor = tf.tensor2d(input);
+const outputTensor = tf.tensor1d(output);
 
-// Шаг 3: Создание модели нейросети
+// Создание модели
 const model = tf.sequential();
-model.add(tf.layers.lstm({ units: 64, inputShape: [indicators.length] }));
-model.add(tf.layers.dense({ units: 1 }));
+model.add(tf.layers.dense({ units: 512, inputShape: [windowSize], activation: 'relu' }));
+model.add(tf.layers.dense({ units: 1, activation: 'linear' }));
+model.compile({ optimizer: 'adam', loss: 'meanSquaredError' });
 
-// Шаг 4: Обучение модели на обучающей выборке
-model.compile({ loss: 'meanSquaredError', optimizer: 'adam' });
-model.fit(tf.expandDims(tf.tensor2d(xTrain), 0), tf.tensor1d(yTrain), { epochs: 100 });
+// Обучение модели
+const epochs = 200;
+const batchSize = 256;
 
-// Шаг 5: Оценка качества модели на тестовой выборке
-const yPred = model.predict(tf.tensor2d(xTest)).dataSync();
-const mae = tf.metrics.meanAbsoluteError(tf.tensor1d(yTest), tf.tensor1d(yPred)).dataSync();
-console.log(`MAE: ${mae}`);
+model.fit(inputTensor, outputTensor, { epochs, batchSize })
+  .then(() => {
+    // Прогнозы цены
+    const predict = (input, hours) => {
+      const normalizedInput = input.map(price => (price - minPrice) / (maxPrice - minPrice));
+      const window = normalizedInput.slice(-windowSize);
+      const inputTensor = tf.tensor2d([window]);
+      const predictedNormalizedPrice = model.predict(inputTensor).dataSync()[0];
+      const predictedPrice = predictedNormalizedPrice * (maxPrice - minPrice) + minPrice;
+      return predictedPrice * Math.pow(1.01, hours);
+    };
 
-// Шаг 6: Использование обученной модели для предсказания будущей цены
-const newX = [values.map(v => v[timeSteps - 1])];
-const newY = model.predict(tf.tensor2d(newX)).dataSync();
-console.log(`Predicted price: ${newY[0]}`);
+    console.log('Price predictions:');
+    console.log(`1 hour: ${predict(prices.slice(-windowSize), 1)}`);
+    console.log(`4 hours: ${predict(prices.slice(-windowSize), 4)}`);
+    console.log(`12 hours: ${predict(prices.slice(-windowSize), 12)}`);
+    console.log(`24 hours: ${predict(prices.slice(-windowSize), 24)}`);
+
+    // Прогнозы тренда
+    const trend = (input, hours) => {
+      const normalizedInput = input.map(price => (price - minPrice) / (maxPrice - minPrice));
+      const window = normalizedInput.slice(-windowSize);
+      const inputTensor = tf.tensor2d([window]);
+      const predictedNormalizedPrice = model.predict(inputTensor).dataSync()[0];
+      const predictedPrice = predictedNormalizedPrice * (maxPrice - minPrice) + minPrice;
+      return predictedPrice > input[input.length - 1] ? 'up' : 'down';
+    };
+
+    console.log('Trend predictions:');
+    console.log(`1 hour: ${trend(prices.slice(-windowSize), 1)}`);
+    console.log(`4 hours: ${trend(prices.slice(-windowSize), 4)}`);
+    console.log(`12 hours: ${trend(prices.slice(-windowSize), 12)}`);
+    console.log(`24 hours: ${trend(prices.slice(-windowSize), 24)}`);
+
+    // Прогнозы точек разворота
+    const reversalPoints = (input, hours) => {
+      const normalizedInput = input.map(price => (price - minPrice) / (maxPrice - minPrice));
+      const window = normalizedInput.slice(-windowSize);
+      const inputTensor = tf.tensor2d([window]);
+      const predictedNormalizedPrice = model.predict(inputTensor).dataSync()[0];
+      const predictedPrice = predictedNormalizedPrice * (maxPrice - minPrice) + minPrice;
+      const currentPrice = input[input.length - 1];
+      const threshold = 0.01;
+      if (predictedPrice > currentPrice * (1 + threshold)) {
+        return 'up';
+      } else if (predictedPrice < currentPrice * (1 - threshold)) {
+        return 'down';
+      } else {
+        return 'none';
+      }
+    };
+/*
+    console.log('Reversal point predictions:');
+    console.log(`1 hour: ${reversalPoints(prices.slice(-windowSize), 1)}`);
+    console.log(`4 hours: ${reversalPoints(prices.slice(-windowSize), 4)}`);
+    console.log(`12 hours: ${reversalPoints(prices.slice(-windowSize), 12)}`);
+    console.log(`24 hours: ${reversalPoints(prices.slice(-windowSize), 24)}`);
+*/
+    // Уровни сопротивления и поддержки
+    const supportResistanceLevels = (input, hours) => {
+      const normalizedInput = input.map(price => (price - minPrice) / (maxPrice - minPrice));
+      const window = normalizedInput.slice(-windowSize);
+      const inputTensor = tf.tensor2d([window]);
+      const predictedNormalizedPrice = model.predict(inputTensor).dataSync()[0];
+      const predictedPrice = predictedNormalizedPrice * (maxPrice - minPrice) + minPrice;
+      const currentPrice = input[input.length - 1];
+      const threshold = 0.01;
+      const supportLevel = currentPrice * (1 - threshold);
+      const resistanceLevel = currentPrice * (1 + threshold);
+      return { supportLevel, resistanceLevel };
+    };
+
+    console.log('Support and resistance levels:');
+    console.log(`1 hour: ${JSON.stringify(supportResistanceLevels(prices.slice(-windowSize), 1))}`);
+  /*  console.log(`4 hours: ${JSON.stringify(supportResistanceLevels(prices.slice(-windowSize), 4))}`);
+    console.log(`12 hours: ${JSON.stringify(supportResistanceLevels(prices.slice(-windowSize), 12))}`);
+    console.log(`24 hours: ${JSON.stringify(supportResistanceLevels(prices.slice(-windowSize), 24))}`);*/
+  })
+  .catch(error => {
+    console.error(error);
+  });
