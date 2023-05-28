@@ -1,4 +1,5 @@
 // Шаг 1: Загрузка данных
+const tf = require('@tensorflow/tfjs');
 const data = require('./indres.json');
 const indicators = Object.keys(data);
 const values = Object.values(data);
