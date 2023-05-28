@@ -26,7 +26,7 @@ const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - mi
 
 const input = [];
 const output = [];
-
+const windowSize = 10;
 for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
   const inputWindow = normalizedPrices.slice(i, i + windowSize);
   const outputWindow = normalizedPrices.slice(i + windowSize, i + windowSize + 1);
