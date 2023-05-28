@@ -29,7 +29,7 @@ for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
   input.push(inputWindow);
   output.push(outputWindow);
 }
-}
+
 const model = tf.sequential();
 model.add(tf.layers.dense({ units: 64, inputShape: [windowSize, 8], activation: 'relu' }));
 model.add(tf.layers.flatten());
