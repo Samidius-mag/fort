@@ -1,31 +1,51 @@
 const fs = require('fs');
-const { CandlestickFinder } = require('technicalindicators');
+const { CandlestickFinder } = require('technicalindicators').candlestick;
 
-const priceData = JSON.parse(fs.readFileSync('price.json'));
+class TweezerTop extends CandlestickFinder {
+  constructor() {
+    super();
+    this.requiredCount = 5;
+    this.name = 'TweezerTop';
+  }
 
-const bearishEngulfingPattern = new CandlestickFinder.BearishEngulfingPattern();
-const bullishEngulfingPattern = new CandlestickFinder.BullishEngulfingPattern();
-const doji = new CandlestickFinder.Doji();
-const bullishHammer = new CandlestickFinder.BullishHammer();
-const bearishHammer = new CandlestickFinder.BearishHammer();
+  logic({ open, high, low, close }) {
+    const isUpTrend = close[3] > close[0];
+    const isDownTrend = close[3] < close[0];
+    const isBodyShort = Math.abs(close[3] - close[0]) < Math.abs(open[3] - open[0]);
+    const isShadowLong = Math.max(open[3], close[3]) < Math.min(open[0], close[0]);
+    const isUpperShadowShort = Math.abs(high[3] - Math.max(open[3], close[3])) < Math.abs(open[3] - open[0]);
+    const isLowerShadowShort = Math.abs(Math.min(open[3], close[3]) - low[3]) < Math.abs(open[3] - open[0]);
 
-const last5Candles = priceData.slice(-5);
+    return isUpTrend && isBodyShort && isShadowLong && isUpperShadowShort && isLowerShadowShort;
+  }
+}
 
-const patternResults = last5Candles.map(candle => {
-  const bearishEngulfing = bearishEngulfingPattern.hasPattern([candle]);
-  const bullishEngulfing = bullishEngulfingPattern.hasPattern([candle]);
-  const isDoji = doji.hasPattern([candle]);
-  const isBullishHammer = bullishHammer.hasPattern([candle]);
-  const isBearishHammer = bearishHammer.hasPattern([candle]);
+class TweezerBottom extends CandlestickFinder {
+  constructor() {
+    super();
+    this.requiredCount = 5;
+    this.name = 'TweezerBottom';
+  }
 
-  return {
-    date: candle.date,
-    bearishEngulfing,
-    bullishEngulfing,
-    isDoji,
-    isBullishHammer,
-    isBearishHammer,
-  };
-});
+  logic({ open, high, low, close }) {
+    const isUpTrend = close[3] > close[0];
+    const isDownTrend = close[3] < close[0];
+    const isBodyShort = Math.abs(close[3] - close[0]) < Math.abs(open[3] - open[0]);
+    const isShadowLong = Math.max(open[3], close[3]) < Math.min(open[0], close[0]);
+    const isUpperShadowShort = Math.abs(high[3] - Math.max(open[3], close[3])) < Math.abs(open[3] - open[0]);
+    const isLowerShadowShort = Math.abs(Math.min(open[3], close[3]) - low[3]) < Math.abs(open[3] - open[0]);
 
-fs.writeFileSync('pattres.json', JSON.stringify(patternResults, null, 2));
+    return isDownTrend && isBodyShort && isShadowLong && isUpperShadowShort && isLowerShadowShort;
+  }
+}
+
+const data = JSON.parse(fs.readFileSync('price.json'));
+
+const tweezerTop = new TweezerTop();
+const tweezerBottom = new TweezerBottom();
+
+const foundTweezerTop = tweezerTop.hasPattern(data);
+const foundTweezerBottom = tweezerBottom.hasPattern(data);
+
+console.log(`Tweezer Top: ${foundTweezerTop}`);
+console.log(`Tweezer Bottom: ${foundTweezerBottom}`);
