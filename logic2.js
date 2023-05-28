@@ -85,15 +85,15 @@ const overboughtOversold = {
 //console.log('ROC:', overboughtOversold.ROC.current);
 
 if (overboughtOversold.RSI.current > overboughtOversold.RSI.overbought) {
-  console.log('Рынок перекуплен');
+  console.log('[RS]Рынок перекуплен');
 } else if (overboughtOversold.RSI.current < overboughtOversold.RSI.oversold) {
-  console.log('Рынок перепродан');
+  console.log('[RS]Рынок перепродан');
 }
 
 if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
-  console.log('Рынок перекуплен');
+  console.log('[RO]Рынок перекуплен');
 } else if (overboughtOversold.ROC.current < overboughtOversold.ROC.oversold) {
-  console.log('Рынок перепродан');
+  console.log('[RO]Рынок перепродан');
 }
 
 // Рекомендации по покупке/продаже
