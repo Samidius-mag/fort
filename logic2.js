@@ -5,7 +5,7 @@ const indRes = require('./indres.json');
 
 // Определение текущей цены
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
-//console.log('Текущая цена:', currentPrice);
+console.log('Текущая цена:', currentPrice);
 
 // Определение изменения цены за последние 2 часа
 const twoHoursAgo = moment().subtract(2, 'hours');
