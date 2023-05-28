@@ -12,6 +12,11 @@ const data = JSON.parse(rawData).map(candle => ({
 const rawIndicators = fs.readFileSync('indres.json');
 const indicators = JSON.parse(rawIndicators);
 
+// Проверка на тип переменной
+if (!Array.isArray(indicators)) {
+  throw new Error('Indicators data is not an array');
+}
+
 // Преобразование даты и значения индикатора
 const cleanIndicators = indicators.map(item => ({
   date: new Date(item.date),
