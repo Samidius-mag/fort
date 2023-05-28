@@ -20,7 +20,7 @@ model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
 model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
 model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy', metrics: ['accuracy'] });
 
-const xs = tf.tensor2d(input.slice(-1), [1, input.length]);
+const xs = tf.tensor2d(input.slice(-1)[0], [1, input[0].length]);
 const ys = tf.tensor2d(output.map(price => {
   if (price > prices[prices.length - 25]) {
     return 1;
@@ -31,7 +31,7 @@ const ys = tf.tensor2d(output.map(price => {
 
 (async () => {
   await model.fit(xs, ys, { epochs: 100 });
-  const prediction = model.predict(tf.tensor2d(input.slice(-1), [1, input.length]));
+  const prediction = model.predict(tf.tensor2d(input.slice(-1)[0], [1, input[0].length]));
   const predictionValues = prediction.dataSync();
   console.log('Prediction:', predictionValues);
 })();
