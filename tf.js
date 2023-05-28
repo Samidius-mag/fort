@@ -10,9 +10,14 @@ const data = JSON.parse(rawData).map(candle => ({
 }));
 
 const rawIndicators = fs.readFileSync('indres.json');
-const indicators = JSON.parse(rawIndicators);
+let indicators;
 
-// Проверка на тип переменной
+try {
+  indicators = JSON.parse(rawIndicators);
+} catch (error) {
+  throw new Error('Indicators data is not valid JSON');
+}
+
 if (!Array.isArray(indicators)) {
   throw new Error('Indicators data is not an array');
 }
