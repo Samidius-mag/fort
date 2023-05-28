@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { CandlestickFinder } = require('technicalindicators').candlestick;
+const { CandlestickFinder } = require('technicalindicators');
 
 class TweezerTop extends CandlestickFinder {
   constructor() {
