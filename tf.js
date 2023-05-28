@@ -4,13 +4,13 @@ const indRes = require('./indres.json');
 
 const prices = priceData.map(candle => parseFloat(candle.close));
 const input = [
-  indRes.rsi.slice(0, -24),
-  indRes.ema.slice(0, -24),
-  indRes.roc.slice(0, -24),
-  indRes.bb.map(band => band.upper).slice(0, -24),
-  indRes.bb.map(band => band.lower).slice(0, -24),
-  indRes.obv.slice(0, -24),
-  indRes.wma.slice(0, -24),
+  indRes.RSI.slice(0, -24),
+  indRes.EMA.slice(0, -24),
+  indRes.ROC.slice(0, -24),
+  indRes.BollingerBands.map(band => band.upper).slice(0, -24),
+  indRes.BollingerBands.map(band => band.lower).slice(0, -24),
+  indRes.OBV.slice(0, -24),
+  indRes.WMA.slice(0, -24),
 ];
 const output = prices.slice(24);
 
