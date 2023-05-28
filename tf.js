@@ -35,6 +35,11 @@ for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
 
 }
 
+// Преобразуем данные в тензоры
+const input = tf.tensor(inputData).reshape([-1, windowSize, 1]);
+const output = tf.tensor(outputData).reshape([-1, 1]);
+
+
 const model = tf.sequential();
 model.add(tf.layers.dense({ units: 64, inputShape: [windowSize, 8], activation: 'relu' }));
 model.add(tf.layers.flatten());
