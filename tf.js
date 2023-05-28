@@ -1,4 +1,4 @@
-const tf = require('@tensorflow/tfjs');
+const tf = require('@tensorflow/tfjs-node');
 const priceData = require('./price.json');
 const indRes = require('./indres.json');
 
