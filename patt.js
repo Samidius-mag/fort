@@ -20,9 +20,9 @@ const lastCandle = {
 */
 const resultTop = tweezertop(input);
 const resultBottom = tweezerbottom(input);
-const resultDoji = doji([lastCandle]);
-const resultBullishInvertedHammer = bullishinvertedhammer([lastCandle]);
-const resultBearishInvertedHammer = bearishinvertedhammer([lastCandle]);
+const resultDoji = doji(input);
+const resultBullishInvertedHammer = bullishinvertedhammer(input);
+const resultBearishInvertedHammer = bearishinvertedhammer(input);
 
 console.log(`Tweezer Top patterns found: ${resultTop.length}`);
 console.log(`Tweezer Bottom patterns found: ${resultBottom.length}`);
