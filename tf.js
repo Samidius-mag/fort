@@ -13,7 +13,11 @@ const rawIndicators = fs.readFileSync('indres.json');
 let indicators;
 
 try {
-  indicators = JSON.parse(rawIndicators);
+  const parsedData = JSON.parse(rawIndicators);
+  indicators = Object.keys(parsedData).map(key => ({
+    name: key,
+    values: parsedData[key].map(value => parseFloat(value)),
+  }));
 } catch (error) {
   throw new Error('Indicators data is not valid JSON');
 }
@@ -21,7 +25,6 @@ try {
 if (!Array.isArray(indicators)) {
   throw new Error('Indicators data is not an array');
 }
-
 // Преобразование даты и значения индикатора
 const cleanIndicators = indicators.map(item => ({
   date: new Date(item.date),
