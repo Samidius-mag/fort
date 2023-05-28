@@ -76,8 +76,8 @@ const overboughtOversold = {
   },
   ROC: {
     current: indRes.ROC[indRes.ROC.length - 1],
-    overbought: 1.5,
-    oversold: -1.5
+    overbought: 1.3,
+    oversold: -1.3
   }
 };
 console.log('RSI:', overboughtOversold.RSI.current);
