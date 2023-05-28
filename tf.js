@@ -9,8 +9,20 @@ const data = JSON.parse(rawData).map(candle => ({
   volume: parseFloat(candle.volume),
 }));
 
-const rawIndicators = fs.readFileSync('indres.json');
-const indicators = JSON.parse(rawIndicators);
+const rawData = fs.readFileSync('indres.json');
+const data = JSON.parse(rawData).map(item => ({
+  date: new Date(item.date),
+  value: parseFloat(item.value),
+}));
+
+// Замена NaN на среднее значение по столбцу
+const values = data.map(item => item.value).filter(value => !isNaN(value));
+const meanValue = values.reduce((sum, value) => sum + value, 0) / values.length;
+
+const cleanData = data.map(item => ({
+  date: item.date,
+  value: isNaN(item.value) ? meanValue : item.value,
+}));
 
 // Объединение данных
 const mergedData = data.map((candle, index) => ({
