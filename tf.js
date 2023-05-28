@@ -30,7 +30,7 @@ const output = [];
 
 // Дополнительный код для формирования входных и выходных данных
 
-Для формирования входных и выходных данных, можно использовать следующий код:
+
 
 for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
   const window = normalizedPrices.slice(i, i + windowSize);
@@ -62,7 +62,7 @@ for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
 
 // Обучение нейросети
 
-Для обучения нейросети, можно использовать следующий код:
+
 
 const model = tf.sequential();
 
