@@ -8,7 +8,7 @@ const input = {
   high: data.map(candle => candle.high),
   low: data.map(candle => candle.low),
   close: data.map(candle => candle.close),
-  volume: data.map(candle => candle.volume),
+  
 };
 /*
 const lastCandle = {
