@@ -11,7 +11,7 @@ const data = JSON.parse(rawData).map(candle => ({
 }));
 
 // Подготовка данных
-const prices = data.map(candle => candle.RSI);
+const prices = data.slice(candle => candle.RSI);
 const minPrice = Math.min(...prices);
 const maxPrice = Math.max(...prices);
 const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - minPrice));
