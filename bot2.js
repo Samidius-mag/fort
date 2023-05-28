@@ -2,7 +2,7 @@ const { exec } = require('child_process');
 const TelegramBot = require('node-telegram-bot-api');
 
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
-const chatId = '-1001979484873';
+const chatId = '-1001889085120';
 
 const bot = new TelegramBot(token, { polling: false });
 
