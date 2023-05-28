@@ -18,6 +18,10 @@ const combinedData = data.map((candle, index) => ({
   ...indresData[index],
 }));
 
+
+const prices = data.map(candle => candle.close);
+const minPrice = Math.min(...prices);
+const maxPrice = Math.max(...prices);
 const normalizedPrices = prices.map(price => (price - minPrice) / (maxPrice - minPrice));
 
 const input = [];
@@ -28,6 +32,7 @@ for (let i = 0; i < normalizedPrices.length - windowSize; i++) {
   const outputWindow = normalizedPrices.slice(i + windowSize, i + windowSize + 1);
   input.push(inputWindow);
   output.push(outputWindow);
+
 }
 
 const model = tf.sequential();
