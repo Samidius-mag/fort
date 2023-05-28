@@ -130,10 +130,10 @@ const entryExitPoints = {
 };
 
 if (buySell.RSI.buy && buySell.ROC.buy) {
-  console.log('Точка входа в сделку (покупка):', entryExitPoints.buy.resistance);
-  console.log('Точка выхода из сделки (продажа):', entryExitPoints.buy.support);
+  console.log('Точка входа в сделку (покупка):', entryExitPoints.buy.support);
+  console.log('Точка выхода из сделки (продажа):', entryExitPoints.buy.resistance);
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
-  console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.support);
-  console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.resistance);
+  console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.resistance);
+  console.log('Точка выхода из сделки (покупка):', entryExitPoints.sell.support);
 }
 
