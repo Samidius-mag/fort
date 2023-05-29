@@ -41,7 +41,7 @@ const lastCandle2 = data[data.length - 2];
 const avgClose2 = (prevCandle.close + lastCandle.close) / 2;
 const prevBodyLength2 = Math.abs(prevCandle.open - prevCandle.close);
 const lastBodyLength2 = Math.abs(lastCandle.open - lastCandle.close);
-const isDarkCloudCover2 = lastCandle2.close < avgClose2 &&
+const isDarkCloudCover = lastCandle2.close < avgClose2 &&
   lastCandle2.open > prevCandle2.close &&
   lastCandle2.close < prevCandle2.open &&
   lastBodyLength2 >= prevBodyLength2 * 0.5;
