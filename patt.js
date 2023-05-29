@@ -14,8 +14,8 @@ const isBullishHammer = lastCandle.close > lastCandle.open &&
 console.log(`Is Bullish Hammer: ${isBullishHammer} ВВЕРХ`);
 
 //Медвежий молот
-const prevCandle1 = data[data.length - 2];
-const lastCandle1 = data[data.length - 1];
+const prevCandle1 = data[data.length - 3];
+const lastCandle1 = data[data.length - 2];
 const lastBodyLength1 = Math.abs(lastCandle.open - lastCandle.close);
 const lastUpperShadowLength1 = Math.abs(lastCandle.high - Math.max(lastCandle.open, lastCandle.close));
 const isBearishHammer = lastCandle1.close < lastCandle1.open &&
@@ -78,38 +78,38 @@ const prevBodyLength5= Math.abs(prevCandle.open - prevCandle.close);
 const prevShadowLength5 =Math.abs(prevCandle.high - prevCandle.low);
 const prevMidPrice5= (prevCandle.open + prevCandle.close) / 2;
 const lastBodyLength5= Math.abs(lastCandle.open - lastCandle.close);
-const isPiercingLine = lastCandle5close > prevCandle3.open &&
-  lastCandle3.open < prevCandle3.close &&
-  lastCandle3.close > prevMidPrice3 &&
-  lastBodyLength3 > prevBodyLength3 &&
-  lastCandle3.high <= lastCandle3.open &&
-  lastCandle3.low >= prevCandle3.low + prevShadowLength3 / 2;
+const isPiercingLine = lastCandle5.close > prevCandle5.open &&
+  lastCandle5.open < prevCandle5.close &&
+  lastCandle5.close > prevMidPrice5 &&
+  lastBodyLength5 > prevBodyLength5 &&
+  lastCandle5.high <= lastCandle5.open &&
+  lastCandle5.low >= prevCandle5.low + prevShadowLength5 / 2;
 console.log(`Is Piercing Line Pattern: ${isPiercingLine} РАЗВОРОТ`);
 
 //Пинцет ТОП
-const prevCandle4 = data[data.length - 2];
-const lastCandle4 = data[data.length - 1];
-const prevBodyLength4 = Math.abs(prevCandle.open - prevCandle.close);
-const prevShadowLength4 = Math.abs(prevCandle.high - prevCandle.low);
-const lastBodyLength4 = Math.abs(lastCandle.open - lastCandle.close);
-const isTweezerTop = lastCandle4.close === prevCandle4.close &&
-  lastCandle4.open > prevCandle4.close &&
-  lastCandle4.close >= prevCandle4.close + prevBodyLength4 / 2 &&
-  lastCandle4.high <= lastCandle4.open &&
-  lastCandle4.low >= prevCandle4.low - prevShadowLength4 &&
-  lastBodyLength4 <= prevBodyLength4;
+const prevCandle6 = data[data.length - 2];
+const lastCandle6 = data[data.length - 1];
+const prevBodyLength6 = Math.abs(prevCandle.open - prevCandle.close);
+const prevShadowLength6 = Math.abs(prevCandle.high - prevCandle.low);
+const lastBodyLength6 = Math.abs(lastCandle.open - lastCandle.close);
+const isTweezerTop = lastCandle6.close === prevCandle6.close &&
+  lastCandle6.open > prevCandle6.close &&
+  lastCandle6.close >= prevCandle6.close + prevBodyLength6 / 2 &&
+  lastCandle6.high <= lastCandle6.open &&
+  lastCandle6.low >= prevCandle6.low - prevShadowLength6 &&
+  lastBodyLength6 <= prevBodyLength6;
 console.log(`Is Tweezer Top Pattern: ${isTweezerTop} ВНИЗ`);
 
 //Пинцет ДНО
-const prevCandle5 = data[data.length - 2];
-const lastCandle5 = data[data.length - 1];
-const prevBodyLength5 = Math.abs(prevCandle.open - prevCandle.close);
-const prevShadowLength5 = Math.abs(prevCandle.high - prevCandle.low);
-const lastBodyLength5 = Math.abs(lastCandle.open - lastCandle.close);
-const isTweezerBottom = lastCandle.close === prevCandle.close &&
-  lastCandle5.open < prevCandle5.close &&
-  lastCandle5.close <= prevCandle5.close - prevBodyLength5 / 2 &&
-  lastCandle5.low >= lastCandle5.open &&
-  lastCandle5.high <= prevCandle5.high + prevShadowLength5 &&
-  lastBodyLength5 <= prevBodyLength5;
+const prevCandle7 = data[data.length - 2];
+const lastCandle7 = data[data.length - 1];
+const prevBodyLength7 = Math.abs(prevCandle.open - prevCandle.close);
+const prevShadowLength7 = Math.abs(prevCandle.high - prevCandle.low);
+const lastBodyLength7 = Math.abs(lastCandle.open - lastCandle.close);
+const isTweezerBottom = lastCandle7.close === prevCandle7.close &&
+  lastCandle7.open < prevCandle7.close &&
+  lastCandle7.close <= prevCandle7.close - prevBodyLength7 / 2 &&
+  lastCandle7.low >= lastCandle7.open &&
+  lastCandle7.high <= prevCandle7.high + prevShadowLength7 &&
+  lastBodyLength7 <= prevBodyLength7;
 console.log(`Is Tweezer Bottom Pattern: ${isTweezerBottom} ВВЕРХ`);
