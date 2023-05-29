@@ -26,13 +26,14 @@ const isBearishHammer = lastCandle1.close < lastCandle1.open &&
 console.log(`Is Bearish Hammer: ${isBearishHammer} ВНИЗ`);
 
 //Доджи
-const candle = data[data.length - 2];
-const bodyLength = Math.abs(candle.open - candle.close);
-const upperShadowLength = candle.high - Math.max(candle.open, candle.close);
-const lowerShadowLength = Math.min(candle.open, candle.close) - candle.low;
-const isDoji = bodyLength <= candle.high * 0.1 &&
-  upperShadowLength <= candle.high * 0.1 &&
-  lowerShadowLength <= candle.high * 0.1;
+const prevCandle8 = data[data.length - 3];
+const lastCandle8 = data[data.length - 2];
+const avgPrice8 = (lastCandle.open + lastCandle.close) / 2;
+const priceDiff8 = Math.abs(lastCandle.open - lastCandle.close);
+const bodyLength8 = Math.abs(lastCandle.open - lastCandle.close);
+const shadowLength8 = Math.abs(lastCandle.high - lastCandle.low);
+const isDoji = priceDiff8 <= avgPrice8 * 0.01 &&
+  bodyLength8 <= shadowLength8 * 0.1;
 console.log(`Is Doji: ${isDoji} ЛОВУШКА`);
 
 //Завеса из облаков
