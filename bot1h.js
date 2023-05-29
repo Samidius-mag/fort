@@ -22,3 +22,24 @@ exec('node patt1h.js', (error, stdout, stderr) => {
   sendMessage(message);
   console.log('Отправлено3');
 });
+
+const chatId2 = '-1001536433459';
+
+const bot2 = new TelegramBot(token, { polling: false });
+
+const sendMessage1 = (message) => {
+  bot2.sendMessage(chatId2, message);
+};
+
+exec('node logic2.js', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`exec error: ${error}`);
+    return;
+  }
+
+  const lines = stdout.trim().split('\n');
+  const message = lines.join('\n');
+
+  sendMessage1(message);
+  console.log('Отправлено2');
+});
