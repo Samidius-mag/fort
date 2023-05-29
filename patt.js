@@ -114,3 +114,62 @@ const isTweezerBottom = lastCandle7.close === prevCandle7.close &&
   lastCandle7.high <= prevCandle7.high + prevShadowLength7 &&
   lastBodyLength7 <= prevBodyLength7;
 console.log(`Пинцет основание: ${isTweezerBottom} ВВЕРХ`);
+
+//Утреняя звезда
+const firstCandle9 = data[data.length - 4];
+const secondCandle9 = data[data.length - 3];
+const lastCandle9 = data[data.length - 2];
+const firstBodyLength9 = Math.abs(firstCandle.open - firstCandle.close);
+const firstLowerShadowLength9 = Math.abs(firstCandle.low - Math.min(firstCandle.open, firstCandle.close));
+const secondBodyLength9 = Math.abs(secondCandle.open - secondCandle.close);
+const secondUpperShadowLength9 = Math.abs(secondCandle.high - Math.max(secondCandle.open, secondCandle.close));
+const thirdBodyLength9 = Math.abs(lastCandle.open - lastCandle.close);
+const thirdUpperShadowLength9 = Math.abs(lastCandle.high - Math.max(lastCandle.open, lastCandle.close));
+const isMorningStar = firstCandle9.close < firstCandle9.open &&
+  lastCandle9.close > lastCandle9.open &&
+  secondCandle9.close < firstCandle9.open &&
+  lastCandle9.close > firstCandle9.close &&
+  secondBodyLength9 <= firstLowerShadowLength9 * 0.5 &&
+  thirdBodyLength9 > secondUpperShadowLength9 &&
+  thirdUpperShadowLength9 <= thirdBodyLength9 * 0.5;
+console.log(`Утреняя звезда: ${isMorningStar} ВВЕРХ`);
+
+//Вечерняя звезда
+const firstCandle10 = data[data.length - 4];
+const secondCandle10 = data[data.length - 3];
+const lastCandle10 = data[data.length - 2];
+const firstBodyLength10 = Math.abs(firstCandle.open - firstCandle.close);
+const firstUpperShadowLength10 = Math.abs(firstCandle.high - Math.max(firstCandle.open, firstCandle.close));
+const secondBodyLength10 = Math.abs(secondCandle.open - secondCandle.close);
+const secondLowerShadowLength10 = Math.abs(secondCandle.low - Math.min(secondCandle.open, secondCandle.close));
+const thirdBodyLength10 = Math.abs(lastCandle.open - lastCandle.close);
+const thirdLowerShadowLength10 = Math.abs(lastCandle.low - Math.min(lastCandle.open, lastCandle.close));
+const isEveningStar = firstCandle10.close > firstCandle10.open &&
+  lastCandle10.close < lastCandle10.open &&
+  secondCandle10.close > firstCandle10.open &&
+  lastCandle10.close < firstCandle10.open &&
+  secondBodyLength10 >= firstUpperShadowLength10 * 0.5 &&
+  thirdBodyLength10 >= firstUpperShadowLength10 * 0.5 &&
+  secondLowerShadowLength10 <= firstBodyLength10 * 0.5 &&
+  thirdLowerShadowLength10 <= firstBodyLength10 * 0.5;
+
+console.log(`Вечерняя звезда: ${isEveningStar} ВНИЗ`);
+
+//Утреняя звезда Доджи
+const firstCandle11 = data[data.length - 4];
+const secondCandle11 = data[data.length - 3];
+const lastCandle11 = data[data.length - 2];
+const avgPrice11 = (secondCandle.open + secondCandle.close) / 2;
+const priceDiff11 = Math.abs(secondCandle.open - secondCandle.close);
+const secondBodyLength11 = Math.abs(secondCandle.open - secondCandle.close);
+const secondShadowLength11 = Math.abs(secondCandle.high - secondCandle.low);
+const thirdBodyLength11 = Math.abs(lastCandle.open - lastCandle.close);
+const thirdUpperShadowLength11 = Math.abs(lastCandle.high - Math.max(lastCandle.open, lastCandle.close));
+const isMorningStarDoji = firstCandle11.close < firstCandle11.open &&
+  lastCandle11.close > lastCandle11.open &&
+  secondCandle11.close < firstCandle11.open &&
+  lastCandle11.close > firstCandle11.close &&
+  priceDiff11 <= avgPrice11 * 0.01 &&
+  thirdBodyLength11 > secondShadowLength11 &&
+  thirdUpperShadowLength11 <= thirdBodyLength11 * 0.5;
+console.log(`Утреняя звезда Доджи: ${isMorningStarDoji} ВВЕРХ`);
