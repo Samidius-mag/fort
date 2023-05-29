@@ -2,23 +2,27 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 //Бычий молот
-const candle = data[data.length - 2];
-const bodyLength = Math.abs(candle.open - candle.close);
-const upperShadowLength = candle.high - Math.max(candle.open, candle.close);
-const lowerShadowLength = Math.min(candle.open, candle.close) - candle.low;
-const isBullishHammer = bodyLength < upperShadowLength &&
-  bodyLength <= candle.high / 3 &&
-  lowerShadowLength <= bodyLength / 2;
+const prevCandle = data[data.length - 3];
+const lastCandle = data[data.length - 2];
+const lastBodyLength = Math.abs(lastCandle.open - lastCandle.close);
+const lastLowerShadowLength = Math.abs(lastCandle.low - Math.min(lastCandle.open, lastCandle.close));
+const isBullishHammer = lastCandle.close > lastCandle.open &&
+  lastCandle.close > prevCandle.high &&
+  lastCandle.close > prevCandle.low &&
+  lastCandle.open < lastCandle.close &&
+  lastLowerShadowLength >= lastBodyLength * 2 / 3;
 console.log(`Is Bullish Hammer: ${isBullishHammer} ВВЕРХ`);
 
 //Медвежий молот
-const candle1 = data[data.length - 2];
-const bodyLength1 = Math.abs(candle.open - candle.close);
-const upperShadowLength1 = candle.high - Math.max(candle.open, candle.close);
-const lowerShadowLength1 = Math.min(candle.open, candle.close) - candle.low;
-const isBearishHammer = bodyLength1 < lowerShadowLength1 &&
-  bodyLength1 <= candle1.high / 3 &&
-  upperShadowLength1 <= bodyLength1 / 2;
+const prevCandle1 = data[data.length - 2];
+const lastCandle1 = data[data.length - 1];
+const lastBodyLength1 = Math.abs(lastCandle.open - lastCandle.close);
+const lastUpperShadowLength1 = Math.abs(lastCandle.high - Math.max(lastCandle.open, lastCandle.close));
+const isBearishHammer = lastCandle1.close < lastCandle1.open &&
+  lastCandle1.close < prevCandle1.high &&
+  lastCandle1.close < prevCandle1.low &&
+  lastCandle1.open > lastCandle1.close &&
+  lastUpperShadowLength1 >= lastBodyLength1 * 2 / 3;
 console.log(`Is Bearish Hammer: ${isBearishHammer} ВНИЗ`);
 
 //Доджи
