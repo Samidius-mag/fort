@@ -47,7 +47,8 @@ const supportResistance = {
   },
 };
 
-const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance;
+const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance 
+ && currentPrice <= priceData[4].high && currentPrice >=priceData[4].low ;
 if (isSideways) {
   console.log('Тренд боковой', trend.current);
 } else {
