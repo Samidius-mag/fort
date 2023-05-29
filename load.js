@@ -45,7 +45,7 @@ axios.get(url)
     }));
 
     fs.writeFileSync('price4.json', JSON.stringify(data));
-    console.log('Data saved to price.json');
+    console.log('Data saved to price4.json');
   })
   .catch(error => {
     console.error(error);
