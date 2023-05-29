@@ -137,4 +137,4 @@ setInterval(sendToBot3, 310000);
 setInterval(sendToBot4, 350000);
 setInterval(sendToBot5, 400000);
 setInterval(sendToBot6, 500000);
-setInterval(sendToBot7, 300000);
+setInterval(sendToBot7, 30000);
