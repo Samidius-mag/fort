@@ -74,7 +74,7 @@ const prevBodyLength3 = Math.abs(prevCandle.open - prevCandle.close);
 const prevShadowLength3 = Math.abs(prevCandle.high - prevCandle.low);
 const prevMidPrice3 = (prevCandle.open + prevCandle.close) / 2;
 const lastBodyLength3 = Math.abs(lastCandle.open - lastCandle.close);
-const isPiercingLine3 = lastCandle.close > prevCandle.open &&
+const isPiercingLine = lastCandle3.close > prevCandle3.open &&
   lastCandle3.open < prevCandle3.close &&
   lastCandle3.close > prevMidPrice3 &&
   lastBodyLength3 > prevBodyLength3 &&
