@@ -13,11 +13,11 @@ const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(
 const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
 const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
 const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
-//console.log('Изменение цены:', priceChange.toFixed(2) + '%');
+console.log('Изменение цены:', priceChange.toFixed(2) + '%');
 
 // Определение тренда
 const trend = {
-  current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'Восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'Нисходящий' : 'Боковой',
+  current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'нисходящий' : 'боковой',
   global: priceData[0].close > priceData[priceData.length - 1].close ? 'Нисходящий' : 'Восходящий',
   '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'Восходящий' : 'Нисходящий',
   '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
@@ -49,9 +49,9 @@ const supportResistance = {
 
 const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance;
 if (isSideways) {
- // console.log('Тренд боковой');
+  console.log('Тренд боковой', trend.current);
 } else {
-//  console.log('Тренд вышел из бокового движения');
+  console.log('Тренд вышел из бокового движения');
 }
 /*
 console.log('Текущий тренд:', trend.current);
@@ -59,6 +59,7 @@ console.log('4-часовой тренд:', trend['4h']);
 console.log('12-часовой тренд:', trend['12h']);
 console.log('24-часовой тренд:', trend['24h']);
 console.log('Глобальный тренд:', trend.global);
+*/
 console.log('Текущая поддержка:', supportResistance.current.support);
 console.log('Текущее сопротивление:', supportResistance.current.resistance);
 console.log('Поддержка 4 часа:', supportResistance['4h'].support);
@@ -67,7 +68,7 @@ console.log('Поддержка 12 часов:', supportResistance['12h'].suppor
 console.log('Сопротивление 12 часов:', supportResistance['12h'].resistance);
 console.log('Поддержка 24 часа:', supportResistance['24h'].support);
 console.log('Сопротивление 24 часа:', supportResistance['24h'].resistance);
-*/
+
 // Перекупленность/перепроданность рынка
 const overboughtOversold = {
   RSI: {
