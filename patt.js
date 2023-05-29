@@ -29,7 +29,7 @@ const lowerShadowLength2 = Math.min(candle.open, candle.close) - candle.low;
 const isDoji = bodyLength2 <= candle2.high * 0.1 &&
   upperShadowLength2 <= candle2.high * 0.1 &&
   lowerShadowLength2 <= candle2.high * 0.1;
-console.log(`Is Doji: ${isDoji} РАЗВОРОТ`);
+console.log(`Is Doji: ${isDoji} ЛОВУШКА`);
 
 //Завеса из облаков
 const prevCandle = data[data.length - 3];
@@ -80,4 +80,4 @@ const isPiercingLine = lastCandle3.close > prevCandle3.open &&
   lastBodyLength3 > prevBodyLength3 &&
   lastCandle3.high <= lastCandle3.open &&
   lastCandle3.low >= prevCandle3.low + prevShadowLength3 / 2;
-console.log(`Is Piercing Line Pattern: ${isPiercingLine}`);
+console.log(`Is Piercing Line Pattern: ${isPiercingLine} РАЗВОРОТ`);
