@@ -11,7 +11,7 @@ const isBullishHammer = lastCandle.close > lastCandle.open &&
   lastCandle.close > prevCandle.low &&
   lastCandle.open < lastCandle.close &&
   lastLowerShadowLength >= lastBodyLength * 2 / 3;
-console.log(`Is Bullish Hammer: ${isBullishHammer} ВВЕРХ`);
+console.log(`Бычий молот: ${isBullishHammer} ВВЕРХ`);
 
 //Медвежий молот
 const prevCandle1 = data[data.length - 3];
@@ -23,7 +23,7 @@ const isBearishHammer = lastCandle1.close < lastCandle1.open &&
   lastCandle1.close < prevCandle1.low &&
   lastCandle1.open > lastCandle1.close &&
   lastUpperShadowLength1 >= lastBodyLength1 * 2 / 3;
-console.log(`Is Bearish Hammer: ${isBearishHammer} ВНИЗ`);
+console.log(`Медвежий молот: ${isBearishHammer} ВНИЗ`);
 
 //Доджи
 const prevCandle8 = data[data.length - 3];
@@ -34,7 +34,7 @@ const bodyLength8 = Math.abs(lastCandle.open - lastCandle.close);
 const shadowLength8 = Math.abs(lastCandle.high - lastCandle.low);
 const isDoji = priceDiff8 <= avgPrice8 * 0.01 &&
   bodyLength8 <= shadowLength8 * 0.1;
-console.log(`Is Doji: ${isDoji} ЛОВУШКА`);
+console.log(`Доджи: ${isDoji} ЛОВУШКА`);
 
 //Завеса из облаков
 const prevCandle2 = data[data.length - 3];
@@ -46,7 +46,7 @@ const isDarkCloudCover = lastCandle2.close < avgClose2 &&
   lastCandle2.open > prevCandle2.close &&
   lastCandle2.close < prevCandle2.open &&
   lastBodyLength2 >= prevBodyLength2 * 0.5;
-console.log(`Is Dark Cloud Cover: ${isDarkCloudCover} ВНИЗ`);
+console.log(`Завеса: ${isDarkCloudCover} ВНИЗ`);
 
 // Поглощение МЕДВЕЖЬЕ
 const prevCandle3 = data[data.length - 3];
@@ -58,7 +58,7 @@ const isBearishEngulfing = lastCandle3.close < prevCandle3.open &&
   lastBodyLength3 > prevBodyLength3 &&
   lastCandle3.high <= lastCandle3.close &&
   lastCandle3.low >= lastCandle3.open;
-console.log(`Is Bearish Engulfing Pattern: ${isBearishEngulfing} ВНИЗ`);
+console.log(`Медвежье поглощение: ${isBearishEngulfing} ВНИЗ`);
 
 // Поглощение БЫЧЬЕ
 const prevCandle4 = data[data.length - 3];
@@ -70,7 +70,7 @@ const isBullishEngulfing = lastCandle4.close > prevCandle4.open &&
   lastBodyLength4 > prevBodyLength4 &&
   lastCandle4.high <= lastCandle4.open &&
   lastCandle4.low >= lastCandle4.close;
-console.log(`Is Bullish Engulfing Pattern: ${isBullishEngulfing} ВВЕРХ`);
+console.log(`Бычье поглощение: ${isBullishEngulfing} ВВЕРХ`);
 
 //Пронизывающая 
 const prevCandle5= data[data.length - 3];
@@ -85,7 +85,7 @@ const isPiercingLine = lastCandle5.close > prevCandle5.open &&
   lastBodyLength5 > prevBodyLength5 &&
   lastCandle5.high <= lastCandle5.open &&
   lastCandle5.low >= prevCandle5.low + prevShadowLength5 / 2;
-console.log(`Is Piercing Line Pattern: ${isPiercingLine} РАЗВОРОТ`);
+console.log(`Пронизывающая: ${isPiercingLine} РАЗВОРОТ`);
 
 //Пинцет ТОП
 const prevCandle6 = data[data.length - 2];
@@ -99,7 +99,7 @@ const isTweezerTop = lastCandle6.close === prevCandle6.close &&
   lastCandle6.high <= lastCandle6.open &&
   lastCandle6.low >= prevCandle6.low - prevShadowLength6 &&
   lastBodyLength6 <= prevBodyLength6;
-console.log(`Is Tweezer Top Pattern: ${isTweezerTop} ВНИЗ`);
+console.log(`Пинцет вершина: ${isTweezerTop} ВНИЗ`);
 
 //Пинцет ДНО
 const prevCandle7 = data[data.length - 2];
@@ -113,4 +113,4 @@ const isTweezerBottom = lastCandle7.close === prevCandle7.close &&
   lastCandle7.low >= lastCandle7.open &&
   lastCandle7.high <= prevCandle7.high + prevShadowLength7 &&
   lastBodyLength7 <= prevBodyLength7;
-console.log(`Is Tweezer Bottom Pattern: ${isTweezerBottom} ВВЕРХ`);
+console.log(`Пинцет основание: ${isTweezerBottom} ВВЕРХ`);
