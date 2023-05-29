@@ -13,9 +13,9 @@ console.log(`Is Bullish Hammer: ${isBullishHammer} ВВЕРХ`);
 
 //Медвежий молот
 const candle1 = data[data.length - 2];
-const bodyLength1 = Math.abs(candle1.open - candle1.close);
-const upperShadowLength1 = candle1.high - Math.max(candle1.open, candle1.close);
-const lowerShadowLength1 = Math.min(candle1.open, candle1.close) - candle1.low;
+const bodyLength1 = Math.abs(candle.open - candle.close);
+const upperShadowLength1 = candle.high - Math.max(candle.open, candle.close);
+const lowerShadowLength1 = Math.min(candle.open, candle.close) - candle.low;
 const isBearishHammer = bodyLength1 < lowerShadowLength1 &&
   bodyLength1 <= candle1.high / 3 &&
   upperShadowLength1 <= bodyLength1 / 2;
@@ -24,7 +24,7 @@ console.log(`Is Bearish Hammer: ${isBearishHammer} ВНИЗ`);
 //Доджи
 const candle2 = data[data.length - 2];
 const bodyLength2 = Math.abs(candle.open - candle.close);
-const upperShadowLength2 = candle2.high - Math.max(candle.open, candle.close);
+const upperShadowLength2 = candle.high - Math.max(candle.open, candle.close);
 const lowerShadowLength2 = Math.min(candle.open, candle.close) - candle.low;
 const isDoji = bodyLength2 <= candle2.high * 0.1 &&
   upperShadowLength2 <= candle2.high * 0.1 &&
