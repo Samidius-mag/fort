@@ -26,7 +26,7 @@ axios.get(url)
     console.error(error);
   });
 
-const url = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=5';
+const url1 = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=5';
 
 axios.get(url)
   .then(response => {
