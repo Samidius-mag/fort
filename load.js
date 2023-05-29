@@ -26,12 +26,13 @@ axios.get(url)
     console.error(error);
   });
 
-const url1 = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=5';
-
-axios.get(url)
+// 4-hour candles
+const url4h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=5`;
+setTimeout(() => {
+axios.get(url4h)
   .then(response => {
     const data = response.data.map(candle => ({
-      time: candle[0],
+      openTime: candle[0],
       open: candle[1],
       high: candle[2],
       low: candle[3],
@@ -41,87 +42,74 @@ axios.get(url)
       quoteAssetVolume: candle[7],
       numberOfTrades: candle[8],
       takerBuyBaseAssetVolume: candle[9],
-      takerBuyQuoteAssetVolume: candle[10],
+      takerBuyQuoteAssetVolume: candle[10]
     }));
 
-    fs.writeFileSync('price4.json', JSON.stringify(data));
-    console.log('Data saved to price4.json');
+    fs.writeFile('price4.json', JSON.stringify(data), err => {
+      if (err) throw err;
+      console.log('Data written to file price4.json');
+    });
   })
   .catch(error => {
-    console.error(error);
+    console.log(error);
   });
+}, 2000);
+// 5-minute candles
+const url5m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=5`;
 
-const url2 = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=24h&limit=5';
+setTimeout(() => {
+  axios.get(url5m)
+    .then(response => {
+      const data = response.data.map(candle => ({
+        openTime: candle[0],
+        open: candle[1],
+        high: candle[2],
+        low: candle[3],
+        close: candle[4],
+        volume: candle[5],
+        closeTime: candle[6],
+        quoteAssetVolume: candle[7],
+        numberOfTrades: candle[8],
+        takerBuyBaseAssetVolume: candle[9],
+        takerBuyQuoteAssetVolume: candle[10]
+      }));
 
-axios.get(url)
-  .then(response => {
-    const data = response.data.map(candle => ({
-      time: candle[0],
-      open: candle[1],
-      high: candle[2],
-      low: candle[3],
-      close: candle[4],
-      volume: candle[5],
-      closeTime: candle[6],
-      quoteAssetVolume: candle[7],
-      numberOfTrades: candle[8],
-      takerBuyBaseAssetVolume: candle[9],
-      takerBuyQuoteAssetVolume: candle[10],
-    }));
+      fs.writeFile('price5m.json', JSON.stringify(data), err => {
+        if (err) throw err;
+        console.log('Data written to file price5m.json');
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, 4000);
 
-    fs.writeFileSync('price24.json', JSON.stringify(data));
-    console.log('Data saved to price24.json');
-  })
-  .catch(error => {
-    console.error(error);
-  });
+// daily candles
+const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=5`;
 
-const url3 = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=15m&limit=5';
+setTimeout(() => {
+  axios.get(url24h)
+    .then(response => {
+      const data = response.data.map(candle => ({
+        openTime: candle[0],
+        open: candle[1],
+        high: candle[2],
+        low: candle[3],
+        close: candle[4],
+        volume: candle[5],
+        closeTime: candle[6],
+        quoteAssetVolume: candle[7],
+        numberOfTrades: candle[8],
+        takerBuyBaseAssetVolume: candle[9],
+        takerBuyQuoteAssetVolume: candle[10]
+      }));
 
-axios.get(url)
-  .then(response => {
-    const data = response.data.map(candle => ({
-      time: candle[0],
-      open: candle[1],
-      high: candle[2],
-      low: candle[3],
-      close: candle[4],
-      volume: candle[5],
-      closeTime: candle[6],
-      quoteAssetVolume: candle[7],
-      numberOfTrades: candle[8],
-      takerBuyBaseAssetVolume: candle[9],
-      takerBuyQuoteAssetVolume: candle[10],
-    }));
-
-    fs.writeFileSync('price15.json', JSON.stringify(data));
-    console.log('Data saved to price15.json');
-  })
-  .catch(error => {
-    console.error(error);
-  });
-
-const url4 = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=5';
-
-axios.get(url)
-  .then(response => {
-    const data = response.data.map(candle => ({
-      time: candle[0],
-      open: candle[1],
-      high: candle[2],
-      low: candle[3],
-      close: candle[4],
-      volume: candle[5],
-      closeTime: candle[6],
-      quoteAssetVolume: candle[7],
-      numberOfTrades: candle[8],
-      takerBuyBaseAssetVolume: candle[9],
-      takerBuyQuoteAssetVolume: candle[10],
-    }));
-
-    fs.writeFileSync('price5.json', JSON.stringify(data));
-    console.log('Data saved to price5.json');
-  })
-  .catch(error => {
-    console.error(error);
-  });
+      fs.writeFile('price24.json', JSON.stringify(data), err => {
+        if (err) throw err;
+        console.log('Data written to file price24.json');
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, 6000);
