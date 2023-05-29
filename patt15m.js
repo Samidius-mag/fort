@@ -12,7 +12,7 @@ const isBullishHammer = lastCandle.close > lastCandle.open &&
   lastCandle.open < lastCandle.close &&
   lastLowerShadowLength >= lastBodyLength * 2 / 3;
 if (isBullishHammer) {
-  console.log('Внимание! Бычий молот! Движение вверх! 5m');
+  console.log('Внимание! Бычий молот! Движение вверх! 15m');
 }
 
 //Медвежий молот
@@ -26,7 +26,7 @@ const isBearishHammer = lastCandle1.close < lastCandle1.open &&
   lastCandle1.open > lastCandle1.close &&
   lastUpperShadowLength1 >= lastBodyLength1 * 2 / 3;
 if (isBearishHammer) {
-  console.log('Внимание! Медвежий молот! Движение вниз! 5m');
+  console.log('Внимание! Медвежий молот! Движение вниз! 15m');
 }
 
 //Доджи
@@ -39,7 +39,7 @@ const shadowLength8 = Math.abs(lastCandle.high - lastCandle.low);
 const isDoji = priceDiff8 <= avgPrice8 * 0.01 &&
   bodyLength8 <= shadowLength8 * 0.1;
 if (isDoji) {
-console.log('Внимание! Доджи! Разворот! 5m');
+console.log('Внимание! Доджи! Разворот! 15m');
 }
 
 //Завеса из облаков
@@ -53,7 +53,7 @@ const isDarkCloudCover = lastCandle2.close < avgClose2 &&
   lastCandle2.close < prevCandle2.open &&
   lastBodyLength2 >= prevBodyLength2 * 0.5;
 if (isDarkCloudCover) {
-console.log('Внимание! Завеса из облаков! Движение вниз! 5m');
+console.log('Внимание! Завеса из облаков! Движение вниз! 15m');
 }
 
 // Поглощение МЕДВЕЖЬЕ
@@ -67,7 +67,7 @@ const isBearishEngulfing = lastCandle3.close < prevCandle3.open &&
   lastCandle3.high <= lastCandle3.close &&
   lastCandle3.low >= lastCandle3.open;
 if (isBearishEngulfing) {
-console.log('Внимание! Медвежье поглощение! Движение вниз! 5m');
+console.log('Внимание! Медвежье поглощение! Движение вниз! 15m');
 }
 
 // Поглощение БЫЧЬЕ
@@ -81,7 +81,7 @@ const isBullishEngulfing = lastCandle4.close > prevCandle4.open &&
   lastCandle4.high <= lastCandle4.open &&
   lastCandle4.low >= lastCandle4.close;
 if (isBullishEngulfing) {
-  console.log('Внимание! Бычье поглощение! Движение вверх! 5m');
+  console.log('Внимание! Бычье поглощение! Движение вверх! 15m');
 }
 
 //Пронизывающая 
@@ -98,7 +98,7 @@ const isPiercingLine = lastCandle5.close > prevCandle5.open &&
   lastCandle5.high <= lastCandle5.open &&
   lastCandle5.low >= prevCandle5.low + prevShadowLength5 / 2;
 if (isPiercingLine) {
-console.log('Внимание! Пронизывающая! Разворот! 5m');
+console.log('Внимание! Пронизывающая! Разворот! 15m');
 }
 
 //Пинцет ТОП
@@ -114,7 +114,7 @@ const isTweezerTop = lastCandle6.close === prevCandle6.close &&
   lastCandle6.low >= prevCandle6.low - prevShadowLength6 &&
   lastBodyLength6 <= prevBodyLength6;
 if (isTweezerTop) {
-console.log('Внимание! Пинцет вершина! Движение вниз! 5m');
+console.log('Внимание! Пинцет вершина! Движение вниз! 15m');
 }
 
 //Пинцет ДНО
@@ -130,7 +130,7 @@ const isTweezerBottom = lastCandle7.close === prevCandle7.close &&
   lastCandle7.high <= prevCandle7.high + prevShadowLength7 &&
   lastBodyLength7 <= prevBodyLength7;
 if (isTweezerBottom) {
-console.log('Внимание! Пинцет основание! Движение вниз! 5m');
+console.log('Внимание! Пинцет основание! Движение вниз! 15m');
 }
 
 //Утреняя звезда
@@ -151,7 +151,7 @@ const isMorningStar = firstCandle.close < firstCandle.open &&
   thirdBodyLength9 > secondUpperShadowLength9 &&
   thirdUpperShadowLength9 <= thirdBodyLength9 * 0.5;
 if (isMorningStar) {
-console.log('Внимание! Пинцет основание! Движение вверх! 5m');
+console.log('Внимание! Пинцет основание! Движение вверх! 15m');
 }
 
 //Вечерняя звезда
@@ -173,7 +173,7 @@ const isEveningStar = firstCandle10.close > firstCandle10.open &&
   secondLowerShadowLength10 <= firstBodyLength10 * 0.5 &&
   thirdLowerShadowLength10 <= firstBodyLength10 * 0.5;
 if (isEveningStar) {
-console.log('Внимание! Пинцет основание! Движение вниз! 5m');
+console.log('Внимание! Пинцет основание! Движение вниз! 15m');
 }
 
 //Утреняя звезда Доджи
@@ -194,5 +194,5 @@ const isMorningStarDoji = firstCandle11.close < firstCandle11.open &&
   thirdBodyLength11 > secondShadowLength11 &&
   thirdUpperShadowLength11 <= thirdBodyLength11 * 0.5;
 if (isMorningStarDoji) {
-console.log('Внимание! Утреняя звезда Доджи! Движение вверх! 5m');
+console.log('Внимание! Утреняя звезда Доджи! Движение вверх! 15m');
 }
