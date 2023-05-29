@@ -66,3 +66,18 @@ const isBullishEngulfing = lastCandle.close > prevCandle.open &&
   lastCandle2.high <= lastCandle2.open &&
   lastCandle2.low >= lastCandle2.close;
 console.log(`Is Bullish Engulfing Pattern: ${isBullishEngulfing} ВВЕРХ`);
+
+//Пронизывающая 
+const prevCandle3 = data[data.length - 3];
+const lastCandle3 = data[data.length - 2];
+const prevBodyLength3 = Math.abs(prevCandle.open - prevCandle.close);
+const prevShadowLength3 = Math.abs(prevCandle.high - prevCandle.low);
+const prevMidPrice3 = (prevCandle.open + prevCandle.close) / 2;
+const lastBodyLength3 = Math.abs(lastCandle.open - lastCandle.close);
+const isPiercingLine3 = lastCandle.close > prevCandle.open &&
+  lastCandle3.open < prevCandle3.close &&
+  lastCandle3.close > prevMidPrice3 &&
+  lastBodyLength3 > prevBodyLength3 &&
+  lastCandle3.high <= lastCandle3.open &&
+  lastCandle3.low >= prevCandle3.low + prevShadowLength3 / 2;
+console.log(`Is Piercing Line Pattern: ${isPiercingLine}`);
