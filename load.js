@@ -54,11 +54,11 @@ axios.get(url4h)
     console.log(error);
   });
 }, 2000);
-// 5-minute candles
-const url5m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=5`;
+// 15-minute candles
+const url5m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=15m&limit=5`;
 
 setTimeout(() => {
-  axios.get(url5m)
+  axios.get(url15m)
     .then(response => {
       const data = response.data.map(candle => ({
         openTime: candle[0],
@@ -74,7 +74,7 @@ setTimeout(() => {
         takerBuyQuoteAssetVolume: candle[10]
       }));
 
-      fs.writeFile('price5m.json', JSON.stringify(data), err => {
+      fs.writeFile('price15m.json', JSON.stringify(data), err => {
         if (err) throw err;
         console.log('Data written to file price5m.json');
       });

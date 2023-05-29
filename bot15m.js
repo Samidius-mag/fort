@@ -10,7 +10,7 @@ const sendMessage = (message) => {
   bot.sendMessage(chatId, message);
 };
 
-exec('node patt5m.js', (error, stdout, stderr) => {
+exec('node patt15m.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;

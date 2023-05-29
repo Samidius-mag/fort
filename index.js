@@ -50,7 +50,7 @@ const sendToBot2 = () => {
 
 
 const sendToBot3 = () => {
-  const child = spawn('node', ['bot5m.js']);
+  const child = spawn('node', ['bot15m.js']);
 
   child.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);

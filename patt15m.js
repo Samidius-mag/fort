@@ -1,5 +1,5 @@
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('price5m.json'));
+const data = JSON.parse(fs.readFileSync('price15m.json'));
 
 //Бычий молот
 const prevCandle = data[data.length - 3];
