@@ -27,8 +27,8 @@ const chatId2 = '-1001536433459';
 
 const bot2 = new TelegramBot(token, { polling: false });
 
-const sendMessage2 = (message) => {
-  bot2.sendMessage2(chatId2, message);
+const sendMessage1 = (message) => {
+  bot2.sendMessage(chatId2, message);
 };
 
 exec('node logic2.js', (error, stdout, stderr) => {
@@ -40,6 +40,6 @@ exec('node logic2.js', (error, stdout, stderr) => {
   const lines = stdout.trim().split('\n');
   const message = lines.join('\n');
 
-  sendMessage2(message);
+  sendMessage1(message);
   console.log('Отправлено2');
 });
