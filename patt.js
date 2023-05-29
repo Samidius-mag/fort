@@ -1,6 +1,6 @@
 const fs = require('fs');
-
 const data = JSON.parse(fs.readFileSync('price.json'));
+
 //Бычий молот
 const prevCandle = data[data.length - 3];
 const lastCandle = data[data.length - 2];
@@ -11,7 +11,9 @@ const isBullishHammer = lastCandle.close > lastCandle.open &&
   lastCandle.close > prevCandle.low &&
   lastCandle.open < lastCandle.close &&
   lastLowerShadowLength >= lastBodyLength * 2 / 3;
-console.log(`Бычий молот: ${isBullishHammer} ВВЕРХ`);
+if (isBullishHammer) {
+  console.log('Внимание! Бычий молот! Движение вверх! 1H');
+}
 
 //Медвежий молот
 const prevCandle1 = data[data.length - 3];
@@ -23,7 +25,9 @@ const isBearishHammer = lastCandle1.close < lastCandle1.open &&
   lastCandle1.close < prevCandle1.low &&
   lastCandle1.open > lastCandle1.close &&
   lastUpperShadowLength1 >= lastBodyLength1 * 2 / 3;
-console.log(`Медвежий молот: ${isBearishHammer} ВНИЗ`);
+if (isBearishHammer) {
+  console.log('Внимание! Медвежий молот! Движение вниз! 1H');
+}
 
 //Доджи
 const prevCandle8 = data[data.length - 3];
@@ -34,7 +38,9 @@ const bodyLength8 = Math.abs(lastCandle.open - lastCandle.close);
 const shadowLength8 = Math.abs(lastCandle.high - lastCandle.low);
 const isDoji = priceDiff8 <= avgPrice8 * 0.01 &&
   bodyLength8 <= shadowLength8 * 0.1;
-console.log(`Доджи: ${isDoji} ЛОВУШКА`);
+if (isDoji) {
+console.log('Внимание! Доджи! Разворот! 1H');
+}
 
 //Завеса из облаков
 const prevCandle2 = data[data.length - 3];
@@ -46,7 +52,9 @@ const isDarkCloudCover = lastCandle2.close < avgClose2 &&
   lastCandle2.open > prevCandle2.close &&
   lastCandle2.close < prevCandle2.open &&
   lastBodyLength2 >= prevBodyLength2 * 0.5;
-console.log(`Завеса: ${isDarkCloudCover} ВНИЗ`);
+if (isDarkCloudCover) {
+console.log('Внимание! Завеса из облаков! Движение вниз! 1H');
+}
 
 // Поглощение МЕДВЕЖЬЕ
 const prevCandle3 = data[data.length - 3];
@@ -58,7 +66,9 @@ const isBearishEngulfing = lastCandle3.close < prevCandle3.open &&
   lastBodyLength3 > prevBodyLength3 &&
   lastCandle3.high <= lastCandle3.close &&
   lastCandle3.low >= lastCandle3.open;
-console.log(`Медвежье поглощение: ${isBearishEngulfing} ВНИЗ`);
+if (isBearishEngulfing) {
+console.log('Внимание! Медвежье поглощение! Движение вниз! 1H');
+}
 
 // Поглощение БЫЧЬЕ
 const prevCandle4 = data[data.length - 3];
@@ -70,7 +80,9 @@ const isBullishEngulfing = lastCandle4.close > prevCandle4.open &&
   lastBodyLength4 > prevBodyLength4 &&
   lastCandle4.high <= lastCandle4.open &&
   lastCandle4.low >= lastCandle4.close;
-console.log(`Бычье поглощение: ${isBullishEngulfing} ВВЕРХ`);
+if (isBullishEngulfing) {
+  console.log('Внимание! Бычье поглощение! Движение вверх! 1H');
+}
 
 //Пронизывающая 
 const prevCandle5= data[data.length - 3];
@@ -85,7 +97,9 @@ const isPiercingLine = lastCandle5.close > prevCandle5.open &&
   lastBodyLength5 > prevBodyLength5 &&
   lastCandle5.high <= lastCandle5.open &&
   lastCandle5.low >= prevCandle5.low + prevShadowLength5 / 2;
-console.log(`Пронизывающая: ${isPiercingLine} РАЗВОРОТ`);
+if (isPiercingLine) {
+console.log('Внимание! Пронизывающая! Разворот! 1H');
+}
 
 //Пинцет ТОП
 const prevCandle6 = data[data.length - 2];
@@ -99,7 +113,9 @@ const isTweezerTop = lastCandle6.close === prevCandle6.close &&
   lastCandle6.high <= lastCandle6.open &&
   lastCandle6.low >= prevCandle6.low - prevShadowLength6 &&
   lastBodyLength6 <= prevBodyLength6;
-console.log(`Пинцет вершина: ${isTweezerTop} ВНИЗ`);
+if (isTweezerTop) {
+console.log('Внимание! Пинцет вершина! Движение вниз! 1H');
+}
 
 //Пинцет ДНО
 const prevCandle7 = data[data.length - 2];
@@ -113,7 +129,9 @@ const isTweezerBottom = lastCandle7.close === prevCandle7.close &&
   lastCandle7.low >= lastCandle7.open &&
   lastCandle7.high <= prevCandle7.high + prevShadowLength7 &&
   lastBodyLength7 <= prevBodyLength7;
-console.log(`Пинцет основание: ${isTweezerBottom} ВВЕРХ`);
+if (isTweezerBottom) {
+console.log('Внимание! Пинцет основание! Движение вниз! 1H');
+}
 
 //Утреняя звезда
 const firstCandle = data[data.length - 4];
@@ -132,7 +150,9 @@ const isMorningStar = firstCandle.close < firstCandle.open &&
   secondBodyLength9 <= firstLowerShadowLength9 * 0.5 &&
   thirdBodyLength9 > secondUpperShadowLength9 &&
   thirdUpperShadowLength9 <= thirdBodyLength9 * 0.5;
-console.log(`Утреняя звезда: ${isMorningStar} ВВЕРХ`);
+if (isMorningStar) {
+console.log('Внимание! Пинцет основание! Движение вверх! 1H');
+}
 
 //Вечерняя звезда
 const firstCandle10 = data[data.length - 4];
@@ -152,8 +172,9 @@ const isEveningStar = firstCandle10.close > firstCandle10.open &&
   thirdBodyLength10 >= firstUpperShadowLength10 * 0.5 &&
   secondLowerShadowLength10 <= firstBodyLength10 * 0.5 &&
   thirdLowerShadowLength10 <= firstBodyLength10 * 0.5;
-
-console.log(`Вечерняя звезда: ${isEveningStar} ВНИЗ`);
+if (isEveningStar) {
+console.log('Внимание! Пинцет основание! Движение вниз! 1H');
+}
 
 //Утреняя звезда Доджи
 const firstCandle11 = data[data.length - 4];
@@ -172,4 +193,6 @@ const isMorningStarDoji = firstCandle11.close < firstCandle11.open &&
   priceDiff11 <= avgPrice11 * 0.01 &&
   thirdBodyLength11 > secondShadowLength11 &&
   thirdUpperShadowLength11 <= thirdBodyLength11 * 0.5;
-console.log(`Утреняя звезда Доджи: ${isMorningStarDoji} ВВЕРХ`);
+if (isMorningStarDoji) {
+console.log('Внимание! Утреняя звезда Доджи! Движение вверх! 1H');
+}
