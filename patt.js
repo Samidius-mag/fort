@@ -42,3 +42,27 @@ const isDarkCloudCover = lastCandle.close < avgClose &&
   lastCandle.close < prevCandle.open &&
   lastBodyLength >= prevBodyLength * 0.5;
 console.log(`Is Dark Cloud Cover: ${isDarkCloudCover} ВНИЗ`);
+
+// Поглощение МЕДВЕЖЬЕ
+const prevCandle1 = data[data.length - 3];
+const lastCandle1 = data[data.length - 2];
+const prevBodyLength1 = Math.abs(prevCandle1.open - prevCandle1.close);
+const lastBodyLength1 = Math.abs(lastCandle1.open - lastCandle1.close);
+const isBearishEngulfing = lastCandle1.close < prevCandle1.open &&
+  lastCandle1.open > prevCandle1.close &&
+  lastBodyLength1 > prevBodyLength1 &&
+  lastCandle1.high <= lastCandle1.close &&
+  lastCandle1.low >= lastCandle1.open;
+console.log(`Is Bearish Engulfing Pattern: ${isBearishEngulfing} ВНИЗ`);
+
+// Поглощение БЫЧЬЕ
+const prevCandle2 = data[data.length - 3];
+const lastCandle2 = data[data.length - 2];
+const prevBodyLength2 = Math.abs(prevCandle2.open - prevCandle2.close);
+const lastBodyLength2 = Math.abs(lastCandle2.open - lastCandle2.close);
+const isBullishEngulfing = lastCandle2.close > prevCandle2.open &&
+  lastCandle2.open < prevCandle2.close &&
+  lastBodyLength2 > prevBodyLength2 &&
+  lastCandle2.high <= lastCandle2.open &&
+  lastCandle2.low >= lastCandle2.close;
+console.log(`Is Bullish Engulfing Pattern: ${isBullishEngulfing} ВВЕРХ`);
