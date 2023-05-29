@@ -25,3 +25,15 @@ const isBearishHammer = bodyLength1 < lowerShadowLength1 &&
   upperShadowLength1 <= bodyLength1 / 2;
 
 console.log(`Is Bearish Hammer: ${isBearishHammer}`);
+
+const candle2 = data[data.length - 2];
+
+const bodyLength2 = Math.abs(candle2.open - candle2.close);
+const upperShadowLength2 = candle2.high - Math.max(candle2.open, candle2.close);
+const lowerShadowLength2 = Math.min(candle2.open, candle2.close) - candle2.low;
+
+const isDoji = bodyLength2 <= candle2.high * 0.1 &&
+  upperShadowLength2 <= candle2.high * 0.1 &&
+  lowerShadowLength2 <= candle2.high * 0.1;
+
+console.log(`Is Doji: ${isDoji}`);
