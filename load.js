@@ -55,7 +55,7 @@ axios.get(url4h)
   });
 }, 2000);
 // 15-minute candles
-const url5m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=15m&limit=5`;
+const url15m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=15m&limit=5`;
 
 setTimeout(() => {
   axios.get(url15m)
