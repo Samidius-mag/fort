@@ -2,7 +2,7 @@ const { exec } = require('child_process');
 const TelegramBot = require('node-telegram-bot-api');
 
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
-const chatId = '-1001889085120';
+const chatId = '-1001536433459';
 
 const bot = new TelegramBot(token, { polling: false });
 
@@ -20,5 +20,5 @@ exec('node logic2.js', (error, stdout, stderr) => {
   const message = lines.join('\n');
 
   sendMessage(message);
-  console.log('Отправлено');
+  console.log('Отправлено2');
 });
