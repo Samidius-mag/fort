@@ -20,5 +20,5 @@ exec('node patt.js', (error, stdout, stderr) => {
   const message = lines.join('\n');
 
   sendMessage(message);
-  console.log('Отправлено2');
+  console.log('Отправлено3');
 });
