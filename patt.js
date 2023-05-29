@@ -116,8 +116,8 @@ const isTweezerBottom = lastCandle7.close === prevCandle7.close &&
 console.log(`Пинцет основание: ${isTweezerBottom} ВВЕРХ`);
 
 //Утреняя звезда
-const firstCandle9 = data[data.length - 4];
-const secondCandle9 = data[data.length - 3];
+const firstCandle = data[data.length - 4];
+const secondCandle = data[data.length - 3];
 const lastCandle9 = data[data.length - 2];
 const firstBodyLength9 = Math.abs(firstCandle.open - firstCandle.close);
 const firstLowerShadowLength9 = Math.abs(firstCandle.low - Math.min(firstCandle.open, firstCandle.close));
