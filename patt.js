@@ -125,10 +125,10 @@ const secondBodyLength9 = Math.abs(secondCandle.open - secondCandle.close);
 const secondUpperShadowLength9 = Math.abs(secondCandle.high - Math.max(secondCandle.open, secondCandle.close));
 const thirdBodyLength9 = Math.abs(lastCandle.open - lastCandle.close);
 const thirdUpperShadowLength9 = Math.abs(lastCandle.high - Math.max(lastCandle.open, lastCandle.close));
-const isMorningStar = firstCandle9.close < firstCandle9.open &&
+const isMorningStar = firstCandle.close < firstCandle.open &&
   lastCandle9.close > lastCandle9.open &&
-  secondCandle9.close < firstCandle9.open &&
-  lastCandle9.close > firstCandle9.close &&
+  secondCandle.close < firstCandle.open &&
+  lastCandle9.close > firstCandle.close &&
   secondBodyLength9 <= firstLowerShadowLength9 * 0.5 &&
   thirdBodyLength9 > secondUpperShadowLength9 &&
   thirdUpperShadowLength9 <= thirdBodyLength9 * 0.5;
