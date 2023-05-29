@@ -81,3 +81,31 @@ const isPiercingLine = lastCandle3.close > prevCandle3.open &&
   lastCandle3.high <= lastCandle3.open &&
   lastCandle3.low >= prevCandle3.low + prevShadowLength3 / 2;
 console.log(`Is Piercing Line Pattern: ${isPiercingLine} РАЗВОРОТ`);
+
+//Пинцет ТОП
+const prevCandle4 = data[data.length - 2];
+const lastCandle4 = data[data.length - 1];
+const prevBodyLength4 = Math.abs(prevCandle.open - prevCandle.close);
+const prevShadowLength4 = Math.abs(prevCandle.high - prevCandle.low);
+const lastBodyLength4 = Math.abs(lastCandle.open - lastCandle.close);
+const isTweezerTop = lastCandle4.close === prevCandle4.close &&
+  lastCandle4.open > prevCandle4.close &&
+  lastCandle4.close >= prevCandle4.close + prevBodyLength4 / 2 &&
+  lastCandle4.high <= lastCandle4.open &&
+  lastCandle4.low >= prevCandle4.low - prevShadowLength4 &&
+  lastBodyLength4 <= prevBodyLength4;
+console.log(`Is Tweezer Top Pattern: ${isTweezerTop} ВНИЗ`);
+
+//Пинцет ДНО
+const prevCandle5 = data[data.length - 2];
+const lastCandle5 = data[data.length - 1];
+const prevBodyLength5 = Math.abs(prevCandle.open - prevCandle.close);
+const prevShadowLength5 = Math.abs(prevCandle.high - prevCandle.low);
+const lastBodyLength5 = Math.abs(lastCandle.open - lastCandle.close);
+const isTweezerBottom = lastCandle.close === prevCandle.close &&
+  lastCandle5.open < prevCandle5.close &&
+  lastCandle5.close <= prevCandle5.close - prevBodyLength5 / 2 &&
+  lastCandle5.low >= lastCandle5.open &&
+  lastCandle5.high <= prevCandle5.high + prevShadowLength5 &&
+  lastBodyLength5 <= prevBodyLength5;
+console.log(`Is Tweezer Bottom Pattern: ${isTweezerBottom} ВВЕРХ`);
