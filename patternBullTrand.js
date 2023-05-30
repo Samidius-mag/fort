@@ -297,5 +297,5 @@ function isFallingStar(candles) {
       !isHangingMan(candles) && !isAbandonedBaby(candles) && !isDarkCloudCover(candles) && !isBearishQuest(candles) && !isSouthernEveningStar(candles) &&
       !isMorningStar(candles) && !isDojiStar(candles) && !isThreeLineStrike(candles) && !isStrongUp(candles) && !isFallingStar(candles) && !isBearishGame(candles) &&
       !isBullishPincer(candles) && !isBearishWindow(candles)){
-    console.log('Свечи Бычьего тренда не найдены');
+    console.log('Свечи Бычьего разворота рынка не найдены');
   }

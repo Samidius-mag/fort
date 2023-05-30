@@ -165,5 +165,5 @@ if (isBullishGapSideBySideWhiteLines(candles)) {
 if (!isThreeWhiteSoldiers(candles) && !isThreeDescending(candles) && !isThreeAscending(candles) &&
     !isThreeBlackCrows(candles) && !isBearishTasukiGap(candles) && !isBullishTasukiGap(candles) &&
     !isThreeBullishWings(candles) && !isThreeConcurrentWings(candles) && !isBullishGapSideBySideWhiteLines(candles)) {
-  console.log('Свечи продолжения тренда не найдены');
+  console.log('Свечи продолжения движения тренда не найдены');
 }
