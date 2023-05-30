@@ -358,11 +358,11 @@ function isInvertedHammer(candles) {
   if (isShortHarami(candles)) {
     console.log('Короткая свеча в Харами позиции 🔼');
   }
-  
+  /*
   if (isStar(candles)) {
     console.log('Доджи в звездной позиции 🔼');
   }
-  
+  */
   if (isPiercingLine(candles)) {
     console.log('Проникающая линия 🔼');
   }
