@@ -446,7 +446,7 @@ function isInvertedHammer(candles) {
 
   if (!isInvertedHammer(candles) && !isBullishHarami(candles) && !isBullishEngulfing(candles) &&
       !isHammer(candles) && !isShortStars(candles) && !isMorningStar(candles) &&
-      !isShortHarami(candles) && !isStar(candles) && !isPiercingLine(candles) &&
+      !isShortHarami(candles) && !isPiercingLine(candles) &&
       !isShortHaramiCross(candles) && !isTripleGapDown(candles) && !isNewLows(candles) && !isBullishWindow(candles) &&
       !isBullishThreeLineStrike(candles) && !isBullishKicker(candles) && !isReversalPattern(candles) &&
       !isBullishEngulfing(candles) && !isBullishHarami(candles) && !isDoubleTop(candles) && !isBearishHarami(candles) && !isThreeStarSouth(candles) &&
