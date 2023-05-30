@@ -10,7 +10,7 @@ const sendMessage = (message) => {
   bot.sendMessage(chatId, message);
 };
 
-exec('node patt24h.js', (error, stdout, stderr) => {
+exec('node patternBullTrand.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;
@@ -20,7 +20,7 @@ exec('node patt24h.js', (error, stdout, stderr) => {
   const message = lines.join('\n');
 
   sendMessage(message);
-  console.log('Отправлено24');
+  console.log('Отправлено5');
 });
 
 const chatId2 = '-1001536433459';
@@ -31,7 +31,7 @@ const sendMessage1 = (message) => {
   bot2.sendMessage(chatId2, message);
 };
 
-exec('node logic2.js', (error, stdout, stderr) => {
+exec('node patternBullTrand.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;

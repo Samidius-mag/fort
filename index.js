@@ -50,7 +50,7 @@ const sendToBot2 = () => {
 
 
 const sendToBot3 = () => {
-  const child = spawn('node', ['bot15m.js']);
+  const child = spawn('node', ['bot2.js']);
 
   child.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -66,7 +66,7 @@ const sendToBot3 = () => {
 };
 
 const sendToBot4 = () => {
-  const child = spawn('node', ['bot1h.js']);
+  const child = spawn('node', ['bot3.js']);
 
   child.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -83,7 +83,7 @@ const sendToBot4 = () => {
 };
 
   const sendToBot5 = () => {
-    const child = spawn('node', ['bot4h.js']);
+    const child = spawn('node', ['bot4.js']);
   
     child.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
@@ -99,7 +99,7 @@ const sendToBot4 = () => {
   };
 
   const sendToBot6 = () => {
-    const child = spawn('node', ['bot24h.js']);
+    const child = spawn('node', ['bot5.js']);
   
     child.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
@@ -115,7 +115,7 @@ const sendToBot4 = () => {
   };
 
   const sendToBot7 = () => {
-    const child = spawn('node', ['bot2.js']);
+    const child = spawn('node', ['bot6.js']);
   
     child.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
@@ -133,8 +133,8 @@ const sendToBot4 = () => {
 setInterval(loadPrice, 10000);
 setInterval(sendToBot, 50000);
 setInterval(sendToBot2, 7000);
-setInterval(sendToBot3, 310000);
-setInterval(sendToBot4, 350000);
-setInterval(sendToBot5, 400000);
-setInterval(sendToBot6, 500000);
-setInterval(sendToBot7, 30000);
+setInterval(sendToBot3, 55000);
+setInterval(sendToBot4, 120000);
+setInterval(sendToBot5, 121000);
+setInterval(sendToBot6, 122000);
+setInterval(sendToBot7, 123000);

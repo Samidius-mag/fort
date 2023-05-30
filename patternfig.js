@@ -206,77 +206,77 @@ function isDoubleBottom(candles) {
 let patternFound = false;
 
 if (isAscendingTriangle(candles)) {
-  console.log('Восходящий треугольник');
+  console.log('Восходящий треугольник 🔼');
   patternFound = true;
 }
 
 if (isDescendingTriangle(candles)) {
-  console.log('Нисходящий треугольник');
+  console.log('Нисходящий треугольник 🔽');
   patternFound = true;
 }
 
 if (isSymmetricalTriangle(candles)) {
-  console.log('Симметричный треугольник');
+  console.log('Симметричный треугольник FLAT');
   patternFound = true;
 }
 
 if (isCupWithHandle(candles)) {
-  console.log('Чашка с ручкой');
+  console.log('Чашка с ручкой 🔼');
   patternFound = true;
 }
 
 if (isBearishDiamond(candles)) {
-  console.log('Медвежий паттерн бриллиант');
+  console.log('Медвежий паттерн бриллиант 🔽');
   patternFound = true;
 }
 
 if (isDoubleBottom(candles)) {
-    console.log('Двойное дно');
+    console.log('Двойное дно 🔼');
     patternFound = true;
   }
   
   if (isDoubleTop(candles)) {
-    console.log('Двойная вершина');
+    console.log('Двойная вершина 🔽');
     patternFound = true;
   }
   
   if (isTripleBottom(candles)) {
-    console.log('Тройное дно');
+    console.log('Тройное дно 🔼');
     patternFound = true;
   }
   
   if (isTripleTop(candles)) {
-    console.log('Тройная вершина');
+    console.log('Тройная вершина 🔽');
     patternFound = true;
   }
   
   if (isFallingWedge(candles)) {
-    console.log('Падающий клин');
+    console.log('Падающий клин 🔼');
     patternFound = true;
   }
   
   if (isRisingWedge(candles)) {
-    console.log('Растущий клин');
+    console.log('Растущий клин 🔽');
     patternFound = true;
   }
 
   if (isBullishFlag(candles)) {
-    console.log('Бычий флаг');
+    console.log('Бычий флаг 🔼');
     patternFound = true;
   }
   
   if (isBearishFlag(candles)) {
-    console.log('Медвежий флаг');
+    console.log('Медвежий флаг 🔽');
     patternFound = true;
   }
   
   if (isHeadAndShoulders(candles)) {
-    console.log('Голова и плечи');
+    console.log('Голова и плечи 🔽');
     patternFound = true;
   }
   
   if (isPennant(candles)) {
-    console.log('Вымпел');
+    console.log('Вымпел ⏭');
     patternFound = true;
   }
 

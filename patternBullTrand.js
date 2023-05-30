@@ -222,80 +222,80 @@ function isFallingStar(candles) {
   }
 
   if (isFallingStar(candles)) {
-    console.log( 'Падающая звезда');
+    console.log( 'Падающая звезда 🔽');
   }
 
   if (isBearishQuest(candles)) {
-    console.log( 'Медвежий квест');
+    console.log( 'Медвежий квест 🔽');
   }
 
   if (isBearishHarami(candles)) {
-    console.log( 'Медвежье Харами');
+    console.log( 'Медвежье Харами 🔽');
   }
 
   if (isBearishEngulfing(candles)) {
-    console.log( 'Медвежье поглощение');
+    console.log( 'Медвежье поглощение 🔽');
   }
 
   if (isSouthernEveningStar(candles)) {
-    console.log( 'Южный вечерний крест');
+    console.log( 'Южный вечерний крест 🔽');
   }
 
   if (isThreeLineStrike(candles)) {
-    console.log('Трехлинейная звезда в задумчивости');
+    console.log('Трехлинейная звезда в задумчивости 🔽');
   }
 
   if (isDojiStar(candles)) {
-    console.log( 'Доджи в позиции звездный разворот');
+    console.log( 'Доджи в позиции звездный разворот 🔽');
   }
 
   if (isMorningStar(candles)) {
-    console.log( 'Звездный разворот');
+    console.log( 'Звездный разворот 🔽');
   }
 
   if (isBullishPincer(candles)) {
-    console.log( 'Бычьи щипцы');
+    console.log( 'Бычьи щипцы 🔽');
   }
 
   if (isBearishWindow(candles)) {
-    console.log( 'Медвежье окно');
+    console.log( 'Медвежье окно 🔽');
   }
 
   if (isEveningStar(candles)) {
-    console.log('Трех свечная вечерняя звезда');
+    console.log('Трех свечная вечерняя звезда 🔽');
   }
   
   if (isBearishMeetingLines(candles)) {
-    console.log('Медвежья линия встречи');
+    console.log('Медвежья линия встречи 🔽');
   }
   
   if (isBearishThreeLineStrike(candles)) {
-    console.log('Медвежий трех-линейный прорыв линии сопротивления');
+    console.log('Медвежий трех-линейный прорыв линии сопротивления 🔽');
   }
   
   if (isHangingMan(candles)) {
-    console.log('Висельник');
+    console.log('Висельник 🔽');
   }
   
   if (isAbandonedBaby(candles)) {
-    console.log('Покинутый ребёнок');
+    console.log('Покинутый ребёнок 🔽');
   }
   
   if (isDarkCloudCover(candles)) {
-    console.log('Темная накрывающая туча');
+    console.log('Темная накрывающая туча 🔽');
   }
   
   if (isStrongUp(candles)) {
-    console.log('Сильный верх, крепость');
+    console.log('Сильный верх, крепость 🔽');
   }
   
   if (isBearishGame(candles)) {
-    console.log('Медвежья игра, заканчивающаяся разрывом');
+    console.log('Медвежья игра, заканчивающаяся разрывом 🔽');
   }
   
   if (!isEveningStar(candles) && !isBearishMeetingLines(candles) && !isBearishThreeLineStrike(candles) && !isBearishHarami(candles) && !isBearishEngulfing(candles) &&
       !isHangingMan(candles) && !isAbandonedBaby(candles) && !isDarkCloudCover(candles) && !isBearishQuest(candles) && !isSouthernEveningStar(candles) &&
       !isMorningStar(candles) && !isDojiStar(candles) && !isThreeLineStrike(candles) && !isStrongUp(candles) && !isFallingStar(candles) && !isBearishGame(candles) &&
       !isBullishPincer(candles) && !isBearishWindow(candles)){
-    console.log('Свечи Бычьего разворота рынка не найдены');
+    console.log('Свечи разворота рынка в 🔽 не найдены');
   }

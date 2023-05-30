@@ -332,115 +332,115 @@ function isInvertedHammer(candles) {
   }
 
   if (isInvertedHammer(candles)) {
-    console.log('Перевернутый молот');
+    console.log('Перевернутый молот 🔼');
   }
   
   if (isBullishHarami(candles)) {
-    console.log('Бычья Харами');
+    console.log('Бычья Харами 🔼');
   }
   
   if (isBullishEngulfing(candles)) {
-    console.log('Бычье поглощение');
+    console.log('Бычье поглощение 🔼');
   }
   
   if (isHammer(candles)) {
-    console.log('Молот');
+    console.log('Молот 🔼');
   }
   
   if (isShortStars(candles)) {
-    console.log('Короткие свечи в звездной позиции');
+    console.log('Короткие свечи в звездной позиции 🔼');
   }
   
   if (isMorningStar(candles)) {
-    console.log('Утренняя звезда в трех-свечной позиции');
+    console.log('Утренняя звезда в трех-свечной позиции 🔼');
   }
   
   if (isShortHarami(candles)) {
-    console.log('Короткая свеча в Харами позиции');
+    console.log('Короткая свеча в Харами позиции 🔼');
   }
   
   if (isStar(candles)) {
-    console.log('Доджи в звездной позиции');
+    console.log('Доджи в звездной позиции 🔼');
   }
   
   if (isPiercingLine(candles)) {
-    console.log('Проникающая линия');
+    console.log('Проникающая линия 🔼');
   }
   
   if (isShortHaramiCross(candles)) {
-    console.log('Додж в харами позиции');
+    console.log('Додж в харами позиции 🔼');
   }
   
   if (isDoubleTop(candles)) {
-    console.log('Двойной толчок');
+    console.log('Двойной толчок 🔼');
   }
   
   if (isBearishHarami(candles)) {
-    console.log('Щипцы');
+    console.log('Щипцы 🔼');
   }
   
   if (isThreeStarSouth(candles)) {
-    console.log('Трехзвездный низ');
+    console.log('Трехзвездный низ 🔼');
   }
   
   if (isEngulfingHammer(candles)) {
-    console.log('Поглощение в сочетании с молотом');
+    console.log('Поглощение в сочетании с молотом 🔼');
   }
   
   if (isPiercingLineInScissors(candles)) {
-    console.log('Проникающая линия в щипцах');
+    console.log('Проникающая линия в щипцах 🔼');
   }
   
   if (isAbandonedBaby(candles)) {
-    console.log('Покинутый ребёнок');
+    console.log('Покинутый ребёнок 🔼');
   }
   
   if (isStrongBottom(candles)) {
-    console.log('Сильное дно, крепость');
+    console.log('Сильное дно, крепость 🔼');
   }
   
   if (isFastBreakAndThreeNewLows(candles)) {
-    console.log('Быстрый прорыв и три новых низа');
+    console.log('Быстрый прорыв и три новых низа 🔼');
   }
   
   if (isBullishHaramiCross(candles)) {
-    console.log('Бычий крест Харами');
+    console.log('Бычий крест Харами 🔼');
   }
   
   if (isBullishMeetingLines(candles)) {
-    console.log('Бычья линия встречи');
+    console.log('Бычья линия встречи 🔼');
   }
   
   if (isTripleGapDown(candles)) {
-    console.log('Тройной гэп на черных свечах');
+    console.log('Тройной гэп на черных свечах 🔼');
   }
   
   if (isNewLows(candles)) {
-    console.log('8-10 новых низов');
+    console.log('8-10 новых низов 🔼');
   }
   
   if (isBullishWindow(candles)) {
-    console.log('Бычье окно');
+    console.log('Бычье окно 🔼');
   }
   
   if (isBullishThreeLineStrike(candles)) {
-    console.log('Бычий трех-линейный прорыв поддержки');
+    console.log('Бычий трех-линейный прорыв поддержки 🔼');
   }
   
   if (isBullishKicker(candles)) {
-    console.log('Бычья игра заканчивающаяся разрывом (гэпом)');
+    console.log('Бычья игра заканчивающаяся разрывом (гэпом) 🔼');
   }
   
   if (isReversalPattern(candles)) {
-    console.log('Перевернутый молот, крепость, додж и бычье поглощение');
+    console.log('Перевернутый молот, крепость, додж и бычье поглощение 🔼');
   }
   
   if (isBullishEngulfing(candles)) {
-    console.log('Перевернутый молот, крепость, додж и бычье поглощение');
+    console.log('Перевернутый молот, крепость, додж и бычье поглощение 🔼');
   }
   
   if (isBullishHarami(candles)) {
-    console.log('Перевернутый молот, крепость, додж и бычье поглощение');
+    console.log('Перевернутый молот, крепость, додж и бычье поглощение 🔼');
   }
   
 
@@ -453,6 +453,6 @@ function isInvertedHammer(candles) {
       !isEngulfingHammer(candles) && !isPiercingLineInScissors(candles) && !isAbandonedBaby(candles) &&
       !isStrongBottom(candles) && !isFastBreakAndThreeNewLows(candles) && !isBullishHaramiCross(candles) &&
       !isBullishMeetingLines(candles)){
-    console.log('Свечи продолжения тренда не найдены');
+    console.log('Свечи разворота рынка в 🔼 не найдены');
   }
 

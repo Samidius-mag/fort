@@ -127,43 +127,43 @@ function isBullishGapSideBySideWhiteLines(candles) {
 }
 
 if (isThreeWhiteSoldiers(candles)) {
-  console.log('Три белых солдата');
+  console.log('Три белых солдата ⏭');
 }
 
 if (isThreeDescending(candles)) {
-  console.log('Метод трех снижений');
+  console.log('Метод трех снижений ⏭');
 }
 
 if (isThreeAscending(candles)) {
-  console.log('Метод трех восхождений');
+  console.log('Метод трех восхождений ⏭');
 }
 
 if (isThreeBlackCrows(candles)) {
-  console.log('Три вороны');
+  console.log('Три вороны ⏭');
 }
 
 if (isBearishTasukiGap(candles)) {
-  console.log('Медвежий гэп "Тазуки"');
+  console.log('Медвежий гэп "Тазуки" ⏭');
 }
 
 if (isBullishTasukiGap(candles)) {
-  console.log('Бычий гэп "Тазуки"');
+  console.log('Бычий гэп "Тазуки" ⏭');
 }
 
 if (isThreeBullishWings(candles)) {
-  console.log('Три крыла Бозу');
+  console.log('Три крыла Бозу ⏭');
 }
 
 if (isThreeConcurrentWings(candles)) {
-  console.log('Три одновременных крыла');
+  console.log('Три одновременных крыла ⏭');
 }
 
 if (isBullishGapSideBySideWhiteLines(candles)) {
-  console.log('Бычий гэп край к краю белых линий');
+  console.log('Бычий гэп край к краю белых линий ⏭');
 }
 
 if (!isThreeWhiteSoldiers(candles) && !isThreeDescending(candles) && !isThreeAscending(candles) &&
     !isThreeBlackCrows(candles) && !isBearishTasukiGap(candles) && !isBullishTasukiGap(candles) &&
     !isThreeBullishWings(candles) && !isThreeConcurrentWings(candles) && !isBullishGapSideBySideWhiteLines(candles)) {
-  console.log('Свечи продолжения движения тренда не найдены');
+  console.log('Свечи продолжения движения ⏭ тренда не найдены');
 }
