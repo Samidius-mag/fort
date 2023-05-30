@@ -222,43 +222,43 @@ function isFallingStar(candles) {
   }
 
   if (isFallingStar(candles)) {
-    return 'Падающая звезда';
+    console.log( 'Падающая звезда');
   }
 
   if (isBearishQuest(candles)) {
-    return 'Медвежий квест';
+    console.log( 'Медвежий квест');
   }
 
   if (isBearishHarami(candles)) {
-    return 'Медвежье Харами';
+    console.log( 'Медвежье Харами');
   }
 
   if (isBearishEngulfing(candles)) {
-    return 'Медвежье поглощение';
+    console.log( 'Медвежье поглощение');
   }
 
   if (isSouthernEveningStar(candles)) {
-    return 'Южный вечерний крест';
+    console.log( 'Южный вечерний крест');
   }
 
   if (isThreeLineStrike(candles)) {
-    return 'Трехлинейная звезда в задумчивости';
+    console.log('Трехлинейная звезда в задумчивости');
   }
 
   if (isDojiStar(candles)) {
-    return 'Доджи в позиции звездный разворот';
+    console.log( 'Доджи в позиции звездный разворот');
   }
 
   if (isMorningStar(candles)) {
-    return 'Звездный разворот';
+    console.log( 'Звездный разворот');
   }
 
   if (isBullishPincer(candles)) {
-    return 'Бычьи щипцы';
+    console.log( 'Бычьи щипцы');
   }
 
   if (isBearishWindow(candles)) {
-    return 'Медвежье окно';
+    console.log( 'Медвежье окно');
   }
 
   if (isEveningStar(candles)) {
