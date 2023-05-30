@@ -1,4 +1,4 @@
-const data = require('./price.json');
+const data = require('./price15m.json');
 
 // Функция для проверки паттерна "Три белых солдата"
 function isThreeWhiteSoldiers(candles) {
