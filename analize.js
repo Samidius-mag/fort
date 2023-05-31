@@ -13,10 +13,10 @@ fs.readFile('indres.json', (err, data) => {
   const minVolume = Math.min(...obv);
 
   // Вычисляем среднее значение объема
-  const avgVolume = (maxVolume + minVolume) / 2;
+  const avgVolume = ((maxVolume + minVolume) / 2)/1000000;
 
   // Определяем, насколько текущий объем отличается от среднего значения
-  const currentVolume = obv[obv.length - 1];
+  const currentVolume = (obv[obv.length - 1])/1000000;
   const volumeDiff = currentVolume - avgVolume;
 
   // Если текущий объем больше среднего значения, то это может свидетельствовать о продолжении тренда
