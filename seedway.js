@@ -2,77 +2,38 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
+const resistanceData = data.slice(-2); // данные за последние 2 часа (120 свечей)
+const supportData = data.slice(-4); // данные за последние 4 часа (240 свечей)
 
-const supportResistance = {
-  support: [],
-  resistance: []
-};
+const resistanceLine = findTrendLine(resistanceData);
+const supportLine = findTrendLine(supportData);
 
-const findSupportResistance = (data) => {
-  const points = data.map((item) => item.close);
-  const extrema = findExtrema(points, 5); // находим локальные экстремумы цены
-  const lines = findLines(extrema); // находим линии поддержки и сопротивления
-  updateSupportResistance(lines); // обновляем список линий поддержки и сопротивления
-};
+console.log(`Resistance line: y = ${resistanceLine.slope}x + ${resistanceLine.intercept}`);
+console.log(`Support line: y = ${supportLine.slope}x + ${supportLine.intercept}`);
 
-const findExtrema = (points, windowSize) => {
-  const extrema = [];
-  for (let i = windowSize; i < points.length - windowSize; i++) {
-    const window = points.slice(i - windowSize, i + windowSize + 1);
-    const max = Math.max(...window);
-    const min = Math.min(...window);
-    if (points[i] === max) {
-      extrema.push({ index: i, value: max, type: 'max' });
-    } else if (points[i] === min) {
-      extrema.push({ index: i, value: min, type: 'min' });
-    }
-  }
-  return extrema;
-};
+function findTrendLine(data) {
+  const x = data.map((candle, index) => index);
+  const y = data.map(candle => candle.close);
 
-const findLines = (extrema) => {
-  const lines = [];
-  for (let i = 0; i < extrema.length - 1; i++) {
-    const current = extrema[i];
-    const next = extrema[i + 1];
-    if (current.type === 'min' && next.type === 'max') {
-      lines.push({ type: 'support', value: current.value, points: [current, next] });
-    } else if (current.type === 'max' && next.type === 'min') {
-      lines.push({ type: 'resistance', value: current.value, points: [current, next] });
-    }
-  }
-  return lines;
-};
+  const n = x.length;
+  const sumX = x.reduce((sum, value) => sum + value, 0);
+  const sumY = y.reduce((sum, value) => sum + value, 0);
+  const sumXY = x.reduce((sum, value, index) => sum + value * y[index], 0);
+  const sumX2 = x.reduce((sum, value) => sum + value * value, 0);
 
-const updateSupportResistance = (lines) => {
-  const last = supportResistance.resistance[supportResistance.resistance.length - 1];
-  const previous = supportResistance.resistance[supportResistance.resistance.length - 2];
-  if (last && previous && last.type === 'resistance' && previous.type === 'resistance') {
-    const lastPoint = last.points[last.points.length - 1];
-    const previousPoint = previous.points[previous.points.length - 1];
-    if (lastPoint.value <= previousPoint.value) {
-      supportResistance.support.push(last);
-      supportResistance.resistance.pop();
-    }
-  } else {
-    supportResistance.resistance.push(lines[lines.length - 1]);
-  }
-};
+  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+  const intercept = (sumY - slope * sumX) / n;
 
-findSupportResistance(data);
-console.log(supportResistance);
+  return { slope, intercept };
+}
 
-if (supportResistance.support.length >= 2 && supportResistance.resistance.length >= 2) {
-  const lastSupport = supportResistance.support[supportResistance.support.length - 1];
-  const previousSupport = supportResistance.support[supportResistance.support.length - 2];
-  const lastResistance = supportResistance.resistance[supportResistance.resistance.length - 1];
-  const previousResistance = supportResistance.resistance[supportResistance.resistance.length - 2];
+const previousResistanceLine = resistanceLines.slice(-2)[0];
+const previousSupportLine = supportLines.slice(-2)[0];
 
-  if (lastSupport.points[lastSupport.points.length - 1].x === lastResistance.points[lastResistance.points.length - 1].x) {
-    console.log('Тренд боковой');
-  } else if (lastSupport.points[lastSupport.points.length - 1].x === previousResistance.points[previousResistance.points.length - 1].x) {
-    console.log('Тренд боковой');
-  } else if (lastResistance.points[lastResistance.points.length - 1].x === previousSupport.points[previousSupport.points.length - 1].x) {
-    console.log('Тренд боковой');
-  }
+if (resistanceLine.intercept <= previousSupportLine.intercept || supportLine.intercept >= previousResistanceLine.intercept) {
+  console.log('Trend is sideways');
+} else if (resistanceLine.slope > supportLine.slope) {
+  console.log('Trend is up');
+} else {
+  console.log('Trend is down');
 }
