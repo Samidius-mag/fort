@@ -1,7 +1,6 @@
 const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs').promises;
-await fs.writeFile('model.json', '');
-await model.save('model.json');
+
 
 // Загрузка данных из файла price.json
 const rawData = fs.readFileSync('price.json');
@@ -36,11 +35,11 @@ async function trainModel() {
 
   await model.fit(xs, ys, { epochs: 100 });
 
-  await model.save('model.json');
+  await model.save('root/fort/model.json');
 }
 
 async function predictNextCandleMovement() {
-  const model = await tf.loadLayersModel('model.json');
+  const model = await tf.loadLayersModel('root/fort/model.json');
 
   const lastCandle = data[data.length - 2];
   const input = tf.tensor2d([[lastCandle.open, lastCandle.high, lastCandle.low, lastCandle.close]]);
