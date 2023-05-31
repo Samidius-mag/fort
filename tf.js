@@ -1,3 +1,4 @@
+const tf = require('@tensorflow/tfjs');
 const fs = require('fs');
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
