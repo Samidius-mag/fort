@@ -1,5 +1,7 @@
 const tf = require('@tensorflow/tfjs-node');
-const fs = require('fs');
+const fs = require('fs').promises;
+await fs.writeFile('model.json', '');
+await model.save('model.json');
 
 // Загрузка данных из файла price.json
 const rawData = fs.readFileSync('price.json');
