@@ -5,7 +5,7 @@ const fs = require('fs');
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 // Получаем последние 10 часовых свечей
-const lastCandles = data.slice(-10);
+const lastCandles = data.slice(-4);
 
 // Получаем массив цен закрытия свечей
 const prices = lastCandles.map(candle => parseFloat(candle.close));
