@@ -34,5 +34,5 @@ for (let i = 0; i < data.length; i++) {
     trendVolumesSum += candle.volume;
   }
 }
-
+console.log(`Trend continues with average volume ${trendVolumes}`);
 fs.writeFileSync('anres.json', JSON.stringify(results));
