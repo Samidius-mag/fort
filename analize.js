@@ -1,20 +1,16 @@
 const fs = require('fs');
 
-const data = JSON.parse(fs.readFileSync('price.json'));
+// Читаем файл indres.json
+fs.readFile('indres.json', (err, data) => {
+  if (err) throw err;
 
-const volumes = data.map(candle => ({
-  time: candle.time,
-  volume: candle.volume,
-  isBearish: candle.close < candle.open,
-}));
+  // Извлекаем массив значений объема OBV
+  const indRes = JSON.parse(data);
+  const obv = indRes.OBV;
 
-const totalVolume = volumes.reduce((sum, candle) => sum + (candle.isBearish ? -candle.volume : candle.volume), 0);
-const averageVolume = totalVolume / volumes.length;
+  // Считаем среднее значение объема
+  const sum = obv.reduce((acc, val) => acc + val, 0);
+  const avg = sum / obv.length;
 
-const result = {
-  totalVolume,
-  averageVolume,
-};
-
-fs.writeFileSync('anres.json', JSON.stringify(result));
-console.log('Result saved to anres.json');
+  console.log(`Средний объем: ${avg}`);
+});
