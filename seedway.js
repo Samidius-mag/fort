@@ -1,43 +1,39 @@
+const regression = require('regression');
 const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
-const resistanceData = data.slice(-120); // данные за последние 2 часа (120 свечей)
-const supportData = data.slice(-240); // данные за последние 4 часа (240 свечей)
+// Получаем последние 4 часовых свечи
+const lastCandles = data.slice(-4);
 
-const resistanceLine = findTrendLine(resistanceData);
-const supportLine = findTrendLine(supportData);
+// Получаем массив цен закрытия свечей
+const prices = lastCandles.map(candle => parseFloat(candle.close));
 
-console.log(`Resistance line: y = ${resistanceLine.slope}x + ${resistanceLine.intercept}`);
-console.log(`Support line: y = ${supportLine.slope}x + ${supportLine.intercept}`);
+// Вычисляем линейную регрессию
+const result = regression.linear(prices.map((price, index) => [index, price]));
 
-function findTrendLine(data) {
-  const x = data.map((candle, index) => index);
-  const y = data.map(candle => candle.close);
+// Получаем коэффициенты линейной регрессии
+const slope = result.equation[0];
+const intercept = result.equation[1];
 
-  const n = x.length;
-  const sumX = x.reduce((sum, value) => sum + value, 0);
-  const sumY = y.reduce((sum, value) => sum + value, 0);
-  const sumXY = x.reduce((sum, value, index) => sum + value * y[index], 0);
-  const sumX2 = x.reduce((sum, value) => sum + value * value, 0);
+// Вычисляем текущую цену
+const currentPrice = parseFloat(lastCandles[3].close);
 
-  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-  const intercept = (sumY - slope * sumX) / n;
+// Вычисляем цену на линии сопротивления и поддержки
+const resistancePrice = slope * 4 + intercept;
+const supportPrice = slope * 3 + intercept;
 
-  return { slope, intercept };
-}
-
-const resistanceLines = []; // пустой массив для хранения линий сопротивления
-
-const supportLines = []; // пустой массив для хранения линий поддержки
-
-const previousResistanceLine = resistanceLines.slice(-2)[0];
-const previousSupportLine = supportLines.slice(-2)[0];
-
-if (resistanceLine.intercept <= previousSupportLine.intercept || supportLine.intercept >= previousResistanceLine.intercept) {
-  console.log('Trend is sideways');
-} else if (resistanceLine.slope > supportLine.slope) {
-  console.log('Trend is up');
+// Определяем тренд
+let trend = '';
+if (currentPrice > resistancePrice) {
+  trend = 'down';
+} else if (currentPrice < supportPrice) {
+  trend = 'up';
 } else {
-  console.log('Trend is down');
+  trend = 'sideways';
 }
+
+console.log(`Resistance: ${resistancePrice}`);
+console.log(`Support: ${supportPrice}`);
+console.log(`Current price: ${currentPrice}`);
+console.log(`Trend: ${trend}`);
