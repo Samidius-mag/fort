@@ -31,5 +31,5 @@ if (currentPrice >= lowerBound && currentPrice <= upperBound) {
   console.log(`Текущая цена (${currentPrice}) не находится в линейном регрессионном канале`);
 }
 
-console.log(`Верхняя граница канала: ${upperBound}`);
-console.log(`Нижняя граница канала: ${lowerBound}`);
+console.log(`Верхняя граница канала: ${lowerBound}`);
+console.log(`Нижняя граница канала: ${upperBound}`);
