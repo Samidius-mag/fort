@@ -2,8 +2,8 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
-const resistanceData = data.slice(-2); // данные за последние 2 часа (120 свечей)
-const supportData = data.slice(-4); // данные за последние 4 часа (240 свечей)
+const resistanceData = data.slice(-120); // данные за последние 2 часа (120 свечей)
+const supportData = data.slice(-240); // данные за последние 4 часа (240 свечей)
 
 const resistanceLine = findTrendLine(resistanceData);
 const supportLine = findTrendLine(supportData);
