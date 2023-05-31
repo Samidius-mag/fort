@@ -1,5 +1,5 @@
 const tf = require('@tensorflow/tfjs-node');
-const fs = require('fs').promises;
+const fs = require('fs');
 
 
 // Загрузка данных из файла price.json
