@@ -32,8 +32,8 @@ function isInvertedHammer(candles) {
   
     const [first, second] = candles.slice(-2);
   
-    return first.close < first.open && second.close > second.open &&
-           second.open < first.close && second.close > first.open;
+    return first.close > first.open && second.close < second.open &&
+           second.open < first.close && second.close < first.open;
   }
   
   function isHammer(candles) {
