@@ -83,9 +83,11 @@ function getMedianVolume(data, index, count) {
   const volumes = [];
   for (let i = index - count; i < index; i++) {
     const candle = data[i];
-    const volume = parseFloat(candle.volume);
-    if (!isNaN(volume)) {
-      volumes.push(volume);
+    if (candle && candle.volume) {
+      const volume = parseFloat(candle.volume);
+      if (!isNaN(volume)) {
+        volumes.push(volume);
+      }
     }
   }
   volumes.sort((a, b) => a - b);
