@@ -30,3 +30,5 @@ for (let i = 0; i < data.length; i++) {
     trendVolumesSum += candle.volume;
   }
 }
+
+fs.writeFileSync('anres.json', JSON.stringify(results));
