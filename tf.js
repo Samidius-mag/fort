@@ -15,7 +15,7 @@ const output = [];
 for (let i = 0; i < data.length - interval; i++) {
   const inputRow = [];
   for (let j = i; j < i + interval; j++) {
-    inputRow.push(parseFloat(data[j].price_change));
+    inputRow.push(parseFloat(data[j].close));
     inputRow.push(parseFloat(data[j].volume));
   }
   input.push(inputRow);
