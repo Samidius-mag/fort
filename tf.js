@@ -1,7 +1,27 @@
 const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 
-const data = JSON.parse(fs.readFileSync('price.json'));
+// Загрузка данных из файла price.json
+const rawData = fs.readFileSync('price.json');
+const data = JSON.parse(rawData).map(candle => ({
+  open: parseFloat(candle.open),
+  high: parseFloat(candle.high),
+  low: parseFloat(candle.low),
+  close: parseFloat(candle.close),
+  volume: parseFloat(candle.volume),
+}));
+
+// Преобразование данных в тензоры
+const inputTensor = tf.tensor(data.map(candle => [
+  candle.open,
+  candle.high,
+  candle.low,
+  candle.close,
+  candle.volume,
+]));
+const outputTensor = tf.tensor(data.map(candle => [
+  candle.close,
+]));
 
 async function trainModel() {
   const model = tf.sequential();
