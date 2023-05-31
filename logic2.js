@@ -50,11 +50,11 @@ const supportResistance = {
 const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance 
  && currentPrice <= priceData[4].high && currentPrice >=priceData[4].low ;
 if (isSideways) {
-  console.log('Тренд боковой', trend.current);
+  //console.log('Тренд боковой', trend.current);
 } else {
-  console.log('Тренд вышел из бокового движения');
+  //console.log('Тренд вышел из бокового движения');
 }
-
+/*
 console.log('Текущий тренд:', trend.current);
 console.log('4-часовой тренд:', trend['4h']);
 console.log('12-часовой тренд:', trend['12h']);
@@ -69,7 +69,7 @@ console.log('Сопротивление 12 часов:', supportResistance['12h'
 console.log('Поддержка 12 часов:', supportResistance['12h'].support);
 console.log('Сопротивление 24 часа:', supportResistance['24h'].resistance);
 console.log('Поддержка 24 часа:', supportResistance['24h'].support);
-
+*/
 // Перекупленность/перепроданность рынка
 const overboughtOversold = {
   RSI: {
@@ -79,8 +79,8 @@ const overboughtOversold = {
   },
   ROC: {
     current: indRes.ROC[indRes.ROC.length - 1],
-    overbought: 1.3,
-    oversold: -1.3
+    overbought: 2,
+    oversold: -2
   }
 };
 //console.log('RSI:', overboughtOversold.RSI.current);

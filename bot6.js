@@ -22,7 +22,7 @@ exec('node patternfig.js', (error, stdout, stderr) => {
   sendMessage(message);
   console.log('Отправлено3');
 });
-
+/*
 const chatId2 = '-1001536433459';
 
 const bot2 = new TelegramBot(token, { polling: false });
@@ -43,3 +43,4 @@ exec('node patternfig.js', (error, stdout, stderr) => {
   sendMessage1(message);
   console.log('Отправлено2');
 });
+*/
