@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const data = JSON.parse(fs.readFileSync('price4.json'));
+const data = JSON.parse(fs.readFileSync('price.json'));
 const candles = data.slice(0, -1);
 
 function isInvertedHammer(candles) {
