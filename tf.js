@@ -1,64 +1,67 @@
 const fs = require('fs');
 const tf = require('@tensorflow/tfjs');
-const tfvis = require('@tensorflow/tfjs-vis');
 
-const data = JSON.parse(fs.readFileSync('price.json'));
+// Загрузка данных из файла
+const rawData = fs.readFileSync('price.json');
+const data = JSON.parse(rawData);
 
-const input = data.slice(0, -1).map(candle => [
-  candle.open,
-  candle.high,
-  candle.low,
-  candle.close,
-  candle.volume,
-]);
+// Подготовка данных для обучения модели
+const input = [];
+const output = [];
 
-const output = data.slice(1).map(candle => [
-  candle.open > candle.close ? 0 : 1,
-]);
+for (let i = 0; i < data.length - 1; i++) {
+  const current = data[i];
+  const next = data[i + 1];
 
+  // Создание входных данных
+  const inputRow = [
+    current.open,
+    current.high,
+    current.low,
+    current.close,
+    current.volume
+  ];
+
+  // Создание выходных данных
+  const outputRow = [
+    next.close > current.close ? 1 : 0,
+    next.close < current.close ? 1 : 0
+  ];
+
+  input.push(inputRow);
+  output.push(outputRow);
+}
+
+// Преобразование данных в тензоры
+const xs = tf.tensor2d(input);
+const ys = tf.tensor2d(output);
+
+// Создание модели
 const model = tf.sequential();
+model.add(tf.layers.dense({ inputShape: [5], units: 10, activation: 'relu' }));
+model.add(tf.layers.dense({ units: 2, activation: 'softmax' }));
 
-model.add(tf.layers.dense({
-  inputShape: [5],
-  activation: 'relu',
-  units: 32,
-}));
+// Компиляция модели
+model.compile({ loss: 'categoricalCrossentropy', optimizer: 'adam' });
 
-model.add(tf.layers.dense({
-  activation: 'sigmoid',
-  units: 1,
-}));
+// Обучение модели
+model.fit(xs, ys, { epochs: 100 })
+  .then(() => {
+    console.log('Модель обучена!');
+  });
 
-model.compile({
-  optimizer: tf.train.adam(),
-  loss: 'binaryCrossentropy',
-  metrics: ['accuracy'],
-});
+  // Создание новых данных для предсказания
+const newInput = [
+  [100, 120, 80, 110, 1000],
+  [110, 130, 90, 120, 1200],
+  [120, 140, 100, 130, 1500]
+];
 
-const batchSize = 32;
-const epochs = 50;
+// Преобразование новых данных в тензор
+const newInputTensor = tf.tensor2d(newInput);
 
-model.fit(tf.tensor2d(input), tf.tensor2d(output), {
-  batchSize,
-  epochs,
-  shuffle: true,
-  callbacks: tfvis.show.fitCallbacks(
-    { name: 'Training Performance' },
-    ['loss', 'acc'],
-    { height: 200, callbacks: ['onEpochEnd'] },
-  ),
-}).then(() => {
-  const lastCandle = data[data.length - 1];
-  const inputTensor = tf.tensor2d([[
-    lastCandle.open,
-    lastCandle.high,
-    lastCandle.low,
-    lastCandle.close,
-    lastCandle.volume,
-  ]]);
+// Получение предсказания для новых данных
+const prediction = model.predict(newInputTensor);
 
-  const prediction = model.predict(inputTensor);
-  const direction = prediction.dataSync()[0] > 0.5 ? 'up' : 'down';
-
-  console.log(`Next candle will go ${direction}`);
-});
+// Вывод предсказания в консоль
+prediction.print();
