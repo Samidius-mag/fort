@@ -35,8 +35,8 @@ const supportPrice = slope * (prices.length - 1) + intercept;
 const middlePrice = (resistancePrice + supportPrice) / 2;
 
 // Получаем точки на линии сопротивления и поддержки
-const resistancePoints = regression.getPoints(points, result).map(point => [point[0] + prices.length - points.length, point[1]]);
-const supportPoints = regression.getPoints(points, result).map(point => [point[0] + prices.length - points.length - 1, point[1]]);
+const resistancePoints = [[prices.length - 1, resistancePrice], [prices.length, slope * (prices.length + 1) + intercept]];
+const supportPoints = [[prices.length - 1, supportPrice], [prices.length, slope * prices.length + intercept]];
 
 // Определяем границы канала
 const upperBound = resistancePoints[0][1];
