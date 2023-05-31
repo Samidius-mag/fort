@@ -92,11 +92,11 @@ if (supportResistance.support.length >= 2 && supportResistance.resistance.length
     const lastResistance = supportResistance.resistance[supportResistance.resistance.length - 1];
     const previousResistance = supportResistance.resistance[supportResistance.resistance.length - 2];
   
-    if (lastSupport.points[lastSupport.points.length - 1].x === lastResistance.points[lastResistance.points.length - 1].x) {
+    if (lastSupport.points[lastSupport.points.length - 1] === lastResistance.points[lastResistance.points.length - 1]) {
       console.log('Тренд боковой');
-    } else if (lastSupport.points[lastSupport.points.length - 1].x === previousResistance.points[previousResistance.points.length - 1].x) {
+    } else if (lastSupport.points[lastSupport.points.length - 1] === previousResistance.points[previousResistance.points.length - 1]) {
       console.log('Тренд боковой');
-    } else if (lastResistance.points[lastResistance.points.length - 1].x === previousSupport.points[previousSupport.points.length - 1].x) {
+    } else if (lastResistance.points[lastResistance.points.length - 1] === previousSupport.points[previousSupport.points.length - 1]) {
       console.log('Тренд боковой');
     }
   }
