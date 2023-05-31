@@ -1,6 +1,3 @@
-const tf = require('@tensorflow/tfjs');
-const fs = require('fs');
-
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
 
@@ -8,7 +5,7 @@ const interval = 4; // интервал в часах
 const input = []; // массивы данных для обучения нейросети
 const output = []; // массивы выходных данных
 
-for (let i = 0; i < data.length - interval; i++) {
+for (let i = 0; i < data.length - interval - 1; i++) {
   const inputRow = [];
   for (let j = i; j < i + interval; j++) {
     const candle = data[j];
