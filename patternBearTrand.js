@@ -21,8 +21,8 @@ function isInvertedHammer(candles) {
   
     const [first, second] = candles.slice(-2);
   
-    return first.close < first.open && second.close > second.open &&
-           second.close < first.open && second.open > first.close;
+    return first.close > first.open && second.close < second.open &&
+           first.open < second.close && second.open < first.close;
   }
   
   function isBullishEngulfing(candles) {
