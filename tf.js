@@ -1,3 +1,4 @@
+const fs = require('fs');
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
 
