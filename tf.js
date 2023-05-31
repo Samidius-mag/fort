@@ -1,7 +1,7 @@
 const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 
-const interval = 720; // количество часов в интервале
+const interval = 24; // количество часов в интервале
 const dataFile = 'price.json'; // файл с данными
 
 // Чтение данных из JSON файла
