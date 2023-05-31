@@ -1,67 +1,61 @@
-const fs = require('fs');
 const tf = require('@tensorflow/tfjs');
+const fs = require('fs');
 
-// Загрузка данных из файла
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
 
-// Подготовка данных для обучения модели
-const input = [];
-const output = [];
+const interval = 4; // интервал в часах
+const input = []; // массивы данных для обучения нейросети
+const output = []; // массивы выходных данных
 
-for (let i = 0; i < data.length - 1; i++) {
-  const current = data[i];
-  const next = data[i + 1];
-
-  // Создание входных данных
-  const inputRow = [
-    current.open,
-    current.high,
-    current.low,
-    current.close,
-    current.volume
-  ];
-
-  // Создание выходных данных
-  const outputRow = [
-    next.close > current.close ? 1 : 0,
-    next.close < current.close ? 1 : 0
-  ];
-
+for (let i = 0; i < data.length - interval; i++) {
+  const inputRow = [];
+  for (let j = i; j < i + interval; j++) {
+    const candle = data[j];
+    inputRow.push(
+      candle.open,
+      candle.high,
+      candle.low,
+      candle.close,
+      candle.volume
+    );
+  }
   input.push(inputRow);
-  output.push(outputRow);
+
+  const currentPrice = data[i + interval].close;
+  const futurePrice = data[i + interval + 1].close;
+  const trend = futurePrice > currentPrice ? 1 : futurePrice < currentPrice ? -1 : 0;
+  output.push(trend);
 }
 
-// Преобразование данных в тензоры
-const xs = tf.tensor2d(input);
-const ys = tf.tensor2d(output);
-
-// Создание модели
 const model = tf.sequential();
-model.add(tf.layers.dense({ inputShape: [5], units: 10, activation: 'relu' }));
-model.add(tf.layers.dense({ units: 2, activation: 'softmax' }));
 
-// Компиляция модели
-model.compile({ loss: 'categoricalCrossentropy', optimizer: 'adam' });
+// добавляем первый слой с двумя нейронами и функцией активации relu
+model.add(tf.layers.dense({
+  inputShape: [interval * 5], // количество параметров на входе (interval * 5, где interval - интервал в часах)
+  units: 2, // количество нейронов в слое
+  activation: 'relu' // функция активации
+}));
 
-// Обучение модели
-model.fit(xs, ys, { epochs: 100 })
-  .then(() => {
-    console.log('Модель обучена!');
-  });
+// добавляем второй слой с тремя нейронами и функцией активации softmax
+model.add(tf.layers.dense({
+  units: 3, // количество нейронов в слое
+  activation: 'softmax' // функция активации
+}));
 
-  // Создание новых данных для предсказания
-const newInput = [
-  [100, 120, 80, 110, 1000],
-  [110, 130, 90, 120, 1200],
-  [120, 140, 100, 130, 1500]
-];
+model.compile({
+  optimizer: 'adam',
+  loss: 'sparseCategoricalCrossentropy',
+  metrics: ['accuracy']
+});
 
-// Преобразование новых данных в тензор
-const newInputTensor = tf.tensor2d(newInput);
+const epochs = 10;
+const batchSize = 32;
 
-// Получение предсказания для новых данных
-const prediction = model.predict(newInputTensor);
-
-// Вывод предсказания в консоль
-prediction.print();
+model.fit(tf.tensor2d(input), tf.tensor1d(output), {
+  epochs: epochs,
+  batchSize: batchSize
+}).then(() => {
+  console.log('Training complete');
+  
+});
