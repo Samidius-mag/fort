@@ -9,6 +9,8 @@ let trendVolumes = [];
 let trendVolumesSum = 0;
 let trendVolumesCount = 0;
 
+let results = []; // объявляем переменную results
+
 for (let i = 0; i < data.length; i++) {
   const candle = data[i];
 
@@ -21,8 +23,10 @@ for (let i = 0; i < data.length; i++) {
 
     if (trendVolume > trendVolumeThreshold) {
       console.log(`Trend continues with average volume ${trendVolume}`);
+      results.push({ trend: 'continue', volume: trendVolume });
     } else {
       console.log(`Trend ends with average volume ${trendVolume}`);
+      results.push({ trend: 'end', volume: trendVolume });
     }
 
     trendVolumesSum -= trendVolumes.shift();
