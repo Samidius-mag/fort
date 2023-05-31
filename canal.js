@@ -5,7 +5,7 @@ const fs = require('fs');
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 // Получаем последние 10 часовых свечей
-const lastCandles = data.slice(-4);
+const lastCandles = data.slice(-5);
 
 // Получаем массив цен закрытия свечей
 const prices = lastCandles.map(candle => parseFloat(candle.close));
@@ -43,7 +43,7 @@ const upperBound = resistancePoints[0][1];
 const lowerBound = supportPoints[0][1];
 
 // Определяем текущую цену
-const currentPrice = parseFloat(lastCandles[9].close);
+const currentPrice = parseFloat(lastCandles[4].close);
 
 // Проверяем, вышла ли цена за границы канала
 let message = '';
