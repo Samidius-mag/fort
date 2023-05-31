@@ -1,8 +1,9 @@
-const tf = require('@tensorflow/tfjs-node');
+const tf = require('@tensorflow/tfjs');
 const fs = require('fs');
 
-const interval = 720; // количество часов в интервале
+const interval = 24; // количество часов в интервале
 const dataFile = 'price.json'; // файл с данными
+const predFile = 'pred.json'; // файл с результатами предсказания
 
 // Чтение данных из JSON файла
 const rawData = fs.readFileSync(dataFile);
@@ -15,7 +16,7 @@ const output = [];
 for (let i = 0; i < data.length - interval; i++) {
   const inputRow = [];
   for (let j = i; j < i + interval; j++) {
-    inputRow.push(parseFloat(data[j].close));
+    inputRow.push(parseFloat(data[j].price_change));
     inputRow.push(parseFloat(data[j].volume));
   }
   input.push(inputRow);
@@ -64,6 +65,18 @@ model.fit(tf.tensor2d(input), tf.oneHot(tf.tensor1d(output, 'int32'), 2), {
   const lastInput = input[input.length - 1];
   const prediction = model.predict(tf.tensor2d([lastInput]));
   const direction = prediction.argMax(1).dataSync()[0];
+
+  // Сохранение результата предсказания в файл
+  let predData = [];
+  if (fs.existsSync(predFile)) {
+    const rawPredData = fs.readFileSync(predFile);
+    predData = JSON.parse(rawPredData);
+  }
+  predData.push({
+    date: new Date(),
+    direction: direction
+  });
+  fs.writeFileSync(predFile, JSON.stringify(predData));
 
   if (direction === 0) {
     console.log('Next candle will go up');
