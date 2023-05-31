@@ -1,4 +1,5 @@
 const math = require('mathjs');
+const ss = require('simple-statistics');
 const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
@@ -10,11 +11,11 @@ const last24Hours = data.slice(-24);
 const closePrices = last24Hours.map(candle => parseFloat(candle.close));
 
 // Вычисляем линейный регрессионный канал
-const regression = math.regression(closePrices.map((price, index) => [index, price]));
+const regression = ss.linearRegression(closePrices.map((price, index) => [index, price]));
 
 // Получаем коэффициенты линейной регрессии
-const slope = regression.equation[0];
-const intercept = regression.equation[1];
+const slope = regression.m;
+const intercept = regression.b;
 
 // Вычисляем верхнюю и нижнюю границы канала
 const upperBound = slope * (closePrices.length - 1) + intercept;
