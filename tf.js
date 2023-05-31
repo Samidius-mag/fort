@@ -70,7 +70,9 @@ model.fit(tf.tensor2d(input), tf.oneHot(tf.tensor1d(output, 'int32'), 2), {
   let predData = [];
   if (fs.existsSync(predFile)) {
     const rawPredData = fs.readFileSync(predFile);
-    predData = JSON.parse(rawPredData);
+    if (rawPredData.length > 0) {
+      predData = JSON.parse(rawPredData);
+    }
   }
   predData.push({
     date: new Date(),
