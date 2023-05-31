@@ -27,6 +27,8 @@ function findTrendLine(data) {
   return { slope, intercept };
 }
 
+const resistanceLines = []; // пустой массив для хранения линий сопротивления
+
 const previousResistanceLine = resistanceLines.slice(-2)[0];
 const previousSupportLine = supportLines.slice(-2)[0];
 
