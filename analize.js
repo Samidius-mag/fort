@@ -15,3 +15,9 @@ for (let i = 0; i < data.length - 1; i++) { // не учитываем посл�
 
 const averageVolume = totalVolume / validCandlesCount;
 console.log(`Average volume: ${averageVolume}`);
+
+const result = {
+  averageVolume: averageVolume
+};
+
+fs.writeFileSync('anres.json', JSON.stringify(result));
