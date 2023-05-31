@@ -1,60 +1,73 @@
 const tf = require('@tensorflow/tfjs');
 const fs = require('fs');
-const rawData = fs.readFileSync('price.json');
+
+const interval = 24; // количество часов в интервале
+const dataFile = 'price.json'; // файл с данными
+
+// Чтение данных из JSON файла
+const rawData = fs.readFileSync(dataFile);
 const data = JSON.parse(rawData);
 
-const interval = 4; // интервал в часах
-const input = []; // массивы данных для обучения нейросети
-const output = []; // массивы выходных данных
+// Создание массивов входных и выходных данных
+const input = [];
+const output = [];
 
-for (let i = 0; i < data.length - interval - 1; i++) {
+for (let i = 0; i < data.length - interval; i++) {
   const inputRow = [];
   for (let j = i; j < i + interval; j++) {
-    const candle = data[j];
-    inputRow.push(
-      candle.open,
-      candle.high,
-      candle.low,
-      candle.close,
-      candle.volume
-    );
+    inputRow.push(parseFloat(data[j].price_change));
+    inputRow.push(parseFloat(data[j].volume));
   }
   input.push(inputRow);
 
-  const currentPrice = data[i + interval].close;
-  const futurePrice = data[i + interval + 1].close;
-  const trend = futurePrice > currentPrice ? 1 : futurePrice < currentPrice ? -1 : 0;
-  output.push(trend);
+  const nextPrice = parseFloat(data[i + interval].price);
+  const currentPrice = parseFloat(data[i + interval - 1].price);
+  if (nextPrice > currentPrice) {
+    output.push(0);
+  } else {
+    output.push(1);
+  }
 }
 
+// Создание модели нейросети
 const model = tf.sequential();
 
-// добавляем первый слой с двумя нейронами и функцией активации relu
 model.add(tf.layers.dense({
-  inputShape: [interval * 5], // количество параметров на входе (interval * 5, где interval - интервал в часах)
-  units: 2, // количество нейронов в слое
-  activation: 'relu' // функция активации
+  inputShape: [interval * 2],
+  units: 32,
+  activation: 'relu'
 }));
 
-// добавляем второй слой с тремя нейронами и функцией активации softmax
 model.add(tf.layers.dense({
-  units: 3, // количество нейронов в слое
-  activation: 'softmax' // функция активации
+  units: 2,
+  activation: 'softmax'
 }));
 
+// Компиляция модели нейросети
 model.compile({
-  optimizer: 'adam',
-  loss: 'sparseCategoricalCrossentropy',
+  optimizer: 'sgd',
+  loss: 'categoricalCrossentropy',
   metrics: ['accuracy']
 });
 
-const epochs = 10;
+// Обучение модели нейросети
+const epochs = 100;
 const batchSize = 32;
 
-model.fit(tf.tensor2d(input), tf.tensor1d(output), {
+model.fit(tf.tensor2d(input), tf.oneHot(tf.tensor1d(output, 'int32'), 2), {
   epochs: epochs,
   batchSize: batchSize
 }).then(() => {
   console.log('Training complete');
-  
+
+  // Получение предсказания направления следующей часовой свечи
+  const lastInput = input[input.length - 1];
+  const prediction = model.predict(tf.tensor2d([lastInput]));
+  const direction = prediction.argMax(1).dataSync()[0];
+
+  if (direction === 0) {
+    console.log('Next candle will go up');
+  } else {
+    console.log('Next candle will go down');
+  }
 });
