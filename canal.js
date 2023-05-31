@@ -1,11 +1,10 @@
 const _ = require('lodash');
-const regression = require('regression');
 const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 // Получаем последние 10 часовых свечей
-const lastCandles = data.slice(-5);
+const lastCandles = data.slice(-10);
 
 // Получаем массив цен закрытия свечей
 const prices = lastCandles.map(candle => parseFloat(candle.close));
@@ -21,13 +20,15 @@ for (let i = 1; i < prices.length - 1; i++) {
 }
 
 // Вычисляем линейную регрессию через точки минимумов и максимумов
-const result = regression.linear(points);
+const n = points.length;
+const sumX = _.sumBy(points, point => point[0]);
+const sumY = _.sumBy(points, point => point[1]);
+const sumXY = _.sumBy(points, point => point[0] * point[1]);
+const sumX2 = _.sumBy(points, point => point[0] ** 2);
+const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2);
+const intercept = (sumY - slope * sumX) / n;
 
-// Получаем коэффициенты линейной регрессии
-const slope = result.equation[0];
-const intercept = result.equation[1];
-
-// Вычисляем цены на линии сопротивления и поддержки
+// Получаем цены на линии сопротивления и поддержки
 const resistancePrice = slope * prices.length + intercept;
 const supportPrice = slope * (prices.length - 1) + intercept;
 
@@ -43,7 +44,7 @@ const upperBound = resistancePoints[0][1];
 const lowerBound = supportPoints[0][1];
 
 // Определяем текущую цену
-const currentPrice = parseFloat(lastCandles[4].close);
+const currentPrice = parseFloat(lastCandles[9].close);
 
 // Проверяем, вышла ли цена за границы канала
 let message = '';
