@@ -21,8 +21,8 @@ fs.readFile('indres.json', (err, data) => {
 
   // Если текущий объем больше среднего значения, то это может свидетельствовать о продолжении тренда
   if (volumeDiff > 0) {
-    console.log(`Текущий объем (${currentVolume.toFixed(2)}) больше среднего значения (${avgVolume.toFixed(2)}). Возможно, тренд продолжится.`);
+    console.log(`Текущий объем (${currentVolume.toFixed(5)}) больше среднего значения (${avgVolume.toFixed(5)}). Возможно, тренд продолжится.`);
   } else {
-    console.log(`Текущий объем (${currentVolume.toFixed(2)}) меньше или равен среднему значению (${avgVolume.toFixed(2)}). Возможно, тренд завершится.`);
+    console.log(`Текущий объем (${currentVolume.toFixed(5)}) меньше или равен среднему значению (${avgVolume.toFixed(5)}). Возможно, тренд завершится.`);
   }
 });
