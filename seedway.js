@@ -2,101 +2,77 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
+
 const supportResistance = {
   support: [],
-  resistance: [],
+  resistance: []
 };
 
-let currentTrend = null;
-let currentLine = null;
-let previousLine = null;
+const findSupportResistance = (data) => {
+  const points = data.map((item) => item.close);
+  const extrema = findExtrema(points, 5); // находим локальные экстремумы цены
+  const lines = findLines(extrema); // находим линии поддержки и сопротивления
+  updateSupportResistance(lines); // обновляем список линий поддержки и сопротивления
+};
 
-for (let i = 0; i < data.length; i++) {
-  const candle = data[i];
-  const high = candle.high;
-  const low = candle.low;
-
-  if (currentTrend === null) {
-    if (i < data.length - 1) {
-      const nextCandle = data[i + 1];
-      if (nextCandle.high > high) {
-        currentTrend = 'up';
-        currentLine = {
-          type: 'support',
-          value: low,
-          points: [{ x: i, y: low }],
-        };
-      } else if (nextCandle.low < low) {
-        currentTrend = 'down';
-        currentLine = {
-          type: 'resistance',
-          value: high,
-          points: [{ x: i, y: high }],
-        };
-      }
-    }
-  } else if (currentTrend === 'up') {
-    if (low < currentLine.value) {
-      currentLine.points.push({ x: i, y: low });
-      currentLine.value = low;
-    } else if (high > currentLine.value * 1.01) {
-      previousLine = currentLine;
-      currentTrend = 'down';
-      currentLine = {
-        type: 'resistance',
-        value: high,
-        points: [{ x: i, y: high }],
-      };
-    }
-  } else if (currentTrend === 'down') {
-    if (high > currentLine.value) {
-      currentLine.points.push({ x: i, y: high });
-      currentLine.value = high;
-    } else if (low < currentLine.value * 0.99) {
-      previousLine = currentLine;
-      currentTrend = 'up';
-      currentLine = {
-        type: 'support',
-        value: low,
-        points: [{ x: i, y: low }],
-      };
+const findExtrema = (points, windowSize) => {
+  const extrema = [];
+  for (let i = windowSize; i < points.length - windowSize; i++) {
+    const window = points.slice(i - windowSize, i + windowSize + 1);
+    const max = Math.max(...window);
+    const min = Math.min(...window);
+    if (points[i] === max) {
+      extrema.push({ index: i, value: max, type: 'max' });
+    } else if (points[i] === min) {
+      extrema.push({ index: i, value: min, type: 'min' });
     }
   }
+  return extrema;
+};
 
-  if (previousLine !== null) {
-    if (previousLine.type === 'support' && currentLine.type === 'resistance' && currentLine.value < previousLine.value) {
-      supportResistance.support.push(previousLine);
-      supportResistance.resistance.push(currentLine);
-      previousLine = null;
-    } else if (previousLine.type === 'resistance' && currentLine.type === 'support' && currentLine.value > previousLine.value) {
-      supportResistance.resistance.push(previousLine);
-      supportResistance.support.push(currentLine);
-      previousLine = null;
+const findLines = (extrema) => {
+  const lines = [];
+  for (let i = 0; i < extrema.length - 1; i++) {
+    const current = extrema[i];
+    const next = extrema[i + 1];
+    if (current.type === 'min' && next.type === 'max') {
+      lines.push({ type: 'support', value: current.value, points: [current, next] });
+    } else if (current.type === 'max' && next.type === 'min') {
+      lines.push({ type: 'resistance', value: current.value, points: [current, next] });
     }
   }
-}
+  return lines;
+};
 
-if (previousLine !== null) {
-  if (previousLine.type === 'support') {
-    supportResistance.support.push(previousLine);
-  } else if (previousLine.type === 'resistance') {
-    supportResistance.resistance.push(previousLine);
+const updateSupportResistance = (lines) => {
+  const last = supportResistance.resistance[supportResistance.resistance.length - 1];
+  const previous = supportResistance.resistance[supportResistance.resistance.length - 2];
+  if (last && previous && last.type === 'resistance' && previous.type === 'resistance') {
+    const lastPoint = last.points[last.points.length - 1];
+    const previousPoint = previous.points[previous.points.length - 1];
+    if (lastPoint.value <= previousPoint.value) {
+      supportResistance.support.push(last);
+      supportResistance.resistance.pop();
+    }
+  } else {
+    supportResistance.resistance.push(lines[lines.length - 1]);
   }
-}
+};
 
+findSupportResistance(data);
 console.log(supportResistance);
 
 if (supportResistance.support.length >= 2 && supportResistance.resistance.length >= 2) {
-    const lastSupport = supportResistance.support[supportResistance.support.length - 1];
-    const previousSupport = supportResistance.support[supportResistance.support.length - 2];
-    const lastResistance = supportResistance.resistance[supportResistance.resistance.length - 1];
-    const previousResistance = supportResistance.resistance[supportResistance.resistance.length - 2];
-  
-    if (lastSupport.points[lastSupport.points.length - 1] === lastResistance.points[lastResistance.points.length - 1]) {
-      console.log('Тренд боковой');
-    } else if (lastSupport.points[lastSupport.points.length - 1] === previousResistance.points[previousResistance.points.length - 1]) {
-      console.log('Тренд боковой');
-    } else if (lastResistance.points[lastResistance.points.length - 1] === previousSupport.points[previousSupport.points.length - 1]) {
-      console.log('Тренд боковой');
-    }
+  const lastSupport = supportResistance.support[supportResistance.support.length - 1];
+  const previousSupport = supportResistance.support[supportResistance.support.length - 2];
+  const lastResistance = supportResistance.resistance[supportResistance.resistance.length - 1];
+  const previousResistance = supportResistance.resistance[supportResistance.resistance.length - 2];
+
+  if (lastSupport.points[lastSupport.points.length - 1].x === lastResistance.points[lastResistance.points.length - 1].x) {
+    console.log('Тренд боковой');
+  } else if (lastSupport.points[lastSupport.points.length - 1].x === previousResistance.points[previousResistance.points.length - 1].x) {
+    console.log('Тренд боковой');
+  } else if (lastResistance.points[lastResistance.points.length - 1].x === previousSupport.points[previousSupport.points.length - 1].x) {
+    console.log('Тренд боковой');
   }
+}
