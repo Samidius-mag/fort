@@ -10,7 +10,7 @@ const sendMessage = (message) => {
   bot.sendMessage(chatId, message);
 };
 
-exec('node patternBullTrand.js', (error, stdout, stderr) => {
+exec('node analize.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;
@@ -31,7 +31,7 @@ const sendMessage1 = (message) => {
   bot2.sendMessage(chatId2, message);
 };
 
-exec('node patternBullTrand.js', (error, stdout, stderr) => {
+exec('node analize.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;
