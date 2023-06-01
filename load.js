@@ -85,7 +85,7 @@ setTimeout(() => {
 }, 4000);
 
 // daily candles
-const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=24h&limit=100`;
+const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=24h&limit=50`;
 
 setTimeout(() => {
   axios.get(url24h)
