@@ -18,7 +18,7 @@ const upperBound = averagePrice + 2 * stdDeviation;
 const lowerBound = averagePrice - 2 * stdDeviation;
 
 // Отображаем канал на графике
-const ctx = document.getElementById('myChart').getContext('2d');
+const ctx = document.getElementById('index.html').getContext('2d');
 const chart = new Chart(ctx, {
   type: 'line',
   data: {
