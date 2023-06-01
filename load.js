@@ -106,7 +106,7 @@ setTimeout(() => {
 
       fs.writeFile('price2h.json', JSON.stringify(data), err => {
         if (err) throw err;
-        console.log('Data written to file price3h.json');
+        console.log('Data written to file price2h.json');
       });
     })
     .catch(error => {
