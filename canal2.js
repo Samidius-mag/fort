@@ -2,7 +2,7 @@ const math = require('mathjs');
 const ss = require('simple-statistics');
 const fs = require('fs');
 
-const data = JSON.parse(fs.readFileSync('price15m.json'));
+const data = JSON.parse(fs.readFileSync('price24.json'));
 
 // Определяем временной интервал для анализа (последние 24 часа)
 const last24Hours = data.slice(-24);
