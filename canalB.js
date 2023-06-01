@@ -1,38 +1,21 @@
 const fs = require('fs');
 
+// Получаем данные из файла price.json
 const data = JSON.parse(fs.readFileSync('price.json'));
 
-const period = 20; // период для расчета канала
-const deviation = 2; // отклонение для расчета канала
+// Выбираем последние 10 свечей
+const lastCandles = data.slice(-10);
 
-// Функция для расчета ценового регрессивного канала
-function calculateChannel(data, period, deviation) {
-  const channel = [];
+// Вычисляем среднее значение цены закрытия
+const averagePrice = lastCandles.reduce((sum, candle) => sum + parseFloat(candle.close), 0) / lastCandles.length;
 
-  for (let i = period; i < data.length; i++) {
-    const prices = data.slice(i - period, i).map(candle => candle.close);
-    const sumX = prices.reduce((sum, price, index) => sum + index, 0);
-    const sumY = prices.reduce((sum, price) => sum + price, 0);
-    const sumXY = prices.reduce((sum, price, index) => sum + index * price, 0);
-    const sumX2 = prices.reduce((sum, price, index) => sum + index ** 2, 0);
+// Вычисляем стандартное отклонение цены закрытия
+const stdDeviation = Math.sqrt(lastCandles.reduce((sum, candle) => sum + (parseFloat(candle.close) - averagePrice) ** 2, 0) / lastCandles.length);
 
-    const a = (period * sumXY - sumX * sumY) / (period * sumX2 - sumX ** 2);
-    const b = (sumY - a * sumX) / period;
+// Вычисляем верхнюю и нижнюю границы канала
+const upperBound = averagePrice + 2 * stdDeviation;
+const lowerBound = averagePrice - 2 * stdDeviation;
 
-    const deviationSum = prices.reduce((sum, price) => sum + (price - a * prices.indexOf(price) - b) ** 2, 0);
-    const deviationAvg = Math.sqrt(deviationSum / period);
-
-    channel.push({
-      time: data[i].time,
-      upper: a * period + b + deviation * deviationAvg,
-      middle: a * period + b,
-      lower: a * period + b - deviation * deviationAvg,
-    });
-  }
-
-  return channel;
-}
-
-const channel = calculateChannel(data, period, deviation);
-
-console.log(channel);
+// Отображаем канал на графике
+console.log(`Upper bound: ${upperBound}`);
+console.log(`Lower bound: ${lowerBound}`);
