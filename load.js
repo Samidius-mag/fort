@@ -85,7 +85,7 @@ setTimeout(() => {
 }, 4000);
 
 // daily candles
-const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=24h&limit=25`;
+const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=3h&limit=25`;
 
 setTimeout(() => {
   axios.get(url24h)
@@ -104,9 +104,9 @@ setTimeout(() => {
         takerBuyQuoteAssetVolume: candle[10]
       }));
 
-      fs.writeFile('price24h.json', JSON.stringify(data), err => {
+      fs.writeFile('price3h.json', JSON.stringify(data), err => {
         if (err) throw err;
-        console.log('Data written to file price24.json');
+        console.log('Data written to file price3h.json');
       });
     })
     .catch(error => {
