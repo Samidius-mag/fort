@@ -74,8 +74,8 @@ console.log('Поддержка 24 часа:', supportResistance['24h'].support)
 const overboughtOversold = {
   RSI: {
     current: indRes.RSI[indRes.RSI.length - 1],
-    overbought: 70,
-    oversold: 30
+    overbought: 65,
+    oversold: 35
   },
   ROC: {
     current: indRes.ROC[indRes.ROC.length - 1],
