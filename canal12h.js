@@ -25,7 +25,7 @@ const lowerBound = slope * 0 + intercept;
 const currentPrice = parseFloat(data[data.length - 1].close);
 
 // Проверяем, находится ли текущая цена в канале
-if (currentPrice <= lowerBound && currentPrice >= upperBound) {
+if (currentPrice >= lowerBound && currentPrice <= upperBound) {
   console.log(`Текущая цена (${currentPrice}) находится в линейном регрессионном канале`);
 } else {
   console.log(`Текущая цена (${currentPrice}) не находится в линейном регрессионном канале`);
