@@ -4,7 +4,7 @@ const fs = require('fs');
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 // Выбираем последние 10 свечей
-const lastCandles = data.slice(-10);
+const lastCandles = data.slice(-100);
 
 // Вычисляем среднее значение цены закрытия
 const averagePrice = lastCandles.reduce((sum, candle) => sum + parseFloat(candle.close), 0) / lastCandles.length;
