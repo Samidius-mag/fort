@@ -45,9 +45,9 @@ axios.get(url4h)
       takerBuyQuoteAssetVolume: candle[10]
     }));
 
-    fs.writeFile('price4.json', JSON.stringify(data), err => {
+    fs.writeFile('price4h.json', JSON.stringify(data), err => {
       if (err) throw err;
-      console.log('Data written to file price4.json');
+      console.log('Data written to file price4h.json');
     });
   })
   .catch(error => {
@@ -76,7 +76,7 @@ setTimeout(() => {
 
       fs.writeFile('price15m.json', JSON.stringify(data), err => {
         if (err) throw err;
-        console.log('Data written to file price5m.json');
+        console.log('Data written to file price15m.json');
       });
     })
     .catch(error => {
@@ -85,7 +85,7 @@ setTimeout(() => {
 }, 4000);
 
 // daily candles
-const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=1000`;
+const url24h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=24h&limit=100`;
 
 setTimeout(() => {
   axios.get(url24h)
@@ -104,7 +104,7 @@ setTimeout(() => {
         takerBuyQuoteAssetVolume: candle[10]
       }));
 
-      fs.writeFile('price24.json', JSON.stringify(data), err => {
+      fs.writeFile('price24h.json', JSON.stringify(data), err => {
         if (err) throw err;
         console.log('Data written to file price24.json');
       });
@@ -113,3 +113,90 @@ setTimeout(() => {
       console.log(error);
     });
 }, 6000);
+
+const url5m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=1000`;
+
+setTimeout(() => {
+  axios.get(url5m)
+    .then(response => {
+      const data = response.data.map(candle => ({
+        openTime: candle[0],
+        open: candle[1],
+        high: candle[2],
+        low: candle[3],
+        close: candle[4],
+        volume: candle[5],
+        closeTime: candle[6],
+        quoteAssetVolume: candle[7],
+        numberOfTrades: candle[8],
+        takerBuyBaseAssetVolume: candle[9],
+        takerBuyQuoteAssetVolume: candle[10]
+      }));
+
+      fs.writeFile('price5m.json', JSON.stringify(data), err => {
+        if (err) throw err;
+        console.log('Data written to file price5m.json');
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, 8000);
+
+const url30m = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=30m&limit=1000`;
+
+setTimeout(() => {
+  axios.get(url30m)
+    .then(response => {
+      const data = response.data.map(candle => ({
+        openTime: candle[0],
+        open: candle[1],
+        high: candle[2],
+        low: candle[3],
+        close: candle[4],
+        volume: candle[5],
+        closeTime: candle[6],
+        quoteAssetVolume: candle[7],
+        numberOfTrades: candle[8],
+        takerBuyBaseAssetVolume: candle[9],
+        takerBuyQuoteAssetVolume: candle[10]
+      }));
+
+      fs.writeFile('price30m.json', JSON.stringify(data), err => {
+        if (err) throw err;
+        console.log('Data written to file price30m.json');
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, 10000);
+
+const url12h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=12h&limit=100`;
+
+setTimeout(() => {
+  axios.get(url12h)
+    .then(response => {
+      const data = response.data.map(candle => ({
+        openTime: candle[0],
+        open: candle[1],
+        high: candle[2],
+        low: candle[3],
+        close: candle[4],
+        volume: candle[5],
+        closeTime: candle[6],
+        quoteAssetVolume: candle[7],
+        numberOfTrades: candle[8],
+        takerBuyBaseAssetVolume: candle[9],
+        takerBuyQuoteAssetVolume: candle[10]
+      }));
+
+      fs.writeFile('price12h.json', JSON.stringify(data), err => {
+        if (err) throw err;
+        console.log('Data written to file price12h.json');
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, 12000);

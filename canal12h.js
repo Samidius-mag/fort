@@ -2,7 +2,7 @@ const math = require('mathjs');
 const ss = require('simple-statistics');
 const fs = require('fs');
 
-const data = JSON.parse(fs.readFileSync('price.json'));
+const data = JSON.parse(fs.readFileSync('price12h.json'));
 
 // Определяем временной интервал для анализа (последние 24 часа)
 const last24Hours = data.slice(-24);
@@ -31,5 +31,5 @@ if (currentPrice <= lowerBound && currentPrice >= upperBound) {
   console.log(`Текущая цена (${currentPrice}) не находится в линейном регрессионном канале`);
 }
 
-console.log(`Верхняя граница канала: ${lowerBound}`);
-console.log(`Нижняя граница канала: ${upperBound}`);
+console.log(`Верхняя граница канала: ${lowerBound.toFixed(2)}`);
+console.log(`Нижняя граница канала: ${upperBound.toFixed(2)}`);
