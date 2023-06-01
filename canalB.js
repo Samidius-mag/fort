@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Chart = require('chart.js');
 
 // Получаем данные из файла price.json
 const data = JSON.parse(fs.readFileSync('price.json'));
@@ -17,5 +18,40 @@ const upperBound = averagePrice + 2 * stdDeviation;
 const lowerBound = averagePrice - 2 * stdDeviation;
 
 // Отображаем канал на графике
-console.log(`Upper bound: ${upperBound}`);
-console.log(`Lower bound: ${lowerBound}`);
+const ctx = document.getElementById('myChart').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: lastCandles.map(candle => candle.time),
+    datasets: [
+      {
+        label: 'Price',
+        data: lastCandles.map(candle => parseFloat(candle.close)),
+        borderColor: 'blue',
+        fill: false
+      },
+      {
+        label: 'Upper bound',
+        data: Array(lastCandles.length).fill(upperBound),
+        borderColor: 'red',
+        fill: false
+      },
+      {
+        label: 'Lower bound',
+        data: Array(lastCandles.length).fill(lowerBound),
+        borderColor: 'green',
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: false
+        }
+      }]
+    }
+  }
+});
