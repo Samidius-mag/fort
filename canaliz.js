@@ -15,12 +15,14 @@ const atr = calculateATR(highs, lows, prices, 14);
 const upperChannel = sma20.map((sma, index) => sma + 2 * atr[index]);
 const lowerChannel = sma20.map((sma, index) => sma - 2 * atr[index]);
 
+
 const currentPrice = prices[prices.length - 1];
 const currentSMA20 = sma20[sma20.length - 1];
 const currentSMA50 = sma50[sma50.length - 1];
 const currentSMA100 = sma100[sma100.length - 1];
 const currentUpperChannel = upperChannel[upperChannel.length - 1];
 const currentLowerChannel = lowerChannel[lowerChannel.length - 1];
+const midChannel = (currentUpperChannel + currentLowerChannel) / 2;
 
 let trend = '';
 if (currentPrice > currentSMA20 && currentSMA20 > currentSMA50 && currentSMA50 > currentSMA100) {
@@ -31,13 +33,14 @@ if (currentPrice > currentSMA20 && currentSMA20 > currentSMA50 && currentSMA50 >
   trend = 'Sideways';
 }
 
-console.log(`Current trend: ${trend}`);
-console.log(`Current price: ${currentPrice}`);
-console.log(`Current SMA20: ${currentSMA20}`);
-console.log(`Current SMA50: ${currentSMA50}`);
-console.log(`Current SMA100: ${currentSMA100}`);
-console.log(`Current upper channel: ${currentUpperChannel}`);
-console.log(`Current lower channel: ${currentLowerChannel}`);
+console.log(`Тренд: ${trend}`);
+console.log(`Цена: ${currentPrice}`);
+console.log(`SMA20: ${currentSMA20}`);
+console.log(`SMA50: ${currentSMA50}`);
+console.log(`SMA100: ${currentSMA100}`);
+console.log(`Верх канала: ${currentUpperChannel}`);
+console.log(`Низ канала: ${currentLowerChannel}`);
+console.log(`Середина канала: ${midChannel}`);
 
 function calculateSMA(prices, period) {
   const sma = [];
