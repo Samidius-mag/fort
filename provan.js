@@ -9,3 +9,4 @@ const diffMin = Math.abs(currentPrice - canalizres.min);
 const accuracy = ((diffMax + diffMin) / 2) / currentPrice * 100;
 
 console.log(`Accuracy: ${accuracy.toFixed(2)}%`);
+console.log(`Comparing current price ${currentPrice} with price channel: ${canalizres.min} - ${canalizres.max}`);
