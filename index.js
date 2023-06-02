@@ -133,7 +133,7 @@ const sendToBot4 = () => {
 setInterval(loadPrice, 10000);
 setInterval(sendToBot, 50000);
 setInterval(sendToBot2, 7000);
-setInterval(sendToBot3, 130000);
+setInterval(sendToBot3, 60000);
 setInterval(sendToBot4, 120000);
 setInterval(sendToBot5, 121000);
 setInterval(sendToBot6, 122000);
