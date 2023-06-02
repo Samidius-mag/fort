@@ -15,4 +15,4 @@ const nextLow4 = nextLow1 - (lastHigh - lastLow) * 3;
 
 const nextPrice4 = (nextHigh4 + nextLow4) / 2;
 
-console.log(`Next price prediction for the next 4 hours: ${nextLow4.toFixed(2)} - ${nextHigh4.toFixed(2)}`);
+console.log(`Next price prediction for the next 4 hours: ${nextLow4.toFixed(2)} - ${nextHigh4.toFixed(2)} next4 ${nextPrice4.toFixed(2)} `);
