@@ -25,7 +25,7 @@ for (let i = data.length - 1; i >= data.length - days * 24; i--) {
   channel.push({ high, low });
 }
 
-console.log(`Price channel for the last ${days} days:`, channel);
+//console.log(`Price channel for the last ${days} days:`, channel);
 
 const lastHigh = channel[channel.length - 1].high;
 const lastLow = channel[channel.length - 1].low;
@@ -35,7 +35,7 @@ const nextLow = lastLow - (lastHigh - lastLow);
 
 channel.push({ high: nextHigh, low: nextLow });
 
-console.log(`Price channel for the next day:`, channel);
+//console.log(`Price channel for the next day:`, channel);
 
 const max = Math.max(...channel.map(candle => candle.high));
 const min = Math.min(...channel.map(candle => candle.low));
