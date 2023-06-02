@@ -26,21 +26,22 @@ const midChannel = (currentUpperChannel + currentLowerChannel) / 2;
 
 let trend = '';
 if (currentPrice > currentSMA20 && currentSMA20 > currentSMA50 && currentSMA50 > currentSMA100) {
-  trend = 'Up';
+  trend = 'Восходящий';
 } else if (currentPrice < currentSMA20 && currentSMA20 < currentSMA50 && currentSMA50 < currentSMA100) {
-  trend = 'Down';
+  trend = 'Нисходящий';
 } else {
-  trend = 'Sideways';
+  trend = 'Боковой';
 }
 
 console.log(`Тренд: ${trend}`);
-console.log(`Цена: ${currentPrice}`);
-console.log(`SMA20: ${currentSMA20}`);
-console.log(`SMA50: ${currentSMA50}`);
-console.log(`SMA100: ${currentSMA100}`);
-console.log(`Верх канала: ${currentUpperChannel}`);
-console.log(`Низ канала: ${currentLowerChannel}`);
-console.log(`Середина канала: ${midChannel}`);
+console.log(`Цена: ${currentPrice.toFixed(2)}`);
+console.log(`SMA20: ${currentSMA20.toFixed(2)}`);
+console.log(`SMA50: ${currentSMA50.toFixed(2)}`);
+console.log(`SMA100: ${currentSMA100.toFixed(2)}`);
+console.log(`Верх канала: ${currentUpperChannel.toFixed(2)}`);
+console.log(`Середина канала: ${midChannel.toFixed(2)}`);
+console.log(`Низ канала: ${currentLowerChannel.toFixed(2)}`);
+
 
 function calculateSMA(prices, period) {
   const sma = [];
