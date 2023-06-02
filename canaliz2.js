@@ -59,7 +59,7 @@ console.log(`Current Lower Channel: ${currentLowerChannel}`);
 console.log(`Channel Upper: ${channelUpper}`);
 console.log(`Channel Lower: ${channelLower}`);
 
-console.log(`Last 5 days highs: ${last5Highs}`);
-console.log(`Last 5 days lows: ${last5Lows}`);
+//console.log(`Last 5 days highs: ${last5Highs}`);
+//console.log(`Last 5 days lows: ${last5Lows}`);
 console.log(`Max price: ${maxPrice}`);
 console.log(`Min price: ${minPrice}`);
