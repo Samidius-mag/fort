@@ -40,7 +40,7 @@ const currentSMA100 = sma100[sma100.length - 1];
 const currentUpperChannel = currentSMA20 + (2 * atr[atr.length - 1]);
 const currentLowerChannel = currentSMA20 - (2 * atr[atr.length - 1]);
 
-const last5Days = prices.slice(-5);
+const last5Days = prices.slice(-120);
 const last5Highs = last5Days.map(price => price.high);
 const last5Lows = last5Days.map(price => price.low);
 const maxPrice = Math.max(...last5Highs);
