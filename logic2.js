@@ -5,7 +5,7 @@ const indRes = require('./indres.json');
 
 // Определение текущей цены
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
-console.log('Текущая цена:', currentPrice);
+//console.log('Текущая цена:', currentPrice);
 
 // Определение изменения цены за последние 2 часа
 const twoHoursAgo = moment().subtract(2, 'hours');
@@ -13,7 +13,7 @@ const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(
 const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
 const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
 const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
-console.log('Изменение цены:', priceChange.toFixed(2) + '%');
+//console.log('Изменение цены:', priceChange.toFixed(2) + '%');
 
 // Определение тренда
 const trend = {
@@ -87,15 +87,15 @@ const overboughtOversold = {
 //console.log('ROC:', overboughtOversold.ROC.current);
 
 if (overboughtOversold.RSI.current > overboughtOversold.RSI.overbought) {
-  console.log('[RS]Рынок перекуплен');
+  //console.log('[RS]Рынок перекуплен');
 } else if (overboughtOversold.RSI.current < overboughtOversold.RSI.oversold) {
-  console.log('[RS]Рынок перепродан');
+  //console.log('[RS]Рынок перепродан');
 }
 
 if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
-  console.log('[RO]Рынок перекуплен');
+  //console.log('[RO]Рынок перекуплен');
 } else if (overboughtOversold.ROC.current < overboughtOversold.ROC.oversold) {
-  console.log('[RO]Рынок перепродан');
+  //console.log('[RO]Рынок перепродан');
 }
 
 // Рекомендации по покупке/продаже
@@ -139,5 +139,5 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.resistance);
   console.log('Точка выхода из сделки:', entryExitPoints.sell.support);
-console.log('Стоп - лосс:', supportResistance['24h'].resistance)
+  console.log('Стоп - лосс:', supportResistance['24h'].resistance)
 }
