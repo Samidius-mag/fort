@@ -34,7 +34,7 @@ const nextLow = lastLow - (lastHigh - lastLow);
 
 channel.push({ high: nextHigh, low: nextLow });
 
-console.log(`Price channel for the next day:`, channel);
+//console.log(`Price channel for the next day:`, channel);
 
 const max = Math.max(...channel.map(candle => candle.high));
 const min = Math.min(...channel.map(candle => candle.low));
