@@ -1,4 +1,6 @@
 const fs = require('fs');
+const fmin = require('fmin');
+const nelderMead = fmin.nelderMead;
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 const x = data.map(candle => candle.time);
