@@ -51,7 +51,7 @@ function predict(a, b, c, x) {
   return a * x * x + b * x + c;
 }
 
-const timeToPredict = 10000;
+const timeToPredict = 10;
 
 const predictedPrice = predict(aPrice, bPrice, cPrice, timeToPredict);
 const predictedLow = predict(aLow, bLow, cLow, timeToPredict);
