@@ -40,7 +40,7 @@ const lows = data.map(candle => candle.low);
 const highs = data.map(candle => candle.high);
 const volumes = data.map(candle => candle.volume);
 
-const time = Array.from({ length: data.length }, (_, i) => i);
+const time = 1
 
 const [aPrice, bPrice, cPrice] = quadraticRegression(time, prices);
 const [aLow, bLow, cLow] = quadraticRegression(time, lows);
