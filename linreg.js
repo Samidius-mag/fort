@@ -21,10 +21,15 @@ function linearRegression(data) {
     return { slope, intercept };
   }
 
-  const priceRegression = linearRegression(data.map(({ time, close }) => ({ x: time, y: close })));
-const lowRegression = linearRegression(data.map(({ time, low }) => ({ x: time, y: low })));
-const highRegression = linearRegression(data.map(({ time, high }) => ({ x: time, y: high })));
-const volumeRegression = linearRegression(data.map(({ time, volume }) => ({ x: time, y: volume })));
+  const filteredData = data.filter(({ time, close, low, high, volume }) => {
+    return !isNaN(time) && !isNaN(close) && !isNaN(low) && !isNaN(high) && !isNaN(volume) &&
+      isFinite(time) && isFinite(close) && isFinite(low) && isFinite(high) && isFinite(volume);
+  });
+  
+  const priceRegression = linearRegression(filteredData.map(({ time, close }) => ({ x: time, y: close })));
+  const lowRegression = linearRegression(filteredData.map(({ time, low }) => ({ x: time, y: low })));
+  const highRegression = linearRegression(filteredData.map(({ time, high }) => ({ x: time, y: high })));
+  const volumeRegression = linearRegression(filteredData.map(({ time, volume }) => ({ x: time, y: volume })));
 
 const futureTime = Date.now() + 24 * 60 * 60 * 1000; // 1 день вперед
 const futurePrice = priceRegression.slope * futureTime + priceRegression.intercept;
