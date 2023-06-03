@@ -21,7 +21,7 @@ const initialBeta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const result = numeric.uncmin((beta) => {
   const yPredicted = x.map(x => f(x, beta));
   const residuals = math.subtract(y, yPredicted);
-  const rss = math.sum(math.square(residuals));
+  const rss = math.sum(residuals.map(r => r ** 2)); // изменение здесь
   return rss;
 }, initialBeta);
 
