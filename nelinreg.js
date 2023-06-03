@@ -32,27 +32,15 @@ const yMin = data.map(candle => candle.low);
 const yMax = data.map(candle => candle.high);
 const yVolume = data.map(candle => candle.volume);
 
-const minimizePrice = math.minimize({
-  objective: (params) => math.meanSquaredError(yPrice, math.evaluate(model, { a: params[0], b: params[1], c: params[2], d: avgPrice }, x)),
-  x0: [1, 0.01, 0],
-});
-const minimizeMin = math.minimize({
-  objective: (params) => math.meanSquaredError(yMin, math.evaluate(model, { a: params[0], b: params[1], c: params[2], d: avgMin }, x)),
-  x0: [1, 0.01, 0],
-});
-const minimizeMax = math.minimize({
-  objective: (params) => math.meanSquaredError(yMax, math.evaluate(model, { a: params[0], b: params[1], c: params[2], d: avgMax }, x)),
-  x0: [1, 0.01, 0],
-});
-const minimizeVolume = math.minimize({
-  objective: (params) => math.meanSquaredError(yVolume, math.evaluate(model, { a: params[0], b: params[1], c: params[2], d: avgVolume }, x)),
-  x0: [1, 0.01, 0],
-});
+const optimizePrice = math.optimize(model, [1, 0.01, 0, avgPrice], x, yPrice);
+const optimizeMin = math.optimize(model, [1, 0.01, 0, avgMin], x, yMin);
+const optimizeMax = math.optimize(model, [1, 0.01, 0, avgMax], x, yMax);
+const optimizeVolume = math.optimize(model, [1, 0.01, 0, avgVolume], x, yVolume);
 
-const resultPrice = minimizePrice.solution;
-const resultMin = minimizeMin.solution;
-const resultMax = minimizeMax.solution;
-const resultVolume = minimizeVolume.solution;
+const resultPrice = optimizePrice._data[0];
+const resultMin = optimizeMin._data[0];
+const resultMax = optimizeMax._data[0];
+const resultVolume = optimizeVolume._data[0];
 
 const aPrice = resultPrice.coefficients[0];
 const bPrice = resultPrice.coefficients[1];
