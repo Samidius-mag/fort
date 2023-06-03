@@ -84,3 +84,38 @@ if (currentPrice > upperBound) {
 
 console.log(`Average price: ${avgPrice}`);
 console.log(`Price direction: ${direction}`);
+
+const choices = ['rock', 'paper', 'scissors'];
+
+function predictNextPrice(data) {
+  const lastPrice = data[data.length - 1].close;
+  const prevPrice = data[data.length - 2].close;
+  const priceDiff = lastPrice - prevPrice;
+
+  let choice;
+  if (priceDiff > 0) {
+    choice = 'rock'; // рост цены
+  } else if (priceDiff < 0) {
+    choice = 'scissors'; // падение цены
+  } else {
+    choice = 'paper'; // боковое движение цены
+  }
+
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  const opponentChoice = choices[randomIndex];
+
+  if (choice === opponentChoice) {
+    return lastPrice; // цена не изменится
+  } else if (
+    (choice === 'rock' && opponentChoice === 'scissors') ||
+    (choice === 'scissors' && opponentChoice === 'paper') ||
+    (choice === 'paper' && opponentChoice === 'rock')
+  ) {
+    return lastPrice * 1.01; // цена вырастет на 1%
+  } else {
+    return lastPrice * 0.99; // цена упадет на 1%
+  }
+}
+
+const nextPrice = predictNextPrice(candles);
+console.log(`Predicted price: ${nextPrice}`);
