@@ -18,7 +18,7 @@ console.log(`Mean volume: ${meanVolume}`);
 */
 
 const prices = data.map(candle => candle.close);
-const dates = data.map(candle => new Date(candle.date));
+const dates = data.map(candle => new Date(candle.date).getTime()); // использование метода getTime()
 
 const meanPrice = math.mean(prices);
 const meanDate = math.mean(dates);
