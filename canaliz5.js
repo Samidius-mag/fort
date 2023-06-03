@@ -43,7 +43,7 @@ function sma(data, period) {
     return { maxHigh, minLow };
   }
   
-  const { maxHigh, minLow } = findExtremums(candles, 5);
+  const { maxHigh, minLow } = findExtremums(candles, 2);
   
   const channel = {
     top: maxHigh,
@@ -65,7 +65,7 @@ function sma(data, period) {
     return Math.sqrt(variance);
   }
   
-  const stdDev = standardDeviation(candles, 5);
+  const stdDev = standardDeviation(candles, 2);
   
   const upperBound = avgPrice + stdDev;
   const lowerBound = avgPrice - stdDev;
