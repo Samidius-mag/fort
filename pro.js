@@ -26,7 +26,7 @@ fs.readFile('indres.json', (err, data) => {
 
     // Если текущий объем больше среднего значения, то это может свидетельствовать о продолжении тренда
     const isTrendContinuing = volumeDiff > 0;
-console.log(`${isTrendContinuing.toFixed(2)}`)
+console.log(`${isTrendContinuing}`)
     // Проверяем, правильный ли результат
     const expected = obv[i + 1] > avgVolume;
     if (isTrendContinuing === expected) {
