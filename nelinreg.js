@@ -32,10 +32,10 @@ const yMin = data.map(candle => candle.low);
 const yMax = data.map(candle => candle.high);
 const yVolume = data.map(candle => candle.volume);
 
-const regressionPrice = math.mean(model, x, yPrice, [1, 0.01, 0, avgPrice]);
-const regressionMin = math.mean(model, x, yMin, [1, 0.01, 0, avgMin]);
-const regressionMax = math.mean(model, x, yMax, [1, 0.01, 0, avgMax]);
-const regressionVolume = math.mean(model, x, yVolume, [1, 0.01, 0, avgVolume]);
+const regressionPrice = math.regression(model, x, yPrice, [1, 0.01, 0, avgPrice]);
+const regressionMin = math.regression(model, x, yMin, [1, 0.01, 0, avgMin]);
+const regressionMax = math.regression(model, x, yMax, [1, 0.01, 0, avgMax]);
+const regressionVolume = math.regression(model, x, yVolume, [1, 0.01, 0, avgVolume]);
 
 const resultPrice = regressionPrice.equation;
 const resultMin = regressionMin.equation;
