@@ -10,7 +10,7 @@ const sendMessage = (message) => {
   bot.sendMessage(chatId, message);
 };
 
-exec('node canal.js', (error, stdout, stderr) => {
+exec('node nelinreg.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;
