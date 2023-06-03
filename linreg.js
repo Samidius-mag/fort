@@ -1,23 +1,23 @@
-const regression = require('regression');
+const math = require('mathjs');
 const data = require('./price.json');
 
-const filteredData = data.filter(({ time, close, low, high, volume }) => {
-  return !isNaN(close) && !isNaN(low) && !isNaN(high) && !isNaN(volume) &&
-    isFinite(close) && isFinite(low) && isFinite(high) && isFinite(volume);
-});
+const prices = data.map(candle => candle.close);
+const lows = data.map(candle => candle.low);
+const highs = data.map(candle => candle.high);
+const volumes = data.map(candle => candle.volume);
 
-const closeRegression = regression.linear(filteredData.map(({ close }, i) => [i, close]));
-const lowRegression = regression.linear(filteredData.map(({ low }, i) => [i, low]));
-const highRegression = regression.linear(filteredData.map(({ high }, i) => [i, high]));
-const volumeRegression = regression.linear(filteredData.map(({ volume }, i) => [i, volume]));
+const meanPrice = math.mean(prices);
+const meanLow = math.mean(lows);
+const meanHigh = math.mean(highs);
+const meanVolume = math.mean(volumes);
 
-const nextDayIndex = filteredData.length;
-const nextDayClose = closeRegression.predict(nextDayIndex)[1];
-const nextDayLow = lowRegression.predict(nextDayIndex)[1];
-const nextDayHigh = highRegression.predict(nextDayIndex)[1];
-const nextDayVolume = volumeRegression.predict(nextDayIndex)[1];
+console.log(`Mean price: ${meanPrice}`);
+console.log(`Mean low: ${meanLow}`);
+console.log(`Mean high: ${meanHigh}`);
+console.log(`Mean volume: ${meanVolume}`);
 
-console.log('Next day close:', nextDayClose);
-console.log('Next day low:', nextDayLow);
-console.log('Next day high:', nextDayHigh);
-console.log('Next day volume:', nextDayVolume);
+const x = math.matrix([prices, lows, highs, volumes]);
+const y = math.matrix([meanPrice, meanLow, meanHigh, meanVolume]);
+
+const beta = math.multiply(math.multiply(y, math.transpose(x)), math.inv(math.multiply(x, math.transpose(x))));
+console.log(`Beta: ${beta}`);
