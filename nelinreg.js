@@ -1,4 +1,5 @@
 const math = require('mathjs');
+const numeric = require('numeric');
 const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
@@ -17,13 +18,13 @@ const f = (x, beta) => {
 const initialBeta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 // Используем метод наименьших квадратов для определения коэффициентов
-const result = math.optimize((beta) => {
+const result = numeric.uncmin((beta) => {
   const yPredicted = x.map(x => f(x, beta));
   const residuals = math.subtract(y, yPredicted);
   const rss = math.sum(math.square(residuals));
   return rss;
-}, { method: 'levenbergMarquardt', initialValues: initialBeta });
+}, initialBeta);
 
 // Выводим результаты
 console.log('Coefficients:', result.solution);
-console.log('R-squared:', math.round(result.residual / math.sum(math.square(math.subtract(y, math.mean(y)))), 4));
+console.log('R-squared:', math.round(result.f / math.sum(math.square(math.subtract(y, math.mean(y)))), 4));
