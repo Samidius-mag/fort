@@ -1,4 +1,5 @@
 const math = require('mathjs');
+const fs = require('fs');
 const data = require('./price.json');
 const x = data.map(candle => candle.close);
 const y = data.map(candle => candle.low);
