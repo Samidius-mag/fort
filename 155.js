@@ -1,6 +1,6 @@
 const fs = require('fs');
 const data = JSON.parse(fs.readFileSync('price.json'));
-const length = 5;
+const length = 21;
 const btm_n = 3;
 const top_n = 8;
 let max_high = -Infinity;
