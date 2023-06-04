@@ -112,8 +112,10 @@ const buySell = {
 
 if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Рекомендуется покупка');
+  console.log('Текущая цена:', currentPrice)
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
   console.log('Рекомендуется продажа');
+  console.log('Текущая цена:', currentPrice)
 }
 
 // Точки входа-выхода в сделку
