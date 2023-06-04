@@ -1,29 +1,23 @@
 const fs = require('fs');
+
 const data = JSON.parse(fs.readFileSync('price.json'));
-const length = 3;
-const btm_n = 3;
-const top_n = 8;
-let max_high = -Infinity;
-let min_low = Infinity;
-for (let i = 0; i < length; i++) {
-  max_high = Math.max(max_high, data[i].high);
-  min_low = Math.min(min_low, data[i].low);
-}
-let high = max_high;
-let low = min_low;
-for (let i = length; i < btm_n; i++) {
-  if (data[i].high > high) {
-    high = data[i].high;
-  } else if (data[i].low < low) {
-    low = data[i].low;
+
+const localMaxima = [];
+const localMinima = [];
+
+for (let i = 1; i < data.length - 1; i++) {
+  const prev = data[i - 1];
+  const curr = data[i];
+  const next = data[i + 1];
+
+  if (curr.high > prev.high && curr.high > next.high) {
+    localMaxima.push(curr);
+  }
+
+  if (curr.low < prev.low && curr.low < next.low) {
+    localMinima.push(curr);
   }
 }
-for (let i = top_n; i < data.length; i++) {
-  if (data[i].high > high) {
-    high = data[i].high;
-  } else if (data[i].low < low) {
-    low = data[i].low;
-  }
-}
-console.log(`Local high: ${high}`);
-console.log(`Local low: ${low}`);
+
+console.log('Local maxima:', localMaxima);
+console.log('Local minima:', localMinima);
