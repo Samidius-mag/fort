@@ -15,13 +15,13 @@ if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrad
   console.log('The market is moving sideways');
 }
 */
-if (averageVolume > currentVolume) {
+if (averageVolume < currentVolume) {
   console.log('Внимание! Превышен средний объем!');
   console.log('ср. Объем:', averageVolume);
   console.log('Объем:', currentVolume);
 }
 
-if (averageNumberOfTrades > currentNumberOfTrades) {
+if (averageNumberOfTrades < currentNumberOfTrades) {
   console.log('Внимание! Превышение среднего числа трейдеров!');
   console.log('ср .Трейдеры:', averageNumberOfTrades);
   console.log('Трейдеры:', currentNumberOfTrades);
