@@ -11,7 +11,7 @@ const currentVolume = volume[volume.length - 1];
 const currentNumberOfTrades = numberOfTrades[numberOfTrades.length - 1];
 const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
 
-if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrades && correlation === currentCorrelation) {
+if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrades && correlation >= currentCorrelation) {
   console.log('The market is moving sideways');
 }
 
