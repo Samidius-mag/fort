@@ -5,8 +5,15 @@ const data = JSON.parse(fs.readFileSync('price.json'));
 const volume = data.map(candle => parseFloat(candle.volume));
 const numberOfTrades = data.map(candle => parseFloat(candle.numberOfTrades));
 const correlation = pearsonCorrelation(volume, numberOfTrades);
+const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
+const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) / numberOfTrades.length;
+const currentVolume = volume[volume.length - 1];
+const currentNumberOfTrades = numberOfTrades[numberOfTrades.length - 1];
+const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
 
-console.log('Correlation:', correlation);
+if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrades && correlation === currentCorrelation) {
+  console.log('The market is moving sideways');
+}
 
 function pearsonCorrelation(x, y) {
   const n = x.length;
@@ -29,8 +36,9 @@ function pearsonCorrelation(x, y) {
 
   return numerator / denominator;
 }
-const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
-const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) / numberOfTrades.length;
-
-console.log('Average Volume:', averageVolume);
-console.log('Average Number of Trades:', averageNumberOfTrades);
+console.log('ср. Объем:', averageVolume);
+console.log('Объем:', currentVolume);
+console.log('ср .Трейдеры:', averageNumberOfTrades);
+console.log('Трейдеры:', currentNumberOfTrades);
+console.log('ср. Correlation:', correlation);
+console.log('Correlation:', currentCorrelation);
