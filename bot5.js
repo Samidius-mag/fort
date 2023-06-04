@@ -22,7 +22,7 @@ exec('node patternNextTrand.js', (error, stdout, stderr) => {
   sendMessage(message);
   console.log('Отправлено24');
 });
-/*
+
 const chatId2 = '-1001536433459';
 
 const bot2 = new TelegramBot(token, { polling: false });
@@ -31,7 +31,7 @@ const sendMessage1 = (message) => {
   bot2.sendMessage(chatId2, message);
 };
 
-exec('node patternNextTrand.js', (error, stdout, stderr) => {
+exec('node 155.js', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;
@@ -43,4 +43,3 @@ exec('node patternNextTrand.js', (error, stdout, stderr) => {
   sendMessage1(message);
   console.log('Отправлено2');
 });
-*/

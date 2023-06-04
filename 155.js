@@ -10,9 +10,27 @@ const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) 
 const currentVolume = volume[volume.length - 1];
 const currentNumberOfTrades = numberOfTrades[numberOfTrades.length - 1];
 const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
-
+/*
 if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrades && correlation >= currentCorrelation) {
   console.log('The market is moving sideways');
+}
+*/
+if (averageVolume > currentVolume) {
+  console.log('Внимание! Превышен средний объем!');
+  console.log('ср. Объем:', averageVolume);
+  console.log('Объем:', currentVolume);
+}
+
+if (averageNumberOfTrades > currentNumberOfTrades) {
+  console.log('Внимание! Превышение среднего числа трейдеров!');
+  console.log('ср .Трейдеры:', averageNumberOfTrades);
+  console.log('Трейдеры:', currentNumberOfTrades);
+}
+
+if (currentCorrelation > correlation) {
+  console.log('Внимание! Превышено значение корреляции!');
+  console.log('ср. Correlation:', correlation);
+  console.log('Correlation:', currentCorrelation);
 }
 
 function pearsonCorrelation(x, y) {
@@ -36,9 +54,3 @@ function pearsonCorrelation(x, y) {
 
   return numerator / denominator;
 }
-console.log('ср. Объем:', averageVolume);
-console.log('Объем:', currentVolume);
-console.log('ср .Трейдеры:', averageNumberOfTrades);
-console.log('Трейдеры:', currentNumberOfTrades);
-console.log('ср. Correlation:', correlation);
-console.log('Correlation:', currentCorrelation);
