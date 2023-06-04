@@ -10,8 +10,8 @@ const sumXY = math.sum(math.dotMultiply(x, y));
 const sumX2 = math.sum(math.dotPow(x, 2));
 const b = (n * sumXY - sumX * sumY) / (n * sumX2 - math.pow(sumX, 2));
 const a = (sumY - b * sumX) / n;
-//console.log('a:', a); // отладочный вывод
-//console.log('b:', b); // отладочный вывод
+console.log('a:', a); // отладочный вывод
+console.log('b:', b); // отладочный вывод
 const nextPrice = a + b * x[x.length - 1];
 console.log('Цена регрессии (линейная):', nextPrice); // отладочный вывод
 const x1 = data.map(candle => candle.close);
