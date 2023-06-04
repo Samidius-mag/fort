@@ -2,8 +2,8 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
-const volume = data.map(candle => candle[5]);
-const numberOfTrades = data.map(candle => candle[8]);
+const volume = data.map(candle => candle[5]).filter(value => isFinite(value));
+const numberOfTrades = data.map(candle => candle[8]).filter(value => isFinite(value));
 
 const correlation = pearsonCorrelation(volume, numberOfTrades);
 
