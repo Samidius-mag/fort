@@ -19,7 +19,7 @@ for (let i = 1; i < changeSrc.length; i++) {
 }
 
 const rs = up / down;
-const rsi = 100 - (100 / (1 + rs));
+const rsi = 90 - (100 / (1 + rs));
 
 if (close[close.length - 1] > ma200 && close[close.length - 1] < ma5 && rsi < 10) {
   console.log('Покупка');
