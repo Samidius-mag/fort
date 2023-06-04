@@ -4,9 +4,12 @@ const data = JSON.parse(fs.readFileSync('price.json'));
 const close = data.map(candle => parseFloat(candle.close));
 const ma5 = sma(close, 5);
 const ma200 = sma(close, 200);
+
 const changeSrc = close.map((value, index, array) => index === 0 ? 0 : value - array[index - 1]);
+
 const up = rma(max(changeSrc, 0), 2);
 const down = rma(-min(changeSrc, 0), 2);
+
 const rsi = down === 0 ? 100 : up === 0 ? 0 : 100 - (100 / (1 + up / down));
 
 if (close[close.length - 1] > ma200 && close[close.length - 1] < ma5 && rsi < 10) {
@@ -23,20 +26,18 @@ function sma(values, length) {
   return sum / length;
 }
 
-function max(values, length) {
-  const slice = values.slice(-length);
-  return Math.max(...slice);
+function max(value, threshold) {
+  return value > threshold ? value : threshold;
 }
 
-function min(values, length) {
-  const slice = values.slice(-length);
-  return Math.min(...slice);
+function min(value, threshold) {
+  return value < threshold ? value : threshold;
 }
 
-function rma(values, length) {
-  const slice = values.slice(-length);
-  const sum = slice.reduce((acc, val) => acc + val, 0);
-  return sum / length;
+function rma(value, length) {
+  return (value + rma.prev * (length - 1)) / length;
 }
+
+rma.prev = 0;
 
 console.log(`RSI: ${rsi}`)
