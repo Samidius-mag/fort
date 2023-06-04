@@ -70,7 +70,7 @@ console.log('Сопротивление 24 часа:', supportResistance['24h'].
 // Перекупленность/перепроданность рынка
 const overboughtOversold = {
   RSI: {
-    current: indRes.RSI[indRes.RSI.length - 1]/1.05,
+    current: indRes.RSI[indRes.RSI.length - 1]/0.95,
     overbought: 85,
     oversold: 15
   },
