@@ -2,22 +2,31 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
-const localMaxima = [];
-const localMinima = [];
+const volume = data.map(candle => candle[5]);
+const numberOfTrades = data.map(candle => candle[8]);
 
-for (let i = 1; i < data.length - 1; i++) {
-  const prev = data[i - 1];
-  const curr = data[i];
-  const next = data[i + 1];
+const correlation = pearsonCorrelation(volume, numberOfTrades);
 
-  if (curr.high > prev.high && curr.high > next.high) {
-    localMaxima.push(curr);
+console.log('Correlation:', correlation);
+
+function pearsonCorrelation(x, y) {
+  const n = x.length;
+  let sumX = 0;
+  let sumY = 0;
+  let sumXY = 0;
+  let sumX2 = 0;
+  let sumY2 = 0;
+
+  for (let i = 0; i < n; i++) {
+    sumX += x[i];
+    sumY += y[i];
+    sumXY += x[i] * y[i];
+    sumX2 += x[i] ** 2;
+    sumY2 += y[i] ** 2;
   }
 
-  if (curr.low < prev.low && curr.low < next.low) {
-    localMinima.push(curr);
-  }
+  const numerator = n * sumXY - sumX * sumY;
+  const denominator = Math.sqrt((n * sumX2 - sumX ** 2) * (n * sumY2 - sumY ** 2));
+
+  return numerator / denominator;
 }
-
-console.log('Local maxima:', localMaxima);
-console.log('Local minima:', localMinima);
