@@ -80,7 +80,7 @@ const overboughtOversold = {
     oversold: -0.02
   }
 };
-console.log('RSI:', overboughtOversold.RSI.current);
+console.log('RSI:', overboughtOversold.RSI.current.toFixed(2));
 console.log('ROC:', overboughtOversold.ROC.current);
 
 if (overboughtOversold.RSI.current > overboughtOversold.RSI.overbought) {
