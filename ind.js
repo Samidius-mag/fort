@@ -1,5 +1,5 @@
 const { RSI, EMA, ROC, BollingerBands, OBV, PSAR, WMA } = require('technicalindicators');
-const priceData = require('./price4h.json');
+const priceData = require('./price.json');
 
 const close = priceData.map(candle => parseFloat(candle.close));
 const volume = priceData.map(candle => parseFloat(candle.volume));
