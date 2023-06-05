@@ -13,6 +13,15 @@ const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(
 const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
 const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
 const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
+const volume = data.map(candle => parseFloat(candle.volume));
+const numberOfTrades = data.map(candle => parseFloat(candle.numberOfTrades));
+const correlation = pearsonCorrelation(volume, numberOfTrades);
+const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
+const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) / numberOfTrades.length;
+const currentVolume = volume[volume.length - 1];
+const currentNumberOfTrades = numberOfTrades[numberOfTrades.length - 1];
+const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
+
 //console.log('Изменение цены:', priceChange.toFixed(2) + '%');
 
 // Определение тренда
@@ -101,12 +110,12 @@ if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
 // Рекомендации по покупке/продаже
 const buySell = {
   RSI: {
-    buy: overboughtOversold.RSI.current < overboughtOversold.RSI.oversold,
-    sell: overboughtOversold.RSI.current > overboughtOversold.RSI.overbought
+    buy: overboughtOversold.RSI.current < overboughtOversold.RSI.oversold && averageVolume < currentVolume,
+    sell: overboughtOversold.RSI.current > overboughtOversold.RSI.overbought && averageVolume < currentVolume
   },
   ROC: {
-    buy: overboughtOversold.ROC.current < overboughtOversold.ROC.oversold,
-    sell: overboughtOversold.ROC.current > overboughtOversold.ROC.overbought
+    buy: overboughtOversold.ROC.current < overboughtOversold.ROC.oversold && averageVolume < currentVolume,
+    sell: overboughtOversold.ROC.current > overboughtOversold.ROC.overbought && averageVolume < currentVolume
   }
 };
 
@@ -142,4 +151,51 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.resistance);
   console.log('Точка выхода из сделки:', entryExitPoints.sell.support);
   console.log('Стоп - лосс:', supportResistance['24h'].resistance)
+}
+
+
+
+/*
+if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrades && correlation >= currentCorrelation) {
+  console.log('The market is moving sideways');
+}
+*/
+if (averageVolume < currentVolume) {
+  console.log('Внимание! Превышен средний объем!');
+  console.log('ср. Объем:', averageVolume);
+  console.log('Объем:', currentVolume);
+}
+
+if (averageNumberOfTrades < currentNumberOfTrades) {
+  console.log('Внимание! Превышение среднего числа трейдеров!');
+  console.log('ср .Трейдеры:', averageNumberOfTrades);
+  console.log('Трейдеры:', currentNumberOfTrades);
+}
+
+if (currentCorrelation > correlation) {
+  console.log('Внимание! Превышено значение корреляции!');
+  console.log('ср. Correlation:', correlation);
+  console.log('Correlation:', currentCorrelation);
+}
+
+function pearsonCorrelation(x, y) {
+  const n = x.length;
+  let sumX = 0;
+  let sumY = 0;
+  let sumXY = 0;
+  let sumX2 = 0;
+  let sumY2 = 0;
+
+  for (let i = 0; i < n; i++) {
+    sumX += x[i];
+    sumY += y[i];
+    sumXY += x[i] * y[i];
+    sumX2 += x[i] ** 2;
+    sumY2 += y[i] ** 2;
+  }
+
+  const numerator = n * sumXY - sumX * sumY;
+  const denominator = Math.sqrt((n * sumX2 - sumX ** 2) * (n * sumY2 - sumY ** 2));
+
+  return numerator / denominator;
 }
