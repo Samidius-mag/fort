@@ -13,7 +13,7 @@ const sortedData = data.sort((a, b) => b.numberOfTrades - a.numberOfTrades);
 const selectedData = sortedData.slice(0, 500);
 
 // Создаем массив значений для регрессии
-const xValues = data.map((item) => parseInt(item.timestamp));
+const xValues = data.map((item) => Date.parse(item.timestamp));
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
 
 console.log('xValues:', xValues);
