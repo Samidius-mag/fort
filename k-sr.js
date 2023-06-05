@@ -1,6 +1,6 @@
 const data = require('./price.json');
 
-const points1 = data.map(candle => parseFloat(candle.open));
+const points1 = data.map(candle => parseFloat(candle.volume));
 const points2 = data.map(candle => parseFloat(candle.close));
 const points = points1.map((value, index) => [value, points2[index]]);
 function kMeans(points, k, maxIterations = 100) {
