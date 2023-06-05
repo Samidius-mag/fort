@@ -55,7 +55,7 @@ const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
 
 // Получаем массив цен закрытия
-const prices = data.map(candle => candle.close);
+const prices = data.map(candle => parseFloat(candle.close));
 
 // Вычисляем индикаторы
 const ma = movingAverage(prices, maPeriod);
