@@ -15,7 +15,7 @@ const selectedData = sortedData.slice(0, 500);
 // Создаем массив значений для регрессии
 const xValues = data.map((item) => Date.parse(item.timestamp.replace('T', ' ').replace('Z', '')));
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
-
+console.log(data); // проверяем содержимое массива data
 console.log('xValues:', xValues);
 console.log('yValues:', yValues);
 
