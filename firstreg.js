@@ -11,11 +11,11 @@ const sortedData = data.sort((a, b) => b.numberOfTrades - a.numberOfTrades);
 
 // Выбираем первые 500 свечей
 const selectedData = sortedData.slice(0, 500);
-
+console.log(data); // проверяем содержимое массива data
 // Создаем массив значений для регрессии
 const xValues = data.map((item) => Date.parse(item.timestamp.replace('T', ' ').replace('Z', '')));
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
-console.log(data); // проверяем содержимое массива data
+
 console.log('xValues:', xValues);
 console.log('yValues:', yValues);
 
