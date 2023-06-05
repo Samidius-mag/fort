@@ -90,7 +90,20 @@ const maxPrices = [
   prices[maxRsiIndex + rsiPeriod - 1]
 ];
 
+// Находим уравнения прямых для каждого индикатора
+const maRegression = linearRegression(minMaIndex + maPeriod - 2, minPrices[0], maxMaIndex + maPeriod - 2, maxPrices[0]);
+const stochRegression = linearRegression(minStochIndex + stochPeriod - 2, minPrices[1], maxStochIndex + stochPeriod - 2, maxPrices[1]);
+const rsiRegression = linearRegression(minRsiIndex + rsiPeriod - 2, minPrices[2], maxRsiIndex + rsiPeriod - 2, maxPrices[2]);
+
+// Предсказываем следующие локальные минимумы и максимумы
+const nextMinMa = maRegression.slope * (minMaIndex + maPeriod - 1) + maRegression.intercept;
+const nextMaxMa = maRegression.slope * (maxMaIndex + maPeriod - 1) + maRegression.intercept;
+const nextMinStoch = stochRegression.slope * (minStochIndex + stochPeriod - 1) + stochRegression.intercept;
+const nextMaxStoch = stochRegression.slope * (maxStochIndex + stochPeriod - 1) + stochRegression.intercept;
+const nextMinRsi = rsiRegression.slope * (minRsiIndex + rsiPeriod - 1) + rsiRegression.intercept;
+const nextMaxRsi = rsiRegression.slope * (maxRsiIndex + rsiPeriod - 1) + rsiRegression.intercept;
+
 // Выводим результат в консоль
-console.log(`MA: min=${minMa} (${minPrices[0]}), max=${maxMa} (${maxPrices[0]})`);
-console.log(`Stoch: min=${minStoch} (${minPrices[1]}), max=${maxStoch} (${maxPrices[1]})`);
-console.log(`RSI: min=${minRsi} (${minPrices[2]}), max=${maxRsi} (${maxPrices[2]})`);
+console.log(`MA: min=${minMa} (${minPrices[0]}), max=${maxMa} (${maxPrices[0]}), nextMin=${nextMinMa}, nextMax=${nextMaxMa}`);
+console.log(`Stoch: min=${minStoch} (${minPrices[1]}), max=${maxStoch} (${maxPrices[1]}), nextMin=${nextMinStoch}, nextMax=${nextMaxStoch}`);
+console.log(`RSI: min=${minRsi} (${minPrices[2]}), max=${maxRsi} (${maxPrices[2]}), nextMin=${nextMinRsi}, nextMax=${nextMaxRsi}`);
