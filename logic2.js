@@ -173,7 +173,7 @@ if (averageNumberOfTrades < currentNumberOfTrades) {
 }
 
 if (currentCorrelation > correlation) {
-  console.log('Внимание! Превышено значение корреляции!');
+  console.log('Внимание! Превышено значение корреляции! Вероятность продолжения тренда!');
   console.log('ср. Correlation:', correlation);
   console.log('Correlation:', currentCorrelation);
 }
