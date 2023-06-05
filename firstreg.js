@@ -37,5 +37,8 @@ const prices = nextYValues.reduce((acc, value, i) => {
   return acc;
 }, []);
 
-console.log(`Максимальное количество сделок: ${maxNumberOfTrades}`);
-console.log(`Цены на которых будет максимальное количество сделок: ${prices.join(', ')}`);
+const yValuesNumbers = yValues.map((value) => parseFloat(value));
+const maxTrades = Math.max(...yValuesNumbers);
+const maxPrices = xValues.filter((value, index) => yValuesNumbers[index] === maxTrades);
+console.log(`Максимальное количество сделок: ${maxTrades}`);
+console.log(`Цены на которых будет максимальное количество сделок: ${maxPrices}`);
