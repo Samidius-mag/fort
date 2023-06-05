@@ -50,6 +50,13 @@ function relativeStrengthIndex(prices, period) {
   return rsi;
 }
 
+// Функция для вычисления уравнения прямой по двум точкам
+function linearRegression(x1, y1, x2, y2) {
+  const slope = (y2 - y1) / (x2 - x1);
+  const intercept = y1 - slope * x1;
+  return { slope, intercept };
+}
+
 // Читаем данные из файла price.json
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
