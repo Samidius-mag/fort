@@ -62,7 +62,15 @@ const ma = movingAverage(prices, maPeriod);
 const stoch = stochasticOscillator(prices, stochPeriod);
 const rsi = relativeStrengthIndex(prices, rsiPeriod);
 
+// Находим минимальное и максимальное значение по индикаторам
+const minMa = Math.min(...ma);
+const maxMa = Math.max(...ma);
+const minStoch = Math.min(...stoch);
+const maxStoch = Math.max(...stoch);
+const minRsi = Math.min(...rsi);
+const maxRsi = Math.max(...rsi);
+
 // Выводим результат в консоль
-console.log(ma);
-console.log(stoch);
-console.log(rsi);
+console.log(`MA: min=${minMa}, max=${maxMa}`);
+console.log(`Stoch: min=${minStoch}, max=${maxStoch}`);
+console.log(`RSI: min=${minRsi}, max=${maxRsi}`);
