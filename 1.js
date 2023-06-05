@@ -70,7 +70,27 @@ const maxStoch = Math.max(...stoch);
 const minRsi = Math.min(...rsi);
 const maxRsi = Math.max(...rsi);
 
+// Находим индексы минимальных и максимальных значений
+const minMaIndex = ma.indexOf(minMa);
+const maxMaIndex = ma.indexOf(maxMa);
+const minStochIndex = stoch.indexOf(minStoch);
+const maxStochIndex = stoch.indexOf(maxStoch);
+const minRsiIndex = rsi.indexOf(minRsi);
+const maxRsiIndex = rsi.indexOf(maxRsi);
+
+// Находим цены, соответствующие минимальным и максимальным значениям
+const minPrices = [
+  prices[minMaIndex + maPeriod - 1],
+  prices[minStochIndex + stochPeriod - 1],
+  prices[minRsiIndex + rsiPeriod - 1]
+];
+const maxPrices = [
+  prices[maxMaIndex + maPeriod - 1],
+  prices[maxStochIndex + stochPeriod - 1],
+  prices[maxRsiIndex + rsiPeriod - 1]
+];
+
 // Выводим результат в консоль
-console.log(`MA: min=${minMa}, max=${maxMa}`);
-console.log(`Stoch: min=${minStoch}, max=${maxStoch}`);
-console.log(`RSI: min=${minRsi}, max=${maxRsi}`);
+console.log(`MA: min=${minMa} (${minPrices[0]}), max=${maxMa} (${maxPrices[0]})`);
+console.log(`Stoch: min=${minStoch} (${minPrices[1]}), max=${maxStoch} (${maxPrices[1]})`);
+console.log(`RSI: min=${minRsi} (${minPrices[2]}), max=${maxRsi} (${maxPrices[2]})`);
