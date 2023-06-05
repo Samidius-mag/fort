@@ -16,6 +16,9 @@ const selectedData = sortedData.slice(0, 500);
 const xValues = selectedData.map(candle => parseFloat(candle.time));
 const yValues = selectedData.map(candle => parseFloat(candle.numberOfTrades));
 
+console.log('xValues:', xValues);
+console.log('yValues:', yValues);
+
 // Выполняем регрессию
 const result = regression.linear(xValues.map((x, i) => [i, x]), yValues);
 
