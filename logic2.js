@@ -174,8 +174,8 @@ if (averageNumberOfTrades < currentNumberOfTrades) {
 
 if (currentCorrelation > correlation) {
   console.log('Внимание! Превышено значение корреляции! Чем ближе к 1 тем сильнее импульс!');
-  console.log('ср. корреляция:', correlation);
-  console.log('Корреляция:', currentCorrelation);
+  console.log('ср. корреляция:', correlation.toFixed(8));
+  console.log('Корреляция:', currentCorrelation.toFixed(8));
 }
 
 function pearsonCorrelation(x, y) {
