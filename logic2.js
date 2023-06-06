@@ -205,3 +205,9 @@ function pearsonCorrelation(x, y) {
 
   return numerator / denominator;
 }
+
+module.exports = {
+  currentPrice,
+  currentVolume,
+  currentNumberOfTrades,
+};

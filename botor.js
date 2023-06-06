@@ -12,7 +12,7 @@ const sendMessage = (message) => {
 */
 
 const TelegramBot = require('node-telegram-bot-api');
-
+const { currentPrice, currentVolume, currentNumberOfTrades } = require('./1.js');
 // создаем экземпляр бота
 const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: false });
 
@@ -20,14 +20,20 @@ const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { 
 const chatId = '-1001979484873';
 // создаем функцию, которая возвращает текущее время
 let messageId;
-bot.sendMessage(chatId, `Текущее время: ${new Date().toLocaleTimeString()}`)
+bot.sendMessage(chatId, 
+`Текущая цена: ${currentPrice}
+Текущий объем: ${currentVolume}
+Текущие сделки: ${currentNumberOfTrades}`)
   .then((sentMessage) => {
     messageId = sentMessage.message_id;
   });
 
 // обновляем сообщение с текущим временем каждые 10 секунд
 setInterval(() => {
-  bot.editMessageText(`Текущее время: ${new Date().toLocaleTimeString()}`, {
+  bot.editMessageText(
+  `Текущая цена: ${currentPrice}
+  Текущий объем: ${currentVolume}
+  Текущие сделки: ${currentNumberOfTrades}`, {
     chat_id: chatId,
     message_id: messageId,
   });
