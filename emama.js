@@ -1,32 +1,41 @@
-const _ = require('lodash');
 const fs = require('fs');
+const { EMA, SMA } = require('technicalindicators');
 
-const data = JSON.parse(fs.readFileSync('price.json'));
+const rawData = fs.readFileSync('price.json');
+const data = JSON.parse(rawData);
 
-const ema200 = _.map(_.reverse(_.slice(data, 0, 200)), (candle, index) => {
-  const closePrices = _.map(_.slice(data, index, index + 200), 'close');
-  return _.round(_.sum(closePrices) / 200, 2);
-});
+const ema200 = EMA.calculate({ period: 200, values: data.map(candle => candle.close) });
+const ma200 = SMA.calculate({ period: 200, values: data.map(candle => candle.close) });
+const ema5 = EMA.calculate({ period: 5, values: data.map(candle => candle.close) });
 
-const ma200 = _.map(_.reverse(_.slice(data, 0, 200)), (candle, index) => {
-  const closePrices = _.map(_.slice(data, index, index + 200), 'close');
-  return _.round(_.sum(closePrices) / 200, 2);
-});
+const result = [];
 
-const ema5 = _.map(_.reverse(_.slice(data, 0, 5)), (candle, index) => {
-  const closePrices = _.map(_.slice(data, index, index + 5), 'close');
-  return _.round(_.sum(closePrices) / 5, 2);
-});
+for (let i = 0; i < data.length; i++) {
+  const ema200Value = ema200[i];
+  const ma200Value = ma200[i];
+  const ema5Value = ema5[i];
 
-const result = _.filter(data, (candle, index) => {
-  const ema200Up = ema200[index] > ma200[index] && ma200[index] > ema5[index] && ema200[index] > ema5[index];
-  const ema200Down = ema200[index] < ma200[index] && ma200[index] < ema5[index] && ema200[index] < ema5[index];
-  return ema200Up || ema200Down;
-});
-console.log('EMA200:', ema200);
-console.log('MA200:', ma200);
-console.log('EMA5:', ema5);
-console.log('Result:', result);
+  if (ema200Value > ma200Value && ma200Value > ema5Value && ema200Value > ema5Value) {
+    result.push({
+      time: data[i].time,
+      ema200: ema200Value,
+      ma200: ma200Value,
+      ema5: ema5Value,
+      direction: 'down',
+    });
+  } else if (ema200Value < ma200Value && ma200Value < ema5Value && ema200Value < ema5Value) {
+    result.push({
+      time: data[i].time,
+      ema200: ema200Value,
+      ma200: ma200Value,
+      ema5: ema5Value,
+      direction: 'up',
+    });
+  }
+}
+
+console.log('Results:');
+console.log(result);
 
 fs.writeFileSync('emamares.json', JSON.stringify(result));
-console.log('Data saved to emamares.json');
+console.log('Results saved successfully');
