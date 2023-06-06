@@ -44,6 +44,6 @@ bot.sendMessage(chatId, `Текущая цена: ${currentPrice}\nТекущи�
         prevVolume = currentVolume;
         prevNumberOfTrades = currentNumberOfTrades;
       }
-    }, 10000);
+    }, 15000);
   });
   
