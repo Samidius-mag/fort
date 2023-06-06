@@ -6,8 +6,8 @@ const data = JSON.parse(rawData);
 // Сортируем данные по убыванию количества сделок
 const sortedData = data.sort((a, b) => b.numberOfTrades - a.numberOfTrades);
 // Выбираем первые 500 свечей
-const selectedData = sortedData.slice(0, 500);
-console.log(data); // проверяем содержимое массива data
+const selectedData = sortedData.slice(0, 5000);
+//console.log(data); // проверяем содержимое массива data
 // Создаем массив значений для регрессии
 const xValues = data.map((item) => item.time);
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
@@ -16,7 +16,7 @@ const yValues = data.map((item) => parseInt(item.numberOfTrades));
 // Выполняем регрессию
 const result = regression.linear(xValues.map((x, i) => [i, x]), yValues);
 // Предсказываем значения для следующих 500 свечей
-const nextXValues = math.range(xValues[xValues.length - 1] + 1, xValues[xValues.length - 1] + 501)._data;
+const nextXValues = math.range(xValues[xValues.length - 1] + 1, xValues[xValues.length - 1] + 24)._data;
 const nextYValues = nextXValues.map((x, i) => result.predict([i + xValues.length, x])[1]);
 // Находим максимальное значение количества сделок
 const maxNumberOfTrades = math.max(nextYValues);
