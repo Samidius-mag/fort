@@ -178,7 +178,7 @@ if (currentCorrelation > correlation && averageVolume < currentVolume) {
   console.log('Корреляция:', currentCorrelation.toFixed(8));
 }
 
-if (averageVolume > currentVolume) {
+if (averageVolume > currentVolume && currentVolume > 1200) {
   console.log('Боковик!');
   console.log('Ср. объем:', averageVolume.toFixed(2));
   console.log('Объем:', currentVolume.toFixed(2));
