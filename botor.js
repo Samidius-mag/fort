@@ -12,36 +12,29 @@ const sendMessage = (message) => {
 */
 
 const TelegramBot = require('node-telegram-bot-api');
-const { currentPrice } = require('./logic3.js');
-// создаем экземпляр бота
-const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: false });
+const fs = require('fs');
 
-// ID пользователя, которому будет отправлено сообщение
+const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const chatId = '-1001979484873';
-// отправляем статическое сообщение с текущими значениями
-bot.sendMessage(chatId, `Текущая цена: ${currentPrice}`)
-  .then((message) => {
-    // сохраняем ID сообщения для последующего обновления
-    const messageId = message.message_id;
 
-    // сохраняем предыдущие значения
-    let prevPrice = currentPrice;
-  
+const bot = new TelegramBot(token, { polling: true });
 
-    // обновляем сообщение каждые 10 секунд
-    setInterval(() => {
-      // проверяем, изменились ли значения
-      if (prevPrice !== currentPrice) {
-        // обновляем сообщение с новыми значениями
-        bot.editMessageText(`Текущая цена: ${currentPrice}`, {
-          chat_id: chatId,
-          message_id: messageId,
-        });
+let message = '';
 
-        // обновляем предыдущие значения
-        prevPrice = currentPrice;
-        
-      }
-    }, 15000);
-  });
+
+setInterval(() => {
+  const data = JSON.parse(fs.readFileSync('price.json'));
+
+  const lastCandle = data[data.length - 1];
+  const price = lastCandle.close;
+  const volume = lastCandle.volume;
+  const numberOfTrades = lastCandle.numberOfTrades;
+
+  const newMessage = `BTC/USDT\nPrice: ${price}\nVolume: ${volume}\nNumber of trades: ${numberOfTrades}`;
+
+  if (newMessage !== message) {
+    message = newMessage;
+    bot.sendMessage(chatId, message);
+  }
+}, 15000);
   
