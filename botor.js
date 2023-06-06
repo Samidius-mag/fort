@@ -19,15 +19,16 @@ const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { 
 // ID пользователя, которому будет отправлено сообщение
 const chatId = '-1001979484873';
 // создаем функцию, которая возвращает текущее время
-function getCurrentTime() {
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  return `${hours}:${minutes}:${seconds}`;
-}
+let messageId;
+bot.sendMessage(chatId, `Текущее время: ${new Date().toLocaleTimeString()}`)
+  .then((sentMessage) => {
+    messageId = sentMessage.message_id;
+  });
 
+// обновляем сообщение с текущим временем каждые 10 секунд
 setInterval(() => {
-  bot.sendMessage(chatId, `Текущее время: ${new Date().toLocaleTimeString()}`);
+  bot.editMessageText(`Текущее время: ${new Date().toLocaleTimeString()}`, {
+    
+    message_id: messageId,
+  });
 }, 10000);
-// отправляем сообщение ботом
