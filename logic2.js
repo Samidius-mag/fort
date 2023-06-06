@@ -172,7 +172,7 @@ if (averageNumberOfTrades < currentNumberOfTrades) {
   console.log('Сделки:', currentNumberOfTrades);
 }
 
-if (currentCorrelation > correlation) {
+if (currentCorrelation > correlation && averageVolume < currentVolume) {
   console.log('Внимание! Превышено среднее значение корреляции! Чем ближе к 1.0 тем сильнее импульс!');
   console.log('Ср. корреляция:', correlation.toFixed(8));
   console.log('Корреляция:', currentCorrelation.toFixed(8));
