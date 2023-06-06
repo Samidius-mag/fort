@@ -23,8 +23,10 @@ const result = _.filter(data, (candle, index) => {
   const ema200Down = ema200[index] < ma200[index] && ma200[index] < ema5[index] && ema200[index] < ema5[index];
   return ema200Up || ema200Down;
 });
-console.log(ema200Up);
-console.log(ema200Down)
+console.log('EMA200:', ema200);
+console.log('MA200:', ma200);
+console.log('EMA5:', ema5);
+console.log('Result:', result);
 
 fs.writeFileSync('emamares.json', JSON.stringify(result));
 console.log('Data saved to emamares.json');
