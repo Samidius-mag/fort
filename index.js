@@ -15,7 +15,7 @@ const loadPrice = () => {
     console.log(`child process exited with code ${code}`);
   });
 };
-
+/*
 const sendToBot = () => {
   const child = spawn('node', ['bot.js']);
 
@@ -31,7 +31,7 @@ const sendToBot = () => {
     console.log(`child process exited with code ${code}`);
   });
 };
-
+*/
 const sendToBot2 = () => {
   const child = spawn('node', ['ind.js']);
 
@@ -64,7 +64,7 @@ const sendToBot3 = () => {
     console.log(`child process exited with code ${code}`);
   });
 };
-
+/*
 const sendToBot4 = () => {
   const child = spawn('node', ['bot3.js']);
 
@@ -129,12 +129,12 @@ const sendToBot4 = () => {
       console.log(`child process exited with code ${code}`);
     });
   };
-
+*/
 setInterval(loadPrice, 10000);
-setInterval(sendToBot, 50000);
+//setInterval(sendToBot, 50000);
 setInterval(sendToBot2, 7000);
 setInterval(sendToBot3, 60000);
-setInterval(sendToBot4, 120000);
-setInterval(sendToBot5, 121000);
-setInterval(sendToBot6, 122000);
-setInterval(sendToBot7, 123000);
+//setInterval(sendToBot4, 120000);
+//setInterval(sendToBot5, 121000);
+//setInterval(sendToBot6, 122000);
+//setInterval(sendToBot7, 123000);
