@@ -13,8 +13,8 @@ const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2
 //const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
 //const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
 //const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
-//const volume = priceData.map(candle => parseFloat(candle.volume));
-//const numberOfTrades = priceData.map(candle => parseFloat(candle.numberOfTrades));
+const volume = priceData.map(candle => parseFloat(candle.volume));
+const numberOfTrades = priceData.map(candle => parseFloat(candle.numberOfTrades));
 //const correlation = pearsonCorrelation(volume, numberOfTrades);
 //const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
 //const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) / numberOfTrades.length;
