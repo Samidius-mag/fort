@@ -1,5 +1,5 @@
 const fs = require('fs');
-const tf = require('@tensorflow/tfjs');
+const tf = require('@tensorflow/tfjs-node');
 
 const rawData = fs.readFileSync('emamares.json');
 const data = JSON.parse(rawData);
