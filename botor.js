@@ -31,4 +31,4 @@ setInterval(() => {
     chat_id: chatId,
     message_id: messageId,
   });
-}, 1000);
+}, 6000);
