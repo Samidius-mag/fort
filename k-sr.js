@@ -36,7 +36,7 @@ function kMeans(points, k, maxIterations = 100) {
     const dy = point1[1] - point2[1];
     return Math.sqrt(dx * dx + dy * dy);
   }
-  const k = 5;
+  const k = 50;
 const centroids = kMeans(points, k);
 
 console.log(`Centroids for k=${k}:`);
