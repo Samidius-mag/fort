@@ -28,7 +28,7 @@ bot.sendMessage(chatId, `Текущее время: ${new Date().toLocaleTimeStr
 // обновляем сообщение с текущим временем каждые 10 секунд
 setInterval(() => {
   bot.editMessageText(`Текущее время: ${new Date().toLocaleTimeString()}`, {
-    
+    chat_id: userId,
     message_id: messageId,
   });
-}, 10000);
+}, 1000);
