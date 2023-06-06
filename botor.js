@@ -39,12 +39,3 @@ bot.sendMessage(chatId, message)
     bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
   });
 
-// Функция для получения новой свечи
-function getNewCandle() {
-  // Здесь должен быть код для получения новой свечи
-  return {
-    close: 50000,
-    volume: 100,
-    numberOfTrades: 50
-  };
-}
