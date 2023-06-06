@@ -31,4 +31,3 @@ setInterval(() => {
   bot.sendMessage(chatId, `Текущее время: ${new Date().toLocaleTimeString()}`);
 }, 10000);
 // отправляем сообщение ботом
-bot.sendMessage(chatId, message);
