@@ -18,24 +18,18 @@ const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { 
 
 // ID пользователя, которому будет отправлено сообщение
 const chatId = '-1001979484873';
-// создаем функцию, которая возвращает текущее время
-let messageId;
-bot.sendMessage(chatId, 
-`Текущая цена: ${currentPrice}
-Текущий объем: ${currentVolume}
-Текущие сделки: ${currentNumberOfTrades}`)
-  .then((sentMessage) => {
-    messageId = sentMessage.message_id;
-  });
+// отправляем статическое сообщение с текущими значениями
+bot.sendMessage(chatId, `Текущая цена: ${currentPrice}\nТекущий объем: ${currentVolume}\nТекущее количество сделок: ${currentNumberOfTrades}`)
+  .then((message) => {
+    // сохраняем ID сообщения для последующего обновления
+    const messageId = message.message_id;
 
-// обновляем сообщение с текущим временем каждые 10 секунд
-setInterval(() => {
-  bot.editMessageText(
-  `Текущая цена: ${currentPrice}
-  Текущий объем: ${currentVolume.toFixed(2)}
-  Текущие сделки: ${currentNumberOfTrades} 
-  (${new Date().toLocaleTimeString()})`, {
-    chat_id: chatId,
-    message_id: messageId,
+    // обновляем сообщение каждые 10 секунд
+    setInterval(() => {
+      bot.editMessageText(`Текущая цена: ${currentPrice}\nТекущий объем: ${currentVolume}\nТекущее количество сделок: ${currentNumberOfTrades}`, {
+        chat_id: chatId,
+        message_id: messageId,
+      });
+    }, 10000);
   });
-}, 6000);
+  
