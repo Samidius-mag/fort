@@ -83,8 +83,8 @@ console.log('Поддержка 24 часа:', supportResistance['24h'].support)
 const overboughtOversold = {
   RSI: {
     current: indRes.RSI[indRes.RSI.length - 1],
-    overbought: 70,
-    oversold: 30
+    overbought: 65,
+    oversold: 35
   },
   ROC: {
     current: indRes.ROC[indRes.ROC.length - 1],
@@ -130,14 +130,14 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
 // Точки входа-выхода в сделку
 const entryExitPoints = {
   buy: {
-    support: supportResistance.current.support,
-    resistance: supportResistance.current.resistance,
+    support: supportResistance['4h'].support,
+    resistance: supportResistance['4h'].resistance,
     ema: indRes.EMA[indRes.EMA.length - 1],
     psar: indRes.PSAR[indRes.PSAR.length - 1]
   },
   sell: {
-    support: supportResistance.current.support,
-    resistance: supportResistance.current.resistance,
+    support: supportResistance[`4h`].support,
+    resistance: supportResistance['4h'].resistance,
     ema: indRes.EMA[indRes.EMA.length - 1],
     psar: indRes.PSAR[indRes.PSAR.length - 1]
   }
@@ -146,11 +146,11 @@ const entryExitPoints = {
 if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Точка входа в сделку (покупка):', entryExitPoints.buy.support);
   console.log('Точка выхода из сделки:', entryExitPoints.buy.resistance);
-  console.log('Стоп - лосс:', supportResistance['4h'].support)
+  console.log('Стоп - лосс:', supportResistance['24h'].support)
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
   console.log('Точка входа в сделку (продажа):', entryExitPoints.sell.resistance);
   console.log('Точка выхода из сделки:', entryExitPoints.sell.support);
-  console.log('Стоп - лосс:', supportResistance['4h'].resistance)
+  console.log('Стоп - лосс:', supportResistance['24h'].resistance)
 }
 
 
