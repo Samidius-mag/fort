@@ -12,7 +12,7 @@ const sendMessage = (message) => {
 */
 
 const TelegramBot = require('node-telegram-bot-api');
-const { currentPrice, currentVolume, currentNumberOfTrades } = require('./1.js');
+const { currentPrice, currentVolume, currentNumberOfTrades } = require('./logic2.js');
 // создаем экземпляр бота
 const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: false });
 
