@@ -14,7 +14,7 @@ const sendMessage = (message) => {
 const TelegramBot = require('node-telegram-bot-api');
 
 // создаем экземпляр бота
-const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: true });
+const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: false });
 
 // ID пользователя, которому будет отправлено сообщение
 const chatId = '-1001979484873';
@@ -28,7 +28,7 @@ function getCurrentTime() {
 }
 
 // создаем переменную с текстом сообщения, в котором будет вставлено текущее время
-const message = `Текущее время: ${getCurrentTime()}`;
+const message = `Текущее время: ${new Date().toLocaleTimeString()}`;
 
 // отправляем сообщение ботом
 bot.sendMessage(chatId, message);
