@@ -12,10 +12,13 @@ const xValues = data.map((item) => item.time);
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
 console.log('xValues:', xValues);
 console.log('yValues:', yValues);
+// Нормализуем данные
+const normalizedData = regression.normalize(xValues.map((x, i) => [i, x]), yValues);
+console.log('Нормализованные данные:', normalizedData);
 // Выполняем регрессию
-const result = regression.linear(xValues.map((x, i) => [i, x]), yValues);
+const result = regression.linear(normalizedData.points, { precision: 15 });
 console.log('Коэффициенты регрессии:', result.equation);
 // Предсказываем значения для следующих 500 свечей
 const nextXValues = Array.from({ length: 500 }, (_, i) => xValues[xValues.length - 1] + i + 1);
-const nextYValues = nextXValues.map((x) => result.predict([xValues.length, x])[1]);
+const nextYValues = nextXValues.map((x) => result.predict([normalizedData.max[0] + 1, x])[1]);
 console.log('Предсказанные значения:', nextYValues);
