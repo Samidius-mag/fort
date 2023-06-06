@@ -24,7 +24,27 @@ const data = JSON.parse(fs.readFileSync('price.json'));
 const lastCandle = data[data.length - 1];
 
 // Формируем сообщение с изменяемыми данными
-const message = `BTC/USDT\nPrice: ${lastCandle.close}\nVolume: ${lastCandle.volume}\nNumber of trades: ${lastCandle.numberOfTrades}`;
+let message = `BTC/USDT\nPrice: ${lastCandle.close}\nVolume: ${lastCandle.volume}\nNumber of trades: ${lastCandle.numberOfTrades}`;
 
-// Отправляем сообщение в чат
-bot.sendMessage(chatId, message);
+// Отправляем сообщение в чат и сохраняем его ID
+bot.sendMessage(chatId, message)
+  .then((sentMessage) => {
+    // Сохраняем ID отправленного сообщения
+    const messageId = sentMessage.message_id;
+
+    // Обновляем сообщение с новыми данными
+    data.push(getNewCandle()); // Получаем новую свечу
+    const newCandle = data[data.length - 1];
+    message = `BTC/USDT\nPrice: ${newCandle.close}\nVolume: ${newCandle.volume}\nNumber of trades: ${newCandle.numberOfTrades}`;
+    bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
+  });
+
+// Функция для получения новой свечи
+function getNewCandle() {
+  // Здесь должен быть код для получения новой свечи
+  return {
+    close: 50000,
+    volume: 100,
+    numberOfTrades: 50
+  };
+}
