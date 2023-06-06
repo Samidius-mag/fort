@@ -24,12 +24,26 @@ bot.sendMessage(chatId, `Текущая цена: ${currentPrice}\nТекущи�
     // сохраняем ID сообщения для последующего обновления
     const messageId = message.message_id;
 
+    // сохраняем предыдущие значения
+    let prevPrice = currentPrice;
+    let prevVolume = currentVolume;
+    let prevNumberOfTrades = currentNumberOfTrades;
+
     // обновляем сообщение каждые 10 секунд
     setInterval(() => {
-      bot.editMessageText(`Текущая цена: ${currentPrice}\nТекущий объем: ${currentVolume}\nТекущее количество сделок: ${currentNumberOfTrades}`, {
-        chat_id: chatId,
-        message_id: messageId,
-      });
+      // проверяем, изменились ли значения
+      if (prevPrice !== currentPrice || prevVolume !== currentVolume || prevNumberOfTrades !== currentNumberOfTrades) {
+        // обновляем сообщение с новыми значениями
+        bot.editMessageText(`Текущая цена: ${currentPrice}\nТекущий объем: ${currentVolume}\nТекущее количество сделок: ${currentNumberOfTrades}`, {
+          chat_id: chatId,
+          message_id: messageId,
+        });
+
+        // обновляем предыдущие значения
+        prevPrice = currentPrice;
+        prevVolume = currentVolume;
+        prevNumberOfTrades = currentNumberOfTrades;
+      }
     }, 10000);
   });
   
