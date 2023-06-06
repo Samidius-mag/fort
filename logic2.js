@@ -82,14 +82,14 @@ console.log('Поддержка 24 часа:', supportResistance['24h'].support)
 // Перекупленность/перепроданность рынка
 const overboughtOversold = {
   RSI: {
-    current: indRes.RSI[indRes.RSI.length - 1]*1.665,
-    overbought: 90,
-    oversold: 10
+    current: indRes.RSI[indRes.RSI.length - 1],
+    overbought: 70,
+    oversold: 30
   },
   ROC: {
     current: indRes.ROC[indRes.ROC.length - 1],
-    overbought: 0.03,
-    oversold: -0.03
+    overbought: 2,
+    oversold: -2
   }
 };
 //console.log('RSI:', overboughtOversold.RSI.current);
@@ -110,12 +110,12 @@ if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
 // Рекомендации по покупке/продаже
 const buySell = {
   RSI: {
-    buy: overboughtOversold.RSI.current < overboughtOversold.RSI.oversold && averageVolume < currentVolume,
-    sell: overboughtOversold.RSI.current > overboughtOversold.RSI.overbought && averageVolume < currentVolume
+    buy: overboughtOversold.RSI.current < overboughtOversold.RSI.oversold,
+    sell: overboughtOversold.RSI.current > overboughtOversold.RSI.overbought
   },
   ROC: {
-    buy: overboughtOversold.ROC.current < overboughtOversold.ROC.oversold && averageVolume < currentVolume,
-    sell: overboughtOversold.ROC.current > overboughtOversold.ROC.overbought && averageVolume < currentVolume
+    buy: overboughtOversold.ROC.current < overboughtOversold.ROC.oversold,
+    sell: overboughtOversold.ROC.current > overboughtOversold.ROC.overbought
   }
 };
 
@@ -162,20 +162,20 @@ if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrad
 */
 if (averageVolume < currentVolume) {
   console.log('Внимание! Превышен средний объем!');
-  console.log('ср. Объем:', averageVolume);
+  console.log('ср. объем:', averageVolume);
   console.log('Объем:', currentVolume);
 }
 
 if (averageNumberOfTrades < currentNumberOfTrades) {
-  console.log('Внимание! Превышение среднего числа трейдеров!');
-  console.log('ср .Трейдеры:', averageNumberOfTrades);
-  console.log('Трейдеры:', currentNumberOfTrades);
+  console.log('Внимание! Превышение среднего числа сделок!');
+  console.log('ср .сделки:', averageNumberOfTrades);
+  console.log('ТСделки:', currentNumberOfTrades);
 }
 
 if (currentCorrelation > correlation) {
-  console.log('Внимание! Превышено значение корреляции! Вероятность продолжения тренда!');
-  console.log('ср. Correlation:', correlation);
-  console.log('Correlation:', currentCorrelation);
+  console.log('Внимание! Превышено значение корреляции! Чем ближе к 1 тем сильнее импульс!');
+  console.log('ср. корреляция:', correlation);
+  console.log('Корреляция:', currentCorrelation);
 }
 
 function pearsonCorrelation(x, y) {
