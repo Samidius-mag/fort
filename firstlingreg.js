@@ -16,6 +16,6 @@ const yValues = data.map((item) => parseInt(item.numberOfTrades));
 const regression = new SimpleLinearRegression(xValues, yValues);
 console.log('Коэффициенты регрессии:', regression.slope, regression.intercept);
 // Предсказываем значения для следующих 500 свечей
-const nextXValues = Array.from({ length: 500 }, (_, i) => xValues[xValues.length - 1] + i + 1);
+const nextXValues = Array.from({ length: 24 }, (_, i) => xValues[xValues.length - 1] + i + 1);
 const nextYValues = nextXValues.map((x) => regression.predict(x));
 console.log('Предсказанные значения:', nextYValues);
