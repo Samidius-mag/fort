@@ -6,7 +6,7 @@ const data = JSON.parse(rawData);
 const sortedData = data.sort((a, b) => b.numberOfTrades - a.numberOfTrades);
 // Выбираем первые 500 свечей
 const selectedData = sortedData.slice(0, 500);
-console.log(data); // проверяем содержимое массива data
+//console.log(data); // проверяем содержимое массива data
 // Создаем массив значений для регрессии
 const xValues = data.map((item) => item.time/1000);
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
