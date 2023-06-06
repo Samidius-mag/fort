@@ -12,7 +12,7 @@ const sendMessage = (message) => {
 */
 
 const TelegramBot = require('node-telegram-bot-api');
-const { currentPrice, currentVolume, currentNumberOfTrades } = require('./logic2.js');
+const { currentPrice, currentVolume, currentNumberOfTrades } = require('./logic3.js');
 // создаем экземпляр бота
 const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: false });
 
@@ -32,7 +32,7 @@ bot.sendMessage(chatId,
 setInterval(() => {
   bot.editMessageText(
   `Текущая цена: ${currentPrice}
-  Текущий объем: ${currentVolume}
+  Текущий объем: ${currentVolume.toFixed(2)}
   Текущие сделки: ${currentNumberOfTrades}`, {
     chat_id: chatId,
     message_id: messageId,
