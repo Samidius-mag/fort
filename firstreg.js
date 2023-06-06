@@ -11,8 +11,8 @@ console.log(data); // проверяем содержимое массива dat
 // Создаем массив значений для регрессии
 const xValues = data.map((item) => item.time);
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
-console.log('xValues:', xValues);
-console.log('yValues:', yValues);
+//console.log('xValues:', xValues);
+//console.log('yValues:', yValues);
 // Выполняем регрессию
 const result = regression.linear(xValues.map((x, i) => [i, x]), yValues);
 // Предсказываем значения для следующих 500 свечей
