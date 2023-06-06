@@ -14,7 +14,7 @@ const sendMessage = (message) => {
 const TelegramBot = require('node-telegram-bot-api');
 
 // создаем экземпляр бота
-const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: false });
+const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: true });
 
 // ID пользователя, которому будет отправлено сообщение
 const chatId = '-1001979484873';
