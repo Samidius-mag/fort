@@ -4,9 +4,9 @@ const { EMA, SMA } = require('technicalindicators');
 const rawData = fs.readFileSync('price.json');
 const data = JSON.parse(rawData);
 
-const ema200 = EMA.calculate({ period: 200, values: data.map(candle => candle.close) });
-const ma200 = SMA.calculate({ period: 200, values: data.map(candle => candle.close) });
-const ema5 = EMA.calculate({ period: 5, values: data.map(candle => candle.close) });
+const ema200 = EMA.calculate({ period: 200, values: data.map(candle => parseFloat(candle.close)) });
+const ma200 = SMA.calculate({ period: 200, values: data.map(candle => parseFloat(candle.close)) });
+const ema5 = EMA.calculate({ period: 5, values: data.map(candle => parseFloat(candle.close)) });
 
 const result = [];
 
