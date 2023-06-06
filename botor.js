@@ -33,7 +33,8 @@ setInterval(() => {
   bot.editMessageText(
   `Текущая цена: ${currentPrice}
   Текущий объем: ${currentVolume.toFixed(2)}
-  Текущие сделки: ${currentNumberOfTrades}`, {
+  Текущие сделки: ${currentNumberOfTrades} 
+  (${new Date().toLocaleTimeString()})`, {
     chat_id: chatId,
     message_id: messageId,
   });
