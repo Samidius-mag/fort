@@ -3,7 +3,7 @@ const data = require('./price.json');
 const points1 = data.map(candle => parseFloat(candle.volume));
 const points2 = data.map(candle => parseFloat(candle.close));
 const points = points1.map((value, index) => [value, points2[index]]);
-function kMeans(points, k, maxIterations = 100) {
+function kMeans(points, k, maxIterations = 1000) {
     // Инициализация центроидов
     const centroids = points.slice(0, k);
   
