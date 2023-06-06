@@ -1,26 +1,26 @@
 const fs = require('fs');
-const moment = require('moment');
+//const moment = require('moment');
 const priceData = require('./price.json');
-const indRes = require('./indres.json');
+//const indRes = require('./indres.json');
 
 // Определение текущей цены
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
 //console.log('Текущая цена:', currentPrice);
 
 // Определение изменения цены за последние 2 часа
-const twoHoursAgo = moment().subtract(2, 'hours');
-const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(twoHoursAgo));
-const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
-const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
-const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
-const volume = priceData.map(candle => parseFloat(candle.volume));
-const numberOfTrades = priceData.map(candle => parseFloat(candle.numberOfTrades));
-const correlation = pearsonCorrelation(volume, numberOfTrades);
-const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
-const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) / numberOfTrades.length;
+//const twoHoursAgo = moment().subtract(2, 'hours');
+//const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(twoHoursAgo));
+//const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
+//const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
+//const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
+//const volume = priceData.map(candle => parseFloat(candle.volume));
+//const numberOfTrades = priceData.map(candle => parseFloat(candle.numberOfTrades));
+//const correlation = pearsonCorrelation(volume, numberOfTrades);
+//const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
+//const averageNumberOfTrades = numberOfTrades.reduce((acc, val) => acc + val, 0) / numberOfTrades.length;
 const currentVolume = volume[volume.length - 1];
 const currentNumberOfTrades = numberOfTrades[numberOfTrades.length - 1];
-const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
+//const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
 
 //console.log('Изменение цены:', priceChange.toFixed(2) + '%');
 /*
