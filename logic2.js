@@ -162,8 +162,8 @@ if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrad
 */
 if (averageVolume < currentVolume) {
   console.log('Внимание! Превышен средний объем! Продолжение текущего тренда!');
-  console.log('Ср. объем:', averageVolume);
-  console.log('Объем:', currentVolume);
+  console.log('Ср. объем:', averageVolume.toFixed(2));
+  console.log('Объем:', currentVolume.toFixed(2));
 }
 
 if (averageNumberOfTrades < currentNumberOfTrades) {
@@ -180,8 +180,8 @@ if (currentCorrelation > correlation) {
 
 if (averageVolume > currentVolume) {
   console.log('Боковик!');
-  console.log('Ср. объем:', averageVolume);
-  console.log('Объем:', currentVolume);
+  console.log('Ср. объем:', averageVolume.toFixed(2));
+  console.log('Объем:', currentVolume.toFixed(2));
 }
 
 function pearsonCorrelation(x, y) {
