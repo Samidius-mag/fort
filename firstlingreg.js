@@ -8,10 +8,10 @@ const sortedData = data.sort((a, b) => b.numberOfTrades - a.numberOfTrades);
 const selectedData = sortedData.slice(0, 500);
 console.log(data); // проверяем содержимое массива data
 // Создаем массив значений для регрессии
-const xValues = data.map((item) => item.time);
+const xValues = data.map((item) => item.time/1000);
 const yValues = data.map((item) => parseInt(item.numberOfTrades));
-console.log('xValues:', xValues);
-console.log('yValues:', yValues);
+//console.log('xValues:', xValues);
+//console.log('yValues:', yValues);
 // Выполняем регрессию
 const regression = new SimpleLinearRegression(xValues, yValues);
 console.log('Коэффициенты регрессии:', regression.slope, regression.intercept);
