@@ -27,8 +27,8 @@ function getCurrentTime() {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-// создаем переменную с текстом сообщения, в котором будет вставлено текущее время
-const message = `Текущее время: ${new Date().toLocaleTimeString()}`;
-
+setInterval(() => {
+  bot.sendMessage(chatId, `Текущее время: ${new Date().toLocaleTimeString()}`);
+}, 10000);
 // отправляем сообщение ботом
 bot.sendMessage(chatId, message);
