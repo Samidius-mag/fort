@@ -168,8 +168,8 @@ const raschet = {
 }
 if (raschet.dano.srOby < raschet.dano.oby) {
   console.log('Внимание! Превышен средний объем! Продолжение текущего тренда!');
-  console.log('Ср. объем:', srOby);
-  console.log('Объем:', oby);
+  console.log('Ср. объем:', raschet.dano.srOby);
+  console.log('Объем:', raschet.dano.oby);
 }
   
 
