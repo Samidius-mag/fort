@@ -26,7 +26,7 @@ let Volume = parseFloat(data.curVolume);
 let NumOfTrad = parseFloat(data.curNumOfTrad);
 
 // Формируем сообщение с изменяемыми данными
-let message = `BTC/USDT\nPrice: ${new Price}\nVolume: ${new Volume}\nNumber of trades: ${new NumOfTrad}`;
+let message = `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`;
 
 // Отправляем сообщение в чат и сохраняем его ID
 bot.sendMessage(chatId, message)
@@ -40,7 +40,7 @@ bot.sendMessage(chatId, message)
     Price = parseFloat(data.curPrice);
     Volume = parseFloat(data.curVolume);
     NumOfTrad = parseFloat(data.curNumOfTrad);
-      message = `BTC/USDT\nPrice: ${new Price} \nVolume: ${new Volume} \nNumber of trades: ${new NumOfTrad}`;
+      message = ` ${new Price}  ${new Volume}  ${new NumOfTrad}`;
       bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
     }, 20000); // Обновляем сообщение каждые 5 секунд
   });
