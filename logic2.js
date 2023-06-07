@@ -208,8 +208,7 @@ function pearsonCorrelation(x, y) {
 
 
 
-// Сохраняем данные в файл
-fs.writeFile('data.json', JSON.stringify(dataToSave), (err) => {
+fs.writeFile('datal.json', JSON.stringify(datal), (err) => {
   if (err) throw err;
-  console.log('Данные успешно сохранены в файл');
-  });
+  console.log(' results saved to datal.json');
+});
