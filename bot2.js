@@ -1,13 +1,18 @@
 const { exec } = require('child_process');
 const TelegramBot = require('node-telegram-bot-api');
-
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const chatId = '-1001979484873';
-
 const bot = new TelegramBot(token, { polling: false });
+let messageId = null;
 
 const sendMessage = (message) => {
-  bot.sendMessage(chatId, message);
+  if (messageId) {
+    bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
+  } else {
+    bot.sendMessage(chatId, message).then((sentMessage) => {
+      messageId = sentMessage.message_id;
+    });
+  }
 };
 
 exec('node logic2.js', (error, stdout, stderr) => {
@@ -15,10 +20,8 @@ exec('node logic2.js', (error, stdout, stderr) => {
     console.error(`exec error: ${error}`);
     return;
   }
-
   const lines = stdout.trim().split('\n');
   const message = lines.join('\n');
-
   sendMessage(message);
   console.log('Отправлено2');
 });
