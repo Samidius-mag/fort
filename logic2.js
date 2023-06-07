@@ -206,9 +206,13 @@ function pearsonCorrelation(x, y) {
   return numerator / denominator;
 }
 
+const daTal = {
+  curPrice: currentPrice,
+  curVolume: currentVolume,
+  curNumOfTrad: currentNumberOfTrades,
+}
 
-
-fs.writeFile('datal.json', JSON.stringify(datal), (err) => {
+fs.writeFile('datal.json', JSON.stringify(daTal), (err) => {
   if (err) throw err;
   console.log(' results saved to datal.json');
 });
