@@ -41,6 +41,9 @@ bot.sendMessage(chatId, message)
     Volume = parseFloat(data.curVolume);
     NumOfTrad = parseFloat(data.curNumOfTrad);
       
-      bot.editMessageText(`BTC/USDT \nPrice: ${ Price} \nVolume: ${ Volume} \nNumber of trades: ${ NumOfTrad}`);
+      bot.editMessageText(`BTC/USDT \nPrice: ${ Price} \nVolume: ${ Volume} \nNumber of trades: ${ NumOfTrad}`), {
+        chat_id: chatId,
+        message_id: messageId,
+      };
     }, 20000); // Обновляем сообщение каждые 5 секунд
   });
