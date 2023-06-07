@@ -130,7 +130,7 @@ const sendToBot4 = () => {
     });
   };
 */
-setInterval(loadPrice, 5000);
+setInterval(loadPrice, 4000);
 //setInterval(sendToBot, 50000);
 setInterval(sendToBot2, 7000);
 setInterval(sendToBot3, 10000);

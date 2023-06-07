@@ -20,8 +20,8 @@ let tgl = (data.tg);
 let srVoll = (data.srVol);
 let srTradd = (data.srTrad);
 // Формируем сообщение с изменяемыми данными
-let message = `BTC/USDT
-\nЦена: ${price} Изменение: ${iz} %
+let message = `
+\nЦена: ${price} | ${iz} % изменение
 \nОбъем: ${volume} Ср.Об: ${srVoll}
 \nСделки: ${numOfTrad} Cp.Сдел: ${srTradd}
 \nТренд тек: ${tt}
@@ -48,8 +48,8 @@ bot.sendMessage(chatId, message)
  tgl = (data.tg);
  srVoll = (data.srVol);
   srTradd = (data.srTrad);
-      message = `BTC/USDT
-      \nЦена: ${price} Изменение: ${iz} %
+      message = `
+      \nЦена: ${price} | ${iz} % изменение
       \nОбъем: ${volume} Ср.Об: ${srVoll}
       \nСделки: ${numOfTrad} Cp.Сдел: ${srTradd}
       \nТренд тек: ${tt}

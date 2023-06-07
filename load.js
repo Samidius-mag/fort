@@ -25,7 +25,7 @@ axios.get(url)
   .catch(error => {
     console.error(error);
   });
-
+/*
 // 4-hour candles
 const url4h = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=1000`;
 setTimeout(() => {
@@ -200,3 +200,4 @@ setTimeout(() => {
       console.log(error);
     });
 }, 12000);
+*/
