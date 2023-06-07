@@ -219,6 +219,12 @@ const daTal = {
   curVolume: currentVolume.toFixed(2),
   curNumOfTrad: currentNumberOfTrades,
   rasch: raschet,
+  izmen: priceChange,
+  tc: trend.current,
+  t4: trend['4h'],
+  t24: trend['24h'],
+  tg: trend.global,
+
 }
 
 fs.writeFile('datal.json', JSON.stringify(daTal), (err) => {
