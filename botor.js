@@ -9,9 +9,9 @@ const chatId = '-1001979484873';
 
 // Получаем последнюю свечу из файла
 const data = JSON.parse(fs.readFileSync('datal.json'));
-const price = data.map(candle => parseFloat(candle.curPrice));
-const volume = data.map(candle => parseFloat(candle.volume));
-const numOfTrad = data.map(candle => parseFloat(candle.numOfTrad));
+const price = data(candle => parseFloat(candle.curPrice));
+const volume = data(candle => parseFloat(candle.volume));
+const numOfTrad = data(candle => parseFloat(candle.numOfTrad));
 // Формируем сообщение с изменяемыми данными
 let message = `BTC/USDT\nPrice: ${price}\nVolume: ${volume}\nNumber of trades: ${numOfTrad}`;
 
