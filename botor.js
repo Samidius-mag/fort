@@ -8,10 +8,10 @@ const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { 
 const chatId = '-1001979484873';
 
 // Получаем последнюю свечу из файла
-let data = JSON.parse(fs.readFileSync('datal.json'));
-let price = data.map(candle => parseFloat(candle.curPrice));
-let volume = data.map(candle => parseFloat(candle.volume));
-let numOfTrad = data.map(candle => parseFloat(candle.numOfTrad));
+const data = JSON.parse(fs.readFileSync('datal.json'));
+const price = data.map(candle => parseFloat(candle.curPrice));
+const volume = data.map(candle => parseFloat(candle.volume));
+const numOfTrad = data.map(candle => parseFloat(candle.numOfTrad));
 // Формируем сообщение с изменяемыми данными
 let message = `BTC/USDT\nPrice: ${price}\nVolume: ${volume}\nNumber of trades: ${numOfTrad}`;
 
