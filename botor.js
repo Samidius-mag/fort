@@ -26,24 +26,25 @@ let Volume = parseFloat(data.curVolume);
 let NumOfTrad = parseFloat(data.curNumOfTrad);
 
 // Формируем сообщение с изменяемыми данными
-let message = `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`;
+//let message = `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`;
 
 // Отправляем сообщение в чат и сохраняем его ID
-bot.sendMessage(chatId, message)
+let messageId;
+bot.sendMessage(chatId, `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`)
   .then((sentMessage) => {
-    // Сохраняем ID отправленного сообщения
-    const messageId = sentMessage.message_id;
-
+    messageId = sentMessage.message_id;
+  });
     // Обновляем сообщение с новыми данными
-    setInterval(() => {
+   
      //data = JSON.parse(fs.readFileSync('datal.json'));
     Price = parseFloat(data.curPrice);
     Volume = parseFloat(data.curVolume);
     NumOfTrad = parseFloat(data.curNumOfTrad);
       
-      bot.editMessageText(`BTC/USDT \nPrice: ${ Price} \nVolume: ${ Volume} \nNumber of trades: ${ NumOfTrad}`), {
+    setInterval(() => {
+      bot.editMessageText(`BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`, {
         chat_id: chatId,
         message_id: messageId,
-      };
-    }, 20000); // Обновляем сообщение каждые 5 секунд
-  });
+      });
+    }, 20000);
+ 
