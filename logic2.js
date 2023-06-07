@@ -160,6 +160,7 @@ if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrad
   console.log('The market is moving sideways');
 }
 */
+/*
 const raschet = {
   dano: {
     srOby: averageVolume.toFixed(2),
@@ -172,7 +173,7 @@ if (raschet.dano.srOby < raschet.dano.oby) {
   console.log('Объем:', raschet.dano.oby);
 }
   
-
+*/
 if (averageNumberOfTrades < currentNumberOfTrades) {
   console.log('Внимание! Превышение среднего числа сделок!');
   console.log('Ср. сделки:', averageNumberOfTrades);
@@ -218,7 +219,7 @@ const daTal = {
   curPrice: currentPrice,
   curVolume: currentVolume.toFixed(2),
   curNumOfTrad: currentNumberOfTrades,
-  rasch: raschet,
+  
   izmen: priceChange,
   tc: trend.current,
   t4: trend['4h'],
