@@ -13,10 +13,10 @@ let price =  parseFloat(data.curPrice);
 let volume =  parseFloat(data.curVolume);
 let numOfTrad = parseFloat(data.curNumOfTrad);
 let iz = parseFloat(data.izmen);
-let tt = parseFloat(data.tc);
-let t4 = parseFloat(data.t4);
-let t24 = parseFloat(data.t24);
-let tgl = parseFloat(data.tg);
+let tt = parseInt(data.tc);
+let t4 = parseInt(data.t4);
+let t24 = parseInt(data.t24);
+let tgl = parseInt(data.tg);
 // Формируем сообщение с изменяемыми данными
 let message = `BTC/USDT
 \nЦена: ${price}
@@ -41,10 +41,10 @@ bot.sendMessage(chatId, message)
  volume =  parseFloat(data.curVolume);
  numOfTrad = parseFloat(data.curNumOfTrad);
  iz = parseFloat(data.izmen);
- tt = parseFloat(data.tc);
- t4 = parseFloat(data.t4);
- t24 = parseFloat(data.t24);
- tgl = parseFloat(data.tg);
+ tt = parseInt(data.tc);
+ t4 = parseInt(data.t4);
+ t24 = parseInt(data.t24);
+ tgl = parseInt(data.tg);
       message = `BTC/USDT
       \nЦена: ${price}
       \nОбъем: ${volume}
