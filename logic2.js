@@ -206,8 +206,10 @@ function pearsonCorrelation(x, y) {
   return numerator / denominator;
 }
 
-module.exports = {
-  currentPrice,
-  currentVolume,
-  currentNumberOfTrades,
-};
+
+
+// Сохраняем данные в файл
+fs.writeFile('data.json', JSON.stringify(dataToSave), (err) => {
+  if (err) throw err;
+  console.log('Данные успешно сохранены в файл');
+  });
