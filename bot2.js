@@ -20,11 +20,15 @@ const process = spawn('node', ['logic2.js']);
 process.stdout.on('data', (data) => {
   const message = data.toString().trim();
   sendMessage(message);
-  console.log('Отправлено2');
+  console.log('Сообщение обновлено');
 });
 
 process.stderr.on('data', (data) => {
   console.error(`stderr: ${data}`);
+});
+
+process.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
 });
 /*
 const chatId2 = '-1001536433459';
