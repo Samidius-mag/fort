@@ -9,9 +9,9 @@ const chatId = '-1001979484873';
 
 // Получаем последнюю свечу из файла
 let data = JSON.parse(fs.readFileSync('datal.json'));
-let price = data[curPrice];
-let volume = data[curVolume];
-let numOfTrad = data[curNumOfTrad];
+let price = data[data.curPrice];
+let volume = data[data.curVolume];
+let numOfTrad = data[data.curNumOfTrad];
 // Формируем сообщение с изменяемыми данными
 let message = `BTC/USDT\nPrice: ${price.curPrice}\nVolume: ${volume.curVolume}\nNumber of trades: ${numOfTrad.curnumOfTrad}`;
 
@@ -24,9 +24,9 @@ bot.sendMessage(chatId, message)
     // Обновляем сообщение с новыми данными
     setInterval(() => {
       data = JSON.parse(fs.readFileSync('datal.json'));
-      price = data[curPrice];
-      volume = data[curVolume];
-      numOfTrad = data[curNumOfTrad];
+      price = data[data.curPrice];
+      volume = data[data.curVolume];
+      numOfTrad = data[data.curNumOfTrad];
       message = `BTC/USDT\nPrice: ${price.curPrice}\nVolume: ${volume.curVolume}\nNumber of trades: ${numOfTrad.curnumOfTrad}`;
       bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
     }, 20000); // Обновляем сообщение каждые 5 секунд
