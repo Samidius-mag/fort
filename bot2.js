@@ -26,7 +26,7 @@ process.stdout.on('data', (data) => {
 process.stderr.on('data', (data) => {
   console.error(`stderr: ${data}`);
 });
-
+/*
 const chatId2 = '-1001536433459';
 
 const bot2 = new TelegramBot(token, { polling: false });
@@ -47,3 +47,4 @@ exec('node logic2.js', (error, stdout, stderr) => {
   sendMessage1(message);
   console.log('Отправлено2');
 });
+*/
