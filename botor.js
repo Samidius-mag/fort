@@ -19,23 +19,24 @@ const chatId = '-1001979484873';
 
 const bot = new TelegramBot(token, { polling: true });
 
-// Функция для отправки сообщения в чат с данными о свече
-function sendCandleData() {
-  // Получаем последнюю свечу из файла
-  const data = JSON.parse(fs.readFileSync('price.json'));
-  const lastCandle = data[data.length - 1];
+// Получаем последнюю свечу из файла
+let data = JSON.parse(fs.readFileSync('price.json'));
+let lastCandle = data[data.length - 1];
 
-  // Формируем сообщение с данными о свече
-  const message = `BTC/USDT\nPrice: ${lastCandle.close}\nVolume: ${lastCandle.volume}\nNumber of trades: ${lastCandle.numberOfTrades}`;
+// Формируем сообщение с изменяемыми данными
+let message = `BTC/USDT\nPrice: ${lastCandle.close}\nVolume: ${lastCandle.volume}\nNumber of trades: ${lastCandle.numberOfTrades}`;
 
-  // Отправляем сообщение в чат
-  bot.sendMessage(chatId, message);
-}
+// Отправляем сообщение в чат и сохраняем его ID
+bot.sendMessage(chatId, message)
+  .then((sentMessage) => {
+    // Сохраняем ID отправленного сообщения
+    const messageId = sentMessage.message_id;
 
-// Отправляем первое сообщение с данными о свече
-sendCandleData();
-
-// Запускаем периодическую отправку сообщений с данными о свече
-setInterval(() => {
-  sendCandleData();
-}, 15000); // Отправляем сообщение каждые 5 секунд
+    // Обновляем сообщение с новыми данными
+    setInterval(() => {
+      data = JSON.parse(fs.readFileSync('price.json'));
+      lastCandle = data[data.length - 1];
+      message = `BTC/USDT\nPrice: ${lastCandle.close}\nVolume: ${lastCandle.volume}\nNumber of trades: ${lastCandle.numberOfTrades}`;
+      bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
+    }, 15000); // Обновляем сообщение каждые 5 секунд
+  });
