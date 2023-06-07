@@ -220,7 +220,7 @@ const daTal = {
   curVolume: currentVolume.toFixed(2),
   curNumOfTrad: currentNumberOfTrades,
   
-  izmen: priceChange,
+  izmen: priceChange.toFixed(2),
   tc: trend.current,
   t4: trend['4h'],
   t24: trend['24h'],
