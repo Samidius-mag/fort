@@ -27,10 +27,10 @@ const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.
 // Определение тренда
 const trend = {
   current: currentPrice > indRes.EMA[indRes.EMA.length - 1] ? 'восходящий' : currentPrice < indRes.EMA[indRes.EMA.length - 1] ? 'нисходящий' : 'боковой',
-  global: priceData[0].close > priceData[priceData.length - 1].close ? 'Нисходящий' : 'Восходящий',
-  '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'Восходящий' : 'Нисходящий',
-  '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'Восходящий' : 'Нисходящий',
-  '24h': priceData[priceData.length - 1].close > priceData[priceData.length - 49].close ? 'Восходящий' : 'Нисходящий',
+  global: priceData[0].close > priceData[priceData.length - 1].close ? 'восходящий' : 'нисходящий',
+  '4h': priceData[priceData.length - 1].close > priceData[priceData.length - 7].close ? 'восходящий' : 'нисходящий',
+  '12h': priceData[priceData.length - 1].close > priceData[priceData.length - 25].close ? 'восходящий' : 'нисходящий',
+  '24h': priceData[priceData.length - 1].close > priceData[priceData.length - 49].close ? 'восходящий' : 'нисходящий',
 };
 
 // Уровни поддержки и сопротивления
@@ -219,7 +219,8 @@ const daTal = {
   curPrice: currentPrice,
   curVolume: currentVolume.toFixed(2),
   curNumOfTrad: currentNumberOfTrades,
-  
+  srVol: averageVolume.toFixed(2),
+  srTrad: averageNumberOfTrades,
   izmen: priceChange.toFixed(2),
   tc: trend.current,
   t4: trend['4h'],
