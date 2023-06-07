@@ -1,16 +1,37 @@
-/*
+const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
 
-const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
+// Создаем бота с помощью токена
+const bot = new TelegramBot('5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ', { polling: true });
+
+// ID чата, в который будем отправлять сообщения
 const chatId = '-1001979484873';
 
-const bot = new TelegramBot(token, { polling: false });
+// Получаем последнюю свечу из файла
+let data = JSON.parse(fs.readFileSync('datal.json'));
+let price = data[curPrice];
+let volume = data[curVolume];
+let numOfTrad = data[curNumOfTrad];
+// Формируем сообщение с изменяемыми данными
+let message = `BTC/USDT\nPrice: ${price.curPrice}\nVolume: ${volume.curVolume}\nNumber of trades: ${numOfTrad.curnumOfTrad}`;
 
-const sendMessage = (message) => {
-  bot.sendMessage(chatId, message);
-};
-*/
+// Отправляем сообщение в чат и сохраняем его ID
+bot.sendMessage(chatId, message)
+  .then((sentMessage) => {
+    // Сохраняем ID отправленного сообщения
+    const messageId = sentMessage.message_id;
 
+    // Обновляем сообщение с новыми данными
+    setInterval(() => {
+      data = JSON.parse(fs.readFileSync('datal.json'));
+      price = data[curPrice];
+      volume = data[curVolume];
+      numOfTrad = data[curNumOfTrad];
+      message = `BTC/USDT\nPrice: ${price.curPrice}\nVolume: ${volume.curVolume}\nNumber of trades: ${numOfTrad.curnumOfTrad}`;
+      bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
+    }, 20000); // Обновляем сообщение каждые 5 секунд
+  });
+/*
 const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 //const { currentNumberOfTrades } = require('./logic3');
@@ -47,4 +68,4 @@ bot.sendMessage(chatId, `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber 
         message_id: messageId,
       });
     }, 20000);
- 
+ */
