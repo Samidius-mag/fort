@@ -20,7 +20,7 @@ const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const chatId = '-1001979484873';
 const bot = new TelegramBot(token, { polling: false });
 // Получаем последнюю свечу из файла
-//let data = JSON.parse(fs.readFileSync('datal.json'));
+let data = JSON.parse(fs.readFileSync('datal.json'));
 let Price = parseFloat(data.curPrice);
 let Volume = parseFloat(data.curVolume);
 let NumOfTrad = parseFloat(data.curNumOfTrad);
@@ -30,19 +30,19 @@ let NumOfTrad = parseFloat(data.curNumOfTrad);
 
 // Отправляем сообщение в чат и сохраняем его ID
 let messageId;
-bot.sendMessage(chatId, `BTC/USDT\nPrice: ${new Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`)
+bot.sendMessage(chatId, `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`)
   .then((sentMessage) => {
     messageId = sentMessage.message_id;
   });
     // Обновляем сообщение с новыми данными
    
-     //data = JSON.parse(fs.readFileSync('datal.json'));
-    Price = parseFloat(data.curPrice);
-    Volume = parseFloat(data.curVolume);
-    NumOfTrad = parseFloat(data.curNumOfTrad);
+    newData = JSON.parse(fs.readFileSync('datal.json'));
+    newPrice = parseFloat(data.curPrice);
+    newVolume = parseFloat(data.curVolume);
+    newNumOfTrad = parseFloat(data.curNumOfTrad);
       
     setInterval(() => {
-      bot.editMessageText(`BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`, {
+      bot.editMessageText(`BTC/USDT\nPrice: ${ newPrice}\nVolume: ${ newVolume}\nNumber of trades: ${ newNumOfTrad}`, {
         chat_id: chatId,
         message_id: messageId,
       });
