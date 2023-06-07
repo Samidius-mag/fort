@@ -30,7 +30,7 @@ let NumOfTrad = parseFloat(data.curNumOfTrad);
 
 // Отправляем сообщение в чат и сохраняем его ID
 let messageId;
-bot.sendMessage(chatId, `BTC/USDT\nPrice: ${ Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`)
+bot.sendMessage(chatId, `BTC/USDT\nPrice: ${new Price}\nVolume: ${ Volume}\nNumber of trades: ${ NumOfTrad}`)
   .then((sentMessage) => {
     messageId = sentMessage.message_id;
   });
