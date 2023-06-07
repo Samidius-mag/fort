@@ -214,5 +214,5 @@ const daTal = {
 
 fs.writeFile('datal.json', JSON.stringify(daTal), (err) => {
   if (err) throw err;
-  console.log(' results saved to datal.json');
+  //console.log(' results saved to datal.json');
 });
