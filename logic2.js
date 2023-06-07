@@ -166,10 +166,10 @@ const raschet = {
     oby: currentVolume.toFixed(2)
   }
 }
-if (srOby < oby) {
+if (raschet.dano.srOby < raschet.dano.oby) {
   console.log('Внимание! Превышен средний объем! Продолжение текущего тренда!');
-  console.log('Ср. объем:', averageVolume.toFixed(2));
-  console.log('Объем:', currentVolume.toFixed(2));
+  console.log('Ср. объем:', srOby);
+  console.log('Объем:', oby);
 }
   
 
