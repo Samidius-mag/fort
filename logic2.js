@@ -8,10 +8,10 @@ const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2
 //console.log('Текущая цена:', currentPrice);
 
 // Определение изменения цены за последние 2 часа
-//const twoHoursAgo = moment().subtract(2, 'hours');
-//const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(twoHoursAgo));
-//const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
-//const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
+const twoHoursAgo = moment().subtract(2, 'hours');
+const lastTwoHoursPrices = priceData.filter(price => moment(price.time).isAfter(twoHoursAgo));
+const firstPrice = parseFloat(lastTwoHoursPrices[0].close);
+const lastPrice = parseFloat(lastTwoHoursPrices[lastTwoHoursPrices.length - 1].close);
 const priceChange = ((lastPrice - firstPrice) / firstPrice) * 100;
 const volume = priceData.map(candle => parseFloat(candle.volume));
 const numberOfTrades = priceData.map(candle => parseFloat(candle.numberOfTrades));
