@@ -12,8 +12,21 @@ let data = JSON.parse(fs.readFileSync('datal.json'));
 let price =  parseFloat(data.curPrice);
 let volume =  parseFloat(data.curVolume);
 let numOfTrad = parseFloat(data.curNumOfTrad);
+let iz = parseFloat(data.izmen);
+let tt = parseFloat(data.tc);
+let t4 = parseFloat(data.t4);
+let t24 = parseFloat(data.t24);
+let tgl = parseFloat(data.tg);
 // Формируем сообщение с изменяемыми данными
-let message = `BTC/USDT\nPrice: ${price}\nVolume: ${volume}\nNumber of trades: ${numOfTrad}`;
+let message = `BTC/USDT
+\nЦена: ${price}
+\nОбъем: ${volume}
+\nСделки: ${numOfTrad}
+\nИзменение: ${iz}
+\nТренд тек: ${tt}
+\nТренд 4ч: ${t4}
+\nТренд 24ч: ${t24}
+\nТренд глоб: ${tgl}`;
 
 // Отправляем сообщение в чат и сохраняем его ID
 bot.sendMessage(chatId, message)
@@ -24,10 +37,23 @@ bot.sendMessage(chatId, message)
     // Обновляем сообщение с новыми данными
     setInterval(() => {
     data = JSON.parse(fs.readFileSync('datal.json'));
-    price =  parseFloat(data.curPrice);
-    volume =  parseFloat(data.curVolume);
-    numOfTrad = parseFloat(data.curNumOfTrad);
-      message = `BTC/USDT\nPrice: ${price}\nVolume: ${volume}\nNumber of trades: ${numOfTrad}`;
+     price =  parseFloat(data.curPrice);
+ volume =  parseFloat(data.curVolume);
+ numOfTrad = parseFloat(data.curNumOfTrad);
+ iz = parseFloat(data.izmen);
+ tt = parseFloat(data.tc);
+ t4 = parseFloat(data.t4);
+ t24 = parseFloat(data.t24);
+ tgl = parseFloat(data.tg);
+      message = `BTC/USDT
+      \nЦена: ${price}
+      \nОбъем: ${volume}
+      \nСделки: ${numOfTrad}
+      \nИзменение: ${iz}
+      \nТренд тек: ${tt}
+      \nТренд 4ч: ${t4}
+      \nТренд 24ч: ${t24}
+      \nТренд глоб: ${tgl}`;
       bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
     }, 20000); // Обновляем сообщение каждые 5 секунд
   });
