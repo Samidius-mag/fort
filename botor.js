@@ -13,17 +13,17 @@ const sendMessage = (message) => {
 
 const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
-const { currentNumberOfTrades } = require('./logic3');
+//const { currentNumberOfTrades } = require('./logic3');
 //const { currentVolume } = require('./logic3');
-const { curPrice, curVolume, curNumOfTrad } = require('./datal.json');
+const data = require('./datal.json');
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const chatId = '-1001979484873';
 const bot = new TelegramBot(token, { polling: false });
 // Получаем последнюю свечу из файла
-let data = JSON.parse(fs.readFileSync('datal.json'));
-let Price = data[curPrice];
-let Volume = data[curVolume];
-let NumOfTrad = data[curNumOfTrad];
+//let data = JSON.parse(fs.readFileSync('datal.json'));
+let Price = parseFloat(data.curPrice);
+let Volume = parseFloat(data.curVolume);
+let NumOfTrad = parseFloat(data.curNumOfTrad);
 
 // Формируем сообщение с изменяемыми данными
 let message = `BTC/USDT\nPrice: ${Price}\nVolume: ${Volume}\nNumber of trades: ${NumOfTrad}`;
@@ -36,11 +36,11 @@ bot.sendMessage(chatId, message)
 
     // Обновляем сообщение с новыми данными
     setInterval(() => {
-     data = JSON.parse(fs.readFileSync('datal.json'));
-      Price = data[curPrice];
-      Volume = data[curVolume];
-       NumOfTrad = data[curNumOfTrad];
-      message = `BTC/USDT\nPrice: ${Price}\nVolume: ${Volume}\nNumber of trades: ${NumOfTrad}`;
+     //data = JSON.parse(fs.readFileSync('datal.json'));
+    Price = parseFloat(data.curPrice);
+    Volume = parseFloat(data.curVolume);
+    NumOfTrad = parseFloat(data.curNumOfTrad);
+      message = `BTC/USDT\nPrice: ${Price} \nVolume: ${Volume} \nNumber of trades: ${NumOfTrad}`;
       bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
     }, 20000); // Обновляем сообщение каждые 5 секунд
   });
