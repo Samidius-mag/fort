@@ -57,7 +57,7 @@ bot.sendMessage(chatId, message)
       \nТренд 24ч: ${t24}
       \nТренд глоб: ${tgl}`;
       bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
-    }, 15000); // Обновляем сообщение каждые 5 секунд
+    }, 20000); // Обновляем сообщение каждые 5 секунд
   });
 /*
 const TelegramBot = require('node-telegram-bot-api');
