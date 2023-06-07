@@ -50,8 +50,8 @@ bot.sendMessage(chatId, message)
   srTradd = (data.srTrad);
       message = `BTC/USDT
       \nЦена: ${price} Изменение: ${iz} %
-      \nОбъем: ${volume} Ср.Об: ${srVol}
-      \nСделки: ${numOfTrad} Cp.Сдел: ${srTrad}
+      \nОбъем: ${volume} Ср.Об: ${srVoll}
+      \nСделки: ${numOfTrad} Cp.Сдел: ${srTradd}
       \nТренд тек: ${tt}
       \nТренд 4ч: ${t4}
       \nТренд 24ч: ${t24}
