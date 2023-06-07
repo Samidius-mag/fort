@@ -39,7 +39,7 @@ bot.sendMessage(chatId, message)
       price = currentPrice;
       volume = currentVolume;
       trades = currentNumberOfTrades;
-      message = `BTC/USDT\nPrice: ${price}\nVolume: ${volume}\nNumber of trades: ${trades}`;
+      message = `BTC/USDT\nPrice: ${price} \nVolume: ${volume} \nNumber of trades: ${trades}`;
       bot.editMessageText(message, { chat_id: chatId, message_id: messageId });
     }, 15000); // Обновляем сообщение каждые 5 секунд
   });
