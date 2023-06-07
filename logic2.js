@@ -160,11 +160,18 @@ if (averageVolume > currentVolume && averageNumberOfTrades > currentNumberOfTrad
   console.log('The market is moving sideways');
 }
 */
-if (averageVolume < currentVolume) {
+const raschet = {
+  dano: {
+    srOby: averageVolume.toFixed(2),
+    oby: currentVolume.toFixed(2)
+  }
+}
+if (srOby < oby) {
   console.log('Внимание! Превышен средний объем! Продолжение текущего тренда!');
   console.log('Ср. объем:', averageVolume.toFixed(2));
   console.log('Объем:', currentVolume.toFixed(2));
 }
+  
 
 if (averageNumberOfTrades < currentNumberOfTrades) {
   console.log('Внимание! Превышение среднего числа сделок!');
@@ -177,12 +184,13 @@ if (currentCorrelation > correlation && averageVolume < currentVolume) {
   console.log('Ср. корреляция:', correlation.toFixed(8));
   console.log('Корреляция:', currentCorrelation.toFixed(8));
 }
-
+/*
 if (averageVolume > currentVolume && currentVolume > 1200 && currentVolume < 1700) {
   console.log('Внимание! Происходит выход из боковика!');
   console.log('Ср. объем:', averageVolume.toFixed(2));
   console.log('Объем:', currentVolume.toFixed(2));
 }
+*/
 
 function pearsonCorrelation(x, y) {
   const n = x.length;
@@ -208,8 +216,9 @@ function pearsonCorrelation(x, y) {
 
 const daTal = {
   curPrice: currentPrice,
-  curVolume: currentVolume,
+  curVolume: currentVolume.toFixed(2),
   curNumOfTrad: currentNumberOfTrades,
+  rasch: raschet,
 }
 
 fs.writeFile('datal.json', JSON.stringify(daTal), (err) => {
