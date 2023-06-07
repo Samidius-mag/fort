@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const TelegramBot = require('node-telegram-bot-api');
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const chatId = '-1001979484873';
@@ -15,15 +15,16 @@ const sendMessage = (message) => {
   }
 };
 
-exec('node logic2.js', (error, stdout, stderr) => {
-  if (error) {
-    console.error(`exec error: ${error}`);
-    return;
-  }
-  const lines = stdout.trim().split('\n');
-  const message = lines.join('\n');
+const process = spawn('node', ['logic2.js']);
+
+process.stdout.on('data', (data) => {
+  const message = data.toString().trim();
   sendMessage(message);
   console.log('Отправлено2');
+});
+
+process.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`);
 });
 
 const chatId2 = '-1001536433459';
