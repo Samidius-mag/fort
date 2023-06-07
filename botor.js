@@ -19,10 +19,9 @@ let t24 = (data.t24);
 let tgl = (data.tg);
 // Формируем сообщение с изменяемыми данными
 let message = `BTC/USDT
-\nЦена: ${price}
+\nЦена: ${price} Изменение: ${iz} %
 \nОбъем: ${volume}
 \nСделки: ${numOfTrad}
-\nИзменение: ${iz}
 \nТренд тек: ${tt}
 \nТренд 4ч: ${t4}
 \nТренд 24ч: ${t24}
@@ -46,10 +45,9 @@ bot.sendMessage(chatId, message)
  t24 = (data.t24);
  tgl = (data.tg);
       message = `BTC/USDT
-      \nЦена: ${price}
+      \nЦена: ${price} Изменение: ${iz} %
       \nОбъем: ${volume}
       \nСделки: ${numOfTrad}
-      \nИзменение: ${iz}
       \nТренд тек: ${tt}
       \nТренд 4ч: ${t4}
       \nТренд 24ч: ${t24}
