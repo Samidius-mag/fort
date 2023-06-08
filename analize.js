@@ -25,7 +25,7 @@ const lastBb = indicators.bb[indicators.bb.length - 1];
 const lastSma = indicators.sma[indicators.sma.length - 1];
 
 // Выводим значения индикаторов в консоль
-console.log(`MACD: ${lastMacd.MACD}, Signal: ${lastMacd.signal.toFixed(2)}, Histogram: ${lastMacd.histogram.toFixed(2)}`);
+console.log(`MACD: ${lastMacd.MACD}, Signal: ${lastMacd.signal}, Histogram: ${lastMacd.histogram}`);
 console.log(`RSI: ${lastRsi.toFixed(2)}`);
 console.log(`Bollinger Bands: Upper: ${lastBb.upper.toFixed(2)}, Middle: ${lastBb.middle.toFixed(2)}, Lower: ${lastBb.lower.toFixed(2)}`);
 console.log(`SMA: ${lastSma.toFixed(2)}`);
