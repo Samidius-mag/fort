@@ -14,12 +14,22 @@ const chatId = '-1001536433459';
 // Создаем функцию для отправки сообщений в чат
 let messageId = null; // хранит id последнего отправленного сообщения
 const sendMessage = (text) => {
-  if (messageId) {
-    bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
+  if (text) {
+    if (messageId) {
+      bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
+    } else {
+      bot.sendMessage(chatId, text).then((message) => {
+        messageId = message.message_id;
+      });
+    }
   } else {
-    bot.sendMessage(chatId, text).then((message) => {
-      messageId = message.message_id;
-    });
+    if (messageId) {
+      bot.editMessageText('-', { chat_id: chatId, message_id: messageId });
+    } else {
+      bot.sendMessage(chatId, '-').then((message) => {
+        messageId = message.message_id;
+      });
+    }
   }
 };
 
@@ -32,7 +42,9 @@ const runXScript = () => {
     }
 
     if (stdout) {
-      sendMessage(`Data from logic3.js: ${stdout}`);
+      sendMessage(` ${stdout}`);
+    } else {
+      sendMessage(null);
     }
   });
 };
