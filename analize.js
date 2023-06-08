@@ -11,7 +11,7 @@ function calculateIndicators(data) {
   const rsi = rsiValues.map(value => parseFloat(value.toFixed(2)));
   const emaPeriod = 21;
   const emaValues = EMA.calculate({ period: emaPeriod, values: close });
-  const ema = emaValues.map(value => parseFloat(value.toFixed(2)));
+  const ema = emaValues.map(value => parseFloat(value));
   const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
 
   return { rsi, ema, stochastic };
