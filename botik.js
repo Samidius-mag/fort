@@ -9,7 +9,7 @@ const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const bot = new TelegramBot(token, { polling: true });
 
 // Указываем id чата, в который будем отправлять сообщения
-const chatId = '1001536433459';
+const chatId = '-1001536433459';
 
 // Создаем функцию для отправки сообщений в чат
 let messageId = null; // хранит id последнего отправленного сообщения
