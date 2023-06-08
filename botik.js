@@ -49,5 +49,15 @@ const runXScript = () => {
   });
 };
 
-// Запускаем выполнение файла x.js и отправку данных в чат
-runXScript();
+// Создаем функцию, которая будет запускаться периодически
+const startSendingData = () => {
+  // Запускаем выполнение файла x.js и отправку данных в чат
+  runXScript();
+  // Задаем интервал в 5 минут и запускаем функцию startSendingData
+  setInterval(() => {
+    runXScript();
+  }, 12000);
+};
+
+// Запускаем функцию startSendingData 
+startSendingData();
