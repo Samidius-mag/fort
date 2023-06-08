@@ -16,7 +16,7 @@ function calculateIndicators(data) {
 
   return { rsi, ema, stochastic };
 }
-
+console.log(ema);
 // Вычисляем индикаторы
 const indicators = calculateIndicators(data);
 
