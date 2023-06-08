@@ -134,7 +134,7 @@ setInterval(loadPrice, 4000);
 //setInterval(sendToBot, 50000);
 setInterval(sendToBot2, 7000);
 setInterval(sendToBot3, 10000);
-setInterval(sendToBot4, 120000);
+setInterval(sendToBot4, 12000);
 //setInterval(sendToBot5, 121000);
 //setInterval(sendToBot6, 122000);
 //setInterval(sendToBot7, 123000);
