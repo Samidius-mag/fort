@@ -35,7 +35,7 @@ const sendMessage = (text) => {
 
 // Создаем функцию для выполнения файла x.js
 const runXScript = () => {
-  exec('node logic3.js', (error, stdout) => {
+  exec('node logic2.js', (error, stdout) => {
     if (error) {
       sendMessage(`Error: ${error.message}`);
       return;

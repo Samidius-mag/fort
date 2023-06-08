@@ -50,7 +50,7 @@ const sendToBot2 = () => {
 
 
 const sendToBot3 = () => {
-  const child = spawn('node', ['logic3.js']);
+  const child = spawn('node', ['logic2.js']);
 
   child.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);

@@ -5,7 +5,7 @@ const indRes = require('./indres.json');
 
 // Определение текущей цены
 const currentPrice = parseFloat(priceData[priceData.length - 1].close).toFixed(2);
-//console.log('Текущая цена:', currentPrice);
+console.log('Текущая цена:', currentPrice);
 
 // Определение изменения цены за последние 2 часа
 const twoHoursAgo = moment().subtract(2, 'hours');
@@ -22,7 +22,7 @@ const currentVolume = volume[volume.length - 1];
 const currentNumberOfTrades = numberOfTrades[numberOfTrades.length - 1];
 const currentCorrelation = pearsonCorrelation(volume.slice(-10), numberOfTrades.slice(-10));
 
-//console.log('Изменение цены:', priceChange.toFixed(2) + '%');
+console.log('Изменение цены:', priceChange.toFixed(2) + '%');
 
 // Определение тренда
 const trend = {
@@ -63,7 +63,7 @@ if (isSideways) {
 } else {
   //console.log('Тренд вышел из бокового движения');
 }
-/*
+
 console.log('Текущий тренд:', trend.current);
 console.log('4-часовой тренд:', trend['4h']);
 console.log('12-часовой тренд:', trend['12h']);
@@ -78,13 +78,13 @@ console.log('Сопротивление 12 часов:', supportResistance['12h'
 console.log('Поддержка 12 часов:', supportResistance['12h'].support);
 console.log('Сопротивление 24 часа:', supportResistance['24h'].resistance);
 console.log('Поддержка 24 часа:', supportResistance['24h'].support);
-*/
+
 // Перекупленность/перепроданность рынка
 const overboughtOversold = {
   RSI: {
     current: indRes.RSI[indRes.RSI.length - 1],
-    overbought: 65,
-    oversold: 35
+    overbought: 70,
+    oversold: 30
   },
   ROC: {
     current: indRes.ROC[indRes.ROC.length - 1],
@@ -96,15 +96,15 @@ const overboughtOversold = {
 //console.log('ROC:', overboughtOversold.ROC.current);
 
 if (overboughtOversold.RSI.current > overboughtOversold.RSI.overbought) {
-  //console.log('[RS]Рынок перекуплен');
+  console.log('[RS]Рынок перекуплен');
 } else if (overboughtOversold.RSI.current < overboughtOversold.RSI.oversold) {
-  //console.log('[RS]Рынок перепродан');
+  console.log('[RS]Рынок перепродан');
 }
 
 if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
-  //console.log('[RO]Рынок перекуплен');
+  console.log('[RO]Рынок перекуплен');
 } else if (overboughtOversold.ROC.current < overboughtOversold.ROC.oversold) {
-  //console.log('[RO]Рынок перепродан');
+  console.log('[RO]Рынок перепродан');
 }
 
 // Рекомендации по покупке/продаже
@@ -214,7 +214,7 @@ function pearsonCorrelation(x, y) {
 
   return numerator / denominator;
 }
-
+/*
 const daTal = {
   curPrice: currentPrice,
   curVolume: currentVolume.toFixed(2),
@@ -233,3 +233,4 @@ fs.writeFile('datal.json', JSON.stringify(daTal), (err) => {
   if (err) throw err;
   //console.log(' results saved to datal.json');
 });
+*/
