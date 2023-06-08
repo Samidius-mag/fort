@@ -13,10 +13,10 @@ function calculateIndicators(data) {
   const emaValues = EMA.calculate({ period: emaPeriod, values: close });
   const ema = emaValues.map(value => parseFloat(value));
   const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
-
+  console.log(ema);
   return { rsi, ema, stochastic };
 }
-console.log(ema);
+
 // Вычисляем индикаторы
 const indicators = calculateIndicators(data);
 
