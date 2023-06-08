@@ -6,8 +6,12 @@ const data = JSON.parse(fs.readFileSync('price.json'));
 // Функция для вычисления индикаторов
 function calculateIndicators(data) {
   const close = data.map(candle => candle.close);
-  const rsi = RSI.calculate({ values: close, period: 14 });
-  const ema = EMA.calculate({ values: close, period: 20 });
+  const rsiPeriod = 14;
+  const rsiValues = RSI.calculate({ period: rsiPeriod, values: close });
+  const rsi = rsiValues.map(value => parseFloat(value.toFixed(2)));
+  const emaPeriod = 21;
+  const emaValues = EMA.calculate({ period: emaPeriod, values: close });
+  const ema = emaValues.map(value => parseFloat(value.toFixed(2)));
   const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
 
   return { rsi, ema, stochastic };
