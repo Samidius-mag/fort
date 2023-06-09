@@ -269,8 +269,7 @@ const isVolumeBullish = averageVolume < currentVolume
 // Если все условия для входа выполнены, сигнализируем о входе в рынок
 if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish && isVolumeBullish) {
   console.log('Найден сигнал на покупку!');
-} else if (isStochasticBearish || isMacdBearish) { // Если Stochastic Oscillator или MACD пересекает сигнальную линию вниз, сигнализируем о выходе из рынка
+} else if (isStochasticBearish || isMacdBearish && isVolumeBullish) { // Если Stochastic Oscillator или MACD пересекает сигнальную линию вниз, сигнализируем о выходе из рынка
   console.log('Найден сигнал на продажу!');
-} else {
-  console.log('-');
+
 }
