@@ -474,7 +474,7 @@ if (isBullishGapSideBySideWhiteLines(candles)) {
 function bullishEngulfing(candle) {
   const prevCandle = candles[candles.indexOf(candle) - 1];
   if (prevCandle && candle.close > prevCandle.open && candle.open < prevCandle.close && candle.close > candle.open && candle.close > prevCandle.open && candle.open < prevCandle.close) {
-    const stopLoss = prevCandle.high * 0.618;
+    const stopLoss = candle.high * 0.618;
     const entryPoint1 = prevCandle.high * 0.5;
     const entryPoint2 = prevCandle.high * 0.382;
     console.log(`Stop Loss: ${stopLoss}`);
