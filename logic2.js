@@ -312,11 +312,11 @@ if (isPriceAboveEma && isAtrAboveEma) {
 */
 
 
-const data2 = JSON.parse(fs.readFileSync('price.json'));
-const candles1 = data2.slice(0, -1);
+
+const candles = data.slice(0, -1);
 
 function isThreeWhiteSoldiers(candles) {
-  if (candles1.length < 3) {
+  if (candles.length < 3) {
     return false;
   }
 
@@ -330,7 +330,7 @@ function isThreeWhiteSoldiers(candles) {
 }
 
 function isThreeDescending(candles) {
-  if (candles1.length < 3) {
+  if (candles.length < 3) {
     return false;
   }
 
@@ -344,7 +344,7 @@ function isThreeDescending(candles) {
 }
 
 function isThreeAscending(candles) {
-  if (candles1.length < 3) {
+  if (candles.length < 3) {
     return false;
   }
 
@@ -358,7 +358,7 @@ function isThreeAscending(candles) {
 }
 
 function isThreeBlackCrows(candles) {
-  if (candles1.length < 3) {
+  if (candles.length < 3) {
     return false;
   }
 
@@ -372,7 +372,7 @@ function isThreeBlackCrows(candles) {
 }
 
 function isBearishTasukiGap(candles) {
-  if (candles1.length < 2) {
+  if (candles.length < 2) {
     return false;
   }
 
@@ -385,7 +385,7 @@ function isBearishTasukiGap(candles) {
 }
 
 function isBullishTasukiGap(candles) {
-  if (candles1.length < 2) {
+  if (candles.length < 2) {
     return false;
   }
 
@@ -398,7 +398,7 @@ function isBullishTasukiGap(candles) {
 }
 
 function isThreeBullishWings(candles) {
-  if (candles1.length < 3) {
+  if (candles.length < 3) {
     return false;
   }
 
@@ -412,7 +412,7 @@ function isThreeBullishWings(candles) {
 }
 
 function isThreeConcurrentWings(candles) {
-  if (candles1.length < 3) {
+  if (candles.length < 3) {
     return false;
   }
 
@@ -426,7 +426,7 @@ function isThreeConcurrentWings(candles) {
 }
 
 function isBullishGapSideBySideWhiteLines(candles) {
-  if (candles1.length < 2) {
+  if (candles.length < 2) {
     return false;
   }
 
@@ -438,126 +438,87 @@ function isBullishGapSideBySideWhiteLines(candles) {
          first.open - first.close > (first.open - first.low) * 0.5;
 }
 
-if (isThreeWhiteSoldiers(candles1)) {
+if (isThreeWhiteSoldiers(candles)) {
   console.log('Три белых солдата ⏭');
 }
 
-if (isThreeDescending(candles1)) {
+if (isThreeDescending(candles)) {
   console.log('Метод трех снижений ⏭');
 }
 
-if (isThreeAscending(candles1)) {
+if (isThreeAscending(candles)) {
   console.log('Метод трех восхождений ⏭');
 }
 
-if (isThreeBlackCrows(candles1)) {
+if (isThreeBlackCrows(candles)) {
   console.log('Три вороны ⏭');
 }
 
-if (isBearishTasukiGap(candles1)) {
+if (isBearishTasukiGap(candles)) {
   console.log('Медвежий гэп "Тазуки" ⏭');
 }
 
-if (isBullishTasukiGap(candles1)) {
+if (isBullishTasukiGap(candles)) {
   console.log('Бычий гэп "Тазуки" ⏭');
 }
 
-if (isThreeBullishWings(candles1)) {
+if (isThreeBullishWings(candles)) {
   console.log('Три крыла Бозу ⏭');
 }
 
-if (isThreeConcurrentWings(candles1)) {
+if (isThreeConcurrentWings(candles)) {
   console.log('Три одновременных крыла ⏭');
 }
 
-if (isBullishGapSideBySideWhiteLines(candles1)) {
+if (isBullishGapSideBySideWhiteLines(candles)) {
   console.log('Бычий гэп край к краю белых линий ⏭');
 }
 
 
 
-const candles = data.map(candle => ({
-  time: new Date(candle.time),
-  open: parseFloat(candle.open),
-  high: parseFloat(candle.high),
-  low: parseFloat(candle.low),
-  close: parseFloat(candle.close),
-  volume: parseFloat(candle.volume),
-}));
-
-for (let i = 2; i < candles.length; i++) {
-  const prevCandle = candles[i - 1];
-  const currCandle = candles[i];
-
-  if (prevCandle.close < prevCandle.open && currCandle.close > currCandle.open && currCandle.close > prevCandle.open && currCandle.open < prevCandle.close) {
-    console.log('Bullish Engulfing Pattern found');
-    const stopLoss = prevCandle.high * 0.618;
-    const entryPoint1 = prevCandle.high * 0.5;
-    const entryPoint2 = prevCandle.high * 0.382;
-    console.log(`Stop Loss: ${stopLoss}`);
-    console.log(`Entry Point 1: ${entryPoint1}`);
-    console.log(`Entry Point 2: ${entryPoint2}`);
-  }
+function bullishEngulfing(candle) {
+  const prevCandle = candles[candles.indexOf(candle) - 1];
+  return prevCandle && candle.close > prevCandle.open && candle.open < prevCandle.close && candle.close > candle.open && candle.close > prevCandle.open && candle.open < prevCandle.close;
 }
 
-for (let i = 1; i < candles.length; i++) {
-  const prevCandle = candles[i - 1];
-  const currCandle = candles[i];
-
-  if (prevCandle.close < prevCandle.open && currCandle.close > currCandle.open && currCandle.close < prevCandle.open && currCandle.open > prevCandle.close) {
-    console.log('Bullish Harami Pattern found');
-  }
+function bullishHarami(candle) {
+  const prevCandle = candles[candles.indexOf(candle) - 1];
+  return prevCandle && candle.close < prevCandle.open && candle.open > prevCandle.close && candle.close > prevCandle.close && candle.open < prevCandle.open;
 }
 
-for (let i = 1; i < candles.length; i++) {
-  const prevCandle = candles[i - 1];
-  const currCandle = candles[i];
-
-  const isHammer = currCandle.close > currCandle.open && currCandle.close > currCandle.low + (currCandle.high - currCandle.low) * 0.6 && currCandle.open > currCandle.low + (currCandle.high - currCandle.low) * 0.4 && currCandle.open < currCandle.high - (currCandle.high - currCandle.low) * 0.1;
-
-  if (isHammer && prevCandle.close < prevCandle.open && prevCandle.close < currCandle.open && prevCandle.open > currCandle.close) {
-    console.log('Bullish Hammer Pattern found');
-  }
+function bullishHammer(candle) {
+  return candle.close > candle.open && (candle.close - candle.low) / (0.001 + candle.high - candle.low) > 0.6 && (candle.close - candle.low) / (0.001 + candle.high - candle.low) < 0.7 && (2 * (candle.close - candle.open)) / (candle.high - candle.low) > 1 && (candle.open - candle.low) / (0.001 + candle.high - candle.low) > 0.1;
 }
 
-for (let i = 1; i < candles.length; i++) {
-  const prevCandle = candles[i - 1];
-  const currCandle = candles[i];
-
-  const isInvertedHammer = currCandle.close < currCandle.open && currCandle.close < currCandle.low + (currCandle.high - currCandle.low) * 0.1 && currCandle.open > currCandle.low + (currCandle.high - currCandle.low) * 0.4 && currCandle.open < currCandle.high - (currCandle.high - currCandle.low) * 0.6;
-
-  if (isInvertedHammer && prevCandle.close < prevCandle.open && prevCandle.close < currCandle.open && prevCandle.open > currCandle.close) {
-    console.log('Bullish Inverted Hammer Pattern found');
-  }
+function invertedHammer(candle) {
+  return candle.close > candle.open && (candle.close - candle.low) / (0.001 + candle.high - candle.low) > 0.6 && (candle.close - candle.low) / (0.001 + candle.high - candle.low) < 0.7 && (2 * (candle.close - candle.open)) / (candle.high - candle.low) > 1 && (candle.high - candle.open) / (0.001 + candle.high - candle.low) > 0.1;
 }
 
-for (let i = 2; i < candles.length; i++) {
-  const prevCandle1 = candles[i - 2];
-  const prevCandle2 = candles[i - 1];
-  const currCandle = candles[i];
-
-  const isMorningStar = prevCandle1.close > prevCandle1.open && prevCandle2.close < prevCandle2.open && currCandle.close > currCandle.open && currCandle.close > prevCandle2.close && currCandle.open < prevCandle2.open && currCandle.open > prevCandle2.close && currCandle.close < prevCandle1.open;
-
-  if (isMorningStar) {
-    console.log('Bullish Morning Star Pattern found');
-  }
+function morningStar(candle) {
+  const prevCandle = candles[candles.indexOf(candle) - 1];
+  const prevPrevCandle = candles[candles.indexOf(candle) - 2];
+  return prevPrevCandle && prevCandle && candle.close < prevPrevCandle.close && candle.close < prevPrevCandle.open && candle.close < prevCandle.open && candle.open > prevCandle.close && candle.close > prevCandle.close && candle.open < prevCandle.open && (prevCandle.close - prevCandle.open) / (0.001 + prevCandle.high - prevCandle.low) > 0.6 && (candle.close - candle.open) / (0.001 + candle.high - candle.low) > 0.6;
 }
 
+const lastCandles = candles.slice(-3);
 
 
-/*
-const bullishEngulfingCandles = lastCandles.filter(bullishEngulfing);
-console.log(`🔼Бычье поглощение: ${bullishEngulfingCandles.length}`);
+if (bullishEngulfing(candles)) {
+console.log('🔼Бычье поглощение');
+}
 
-const bullishHaramiCandles = lastCandles.filter(bullishHarami);
-console.log(`🔼Бычье харами: ${bullishHaramiCandles.length}`);
+if (bullishHarami(candles)) {
+console.log('🔼Бычье харами');
+}
 
-const bullishHammerCandles = lastCandles.filter(bullishHammer);
-console.log(`🔼Бычий молот: ${bullishHammerCandles.length}`);
+if (bullishHammer(candles)) {
+console.log('🔼Бычий молот');
+}
 
-const invertedHammerCandles = lastCandles.filter(invertedHammer);
-console.log(`🔼Перевернутый молот: ${invertedHammerCandles.length}`);
+if (invertedHammer(candles)) {
+console.log('🔼Перевернутый молот');
+}
 
-const morningStarCandles = lastCandles.filter(morningStar);
-console.log(`🔼Утренняя звезда: ${morningStarCandles.length}`);
-*/
+if (morningStar(candles)) {
+console.log('🔼Утренняя звезда');
+}
