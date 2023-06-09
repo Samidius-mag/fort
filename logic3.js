@@ -174,7 +174,7 @@ if (raschet.dano.srOby < raschet.dano.oby) {
 }
   
 */
-console.log('Объем:', currentVolume.toFixed(2));
+//console.log('Объем:', currentVolume.toFixed(2));
 if (averageNumberOfTrades < currentNumberOfTrades) {
   console.log('Внимание! Превышение среднего числа сделок!');
   console.log('Ср. сделки:', averageNumberOfTrades);
