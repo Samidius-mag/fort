@@ -10,7 +10,7 @@ function calculateIndicators(data) {
   const macdSlowPeriod = 26
   const macdSignalPeriod = 9
   const macdValues = MACD.calculate({ values: close, period: macdSignalPeriod, macdFastPeriod, macdSlowPeriod });
-  const macd = macdValues.map(value => parseFloat(value.toFixed(2)));
+  const macd = macdValues.map(value => parseFloat(value));
   const rsiPeriod = 14;
   const rsiValues = RSI.calculate({ period: rsiPeriod, values: close });
   const rsi = rsiValues.map(value => parseFloat(value.toFixed(2)));
