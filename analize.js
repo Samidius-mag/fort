@@ -6,11 +6,7 @@ const data = JSON.parse(fs.readFileSync('price.json'));
 // Функция для вычисления индикаторов
 function calculateIndicators(data) {
   const close = data.map(candle => parseFloat(candle.close));
-  const macdFastPeriod = 12
-  const macdSlowPeriod = 26
-  const macdSignalPeriod = 9
-  const macdValues = MACD.calculate({ values: close, period: macdFastPeriod, macdSlowPeriod });
-  const macd = macdValues.map(value => parseFloat(value));
+  const macd = MACD.calculate({ values: close, fastPeriod: 12, slowPeriod: 26, signalPeriod: 9 });
   const rsiPeriod = 14;
   const rsiValues = RSI.calculate({ period: rsiPeriod, values: close });
   const rsi = rsiValues.map(value => parseFloat(value.toFixed(2)));
@@ -18,7 +14,7 @@ function calculateIndicators(data) {
   const emaValues = EMA.calculate({ period: emaPeriod, values: close });
   const ema = emaValues.map(value => parseFloat(value.toFixed(2)));
   const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
-  console.log(macdValues);
+  console.log(macd);
   return { rsi, ema, stochastic };
 }
 
