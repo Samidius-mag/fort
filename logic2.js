@@ -274,7 +274,42 @@ if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish && 
 } else {
   console.log('-');
 }
+/*
+// Функция для вычисления индикаторов
+function calculateIndicators(data) {
+  const close = data.map(candle => candle.close);
+  const atr = ATR.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14 });
+  const ema = EMA.calculate({ values: close, period: 30 });
 
+  return { atr, ema };
+}
+
+// Вычисляем индикаторы
+
+
+// Определяем текущую цену и последние значения индикаторов
+//const lastCandle = data[data.length - 1];
+const lastAtr = indicators.atr[indicators.atr.length - 1];
+//const lastEma = indicators.ema[indicators.ema.length - 1];
+
+// Выводим текущие значения индикаторов
+console.log(`Current ATR: ${lastAtr}`);
+console.log(`Current EMA: ${lastEma}`);
+
+// Определяем условия для входа и выхода из рынка
+//const isPriceAboveEma = lastCandle.close > lastEma;
+const isAtrAboveEma = lastAtr > lastEma;
+const isAtrBelowEma = lastAtr < lastEma;
+
+// Если все условия для входа выполнены, сигнализируем о входе в рынок
+if (isPriceAboveEma && isAtrAboveEma) {
+  console.log('Buy signal detected!');
+} else if (isPriceAboveEma && isAtrBelowEma) { // Если цена находится выше EMA 30, но ATR 14 ниже EMA 30, сигнализируем о выходе из рынка
+  console.log('Sell signal detected!');
+} else {
+  console.log('No buy or sell signal detected');
+}
+*/
 const candles = data.slice(0, -1);
 
 function isThreeWhiteSoldiers(candles) {
@@ -438,7 +473,16 @@ if (isBullishGapSideBySideWhiteLines(candles)) {
 
 function bullishEngulfing(candle) {
   const prevCandle = candles[candles.indexOf(candle) - 1];
-  return prevCandle && candle.close > prevCandle.open && candle.open < prevCandle.close && candle.close > candle.open && candle.close > prevCandle.open && candle.open < prevCandle.close;
+  if (prevCandle && candle.close > prevCandle.open && candle.open < prevCandle.close && candle.close > candle.open && candle.close > prevCandle.open && candle.open < prevCandle.close) {
+    const stopLoss = prevCandle.high * 0.618;
+    const entryPoint1 = prevCandle.high * 0.5;
+    const entryPoint2 = prevCandle.high * 0.382;
+    console.log(`Stop Loss: ${stopLoss}`);
+    console.log(`Entry Point 1: ${entryPoint1}`);
+    console.log(`Entry Point 2: ${entryPoint2}`);
+    return true;
+  }
+  return false;
 }
 
 function bullishHarami(candle) {
