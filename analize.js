@@ -44,9 +44,7 @@ const isMacdBearish = lastMacd.MACD < lastMacd.signal && lastMacd.histogram < 0;
 
 // Если все условия для входа выполнены, сигнализируем о входе в рынок
 if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish) {
-  console.log('Buy signal detected!');
+  console.log('Найден сигнал на покупку!');
 } else if (isStochasticBearish || isMacdBearish) { // Если Stochastic Oscillator или MACD пересекает сигнальную линию вниз, сигнализируем о выходе из рынка
-  console.log('Sell signal detected!');
-} else {
-  console.log('No buy or sell signal detected');
+  console.log('Найден сигнал на продажу!');
 }
