@@ -270,4 +270,6 @@ if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish && 
   console.log('Найден сигнал на покупку!');
 } else if (isStochasticBearish || isMacdBearish) { // Если Stochastic Oscillator или MACD пересекает сигнальную линию вниз, сигнализируем о выходе из рынка
   console.log('Найден сигнал на продажу!');
+} else {
+  console.log('-');
 }
