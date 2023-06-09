@@ -29,16 +29,16 @@ function morningStar(candle) {
 const lastCandles = candles.slice(-3);
 
 const bullishEngulfingCandles = lastCandles.filter(bullishEngulfing);
-console.log(`Bullish Engulfing: ${bullishEngulfingCandles.length}`);
+console.log(`🔼Бычье поглощение: ${bullishEngulfingCandles.length}`);
 
 const bullishHaramiCandles = lastCandles.filter(bullishHarami);
-console.log(`Bullish Harami: ${bullishHaramiCandles.length}`);
+console.log(`🔼Бычье харами: ${bullishHaramiCandles.length}`);
 
 const bullishHammerCandles = lastCandles.filter(bullishHammer);
-console.log(`Bullish Hammer: ${bullishHammerCandles.length}`);
+console.log(`🔼Бычий молот: ${bullishHammerCandles.length}`);
 
 const invertedHammerCandles = lastCandles.filter(invertedHammer);
-console.log(`Inverted Hammer: ${invertedHammerCandles.length}`);
+console.log(`🔼Перевернутый молот: ${invertedHammerCandles.length}`);
 
 const morningStarCandles = lastCandles.filter(morningStar);
-console.log(`Morning Star: ${morningStarCandles.length}`);
+console.log(`🔼Утренняя звезда: ${morningStarCandles.length}`);
