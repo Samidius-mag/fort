@@ -10,7 +10,7 @@ const bot = new TelegramBot(token, { polling: false });
 let isSignalSent = false; // Переменная для хранения информации о том, было ли уже отправлено сообщение
 
 // Функция для проверки условий на вход в рынок
-function checkConditions() {
+
     // Функция для вычисления индикаторов
 function calculateIndicators(data) {
     const close = data.map(candle => parseFloat(candle.close));
@@ -23,7 +23,7 @@ function calculateIndicators(data) {
     const ema = emaValues.map(value => parseFloat(value.toFixed(2)));
     const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
     return { rsi, ema, stochastic, macd };
-  }
+}
   // Вычисляем индикаторы
   const indicators = calculateIndicators(data);
   // Определяем текущую цену и последние значения индикаторов
@@ -32,16 +32,24 @@ function calculateIndicators(data) {
   const lastEma = indicators.ema[indicators.ema.length - 1];
   const lastStochastic = indicators.stochastic[indicators.stochastic.length - 1];
   const lastMacd = indicators.macd[indicators.macd.length - 1];
-  // Определяем условия для входа и выхода из рынка
-  const isRsiOversold = lastRsi <= 30;
-  const isPriceAboveEma = lastCandle.close > lastEma;
-  const isStochasticBullish = lastStochastic.k > lastStochastic.d && lastStochastic.k < 20;
+  function checkRsiOversold() {
+    const isRsiOversold = lastRsi <= 30;
+  }
+  function checkPriceAboveEma() {
+    const isPriceAboveEma = lastCandle.close > lastEma;
+  }
+  function checkStochasticBullish() {
+    const isStochasticBullish = lastStochastic.k > lastStochastic.d && lastStochastic.k < 20;
   const isStochasticBearish = lastStochastic.k < lastStochastic.d && lastStochastic.k > 80;
-  const isMacdBullish = lastMacd.MACD > lastMacd.signal && lastMacd.histogram > 0;
+  }
+  function checkMacdBullish() {
+    const isMacdBullish = lastMacd.MACD > lastMacd.signal && lastMacd.histogram > 0;
   const isMacdBearish = lastMacd.MACD < lastMacd.signal && lastMacd.histogram < 0;
-  const isVolumeBullish = averageVolume < currentVolume
-}
-
+  }
+  function checkVolumeBullish() {
+    const isVolumeBullish = averageVolume < currentVolume
+  }
+  
 /* Запускаем бота
 bot.start((ctx) => ctx.reply('Привет! Я бот для отправки сигналов на вход в рынок.'));
 bot.launch();
