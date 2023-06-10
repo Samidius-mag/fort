@@ -24,6 +24,9 @@ function calculateIndicators(data) {
   const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
   return { rsi, ema, stochastic, macd };
 }
+
+// Функция для проверки условий и отправки сообщения
+function checkAndSendSignal() {
 const indicators = calculateIndicators(data);
 const lastCandle = data[data.length - 1];
 const lastRsi = indicators.rsi[indicators.rsi.length - 1];
@@ -39,13 +42,6 @@ const isMacdBearish = lastMacd.MACD < lastMacd.signal && lastMacd.histogram < 0;
 const isVolumeBullish = averageVolume < currentVolume
 // Если все условия для входа выполнены, сигнализируем о входе в рынок
 if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish && isVolumeBullish) {
-console.log('Найден сигнал на покупку!');
-} else if (isStochasticBearish || isMacdBearish && isVolumeBullish) { // Если Stochastic Oscillator или MACD пересекает сигнальную линию вниз, сигнализируем о выходе из рынка
-console.log('Найден сигнал на продажу!');
-}
-
-// Если все условия для входа выполнены, сигнализируем о входе в рынок
-if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish && isVolumeBullish) {
   if (!isSignalSent) { // Проверяем, было ли уже отправлено сообщение
     bot.sendMessage(chatId, 'Найден сигнал на покупку!');
     isSignalSent = true; // Устанавливаем значение переменной isSignalSent в true, чтобы сообщение не отправлялось заново
@@ -55,4 +51,10 @@ if (isRsiOversold && isPriceAboveEma && isStochasticBullish && isMacdBullish && 
     bot.sendMessage(chatId, 'Найден сигнал на продажу!');
     isSignalSent = true; // Устанавливаем значение переменной isSignalSent в true, чтобы сообщение не отправлялось заново
   }
+} else {
+  isSignalSent = false; // Сбрасываем значение переменной isSignalSent в false, чтобы сообщение могло быть отправлено при следующем сигнале
 }
+}
+
+// Запускаем проверку каждую минуту
+setInterval(checkAndSendSignal, 60000);
