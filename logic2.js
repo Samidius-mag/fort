@@ -55,7 +55,7 @@ const supportResistance = {
     resistance: parseFloat(Math.max(...priceData.slice(priceData.length - 49).map(candle => parseFloat(candle.high)))).toFixed(2)
   },
 };
-
+/*
 const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance 
  && currentPrice <= priceData[4].high && currentPrice >=priceData[4].low ;
 if (isSideways) {
@@ -63,7 +63,7 @@ if (isSideways) {
 } else {
   //console.log('Тренд вышел из бокового движения');
 }
-
+*/
 console.log('Текущий тренд:', trend.current);
 console.log('4-часовой тренд:', trend['4h']);
 console.log('12-часовой тренд:', trend['12h']);
