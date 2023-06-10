@@ -42,10 +42,10 @@ function calculateIndicators(data) {
   const isVolumeBullish = averageVolume < currentVolume
 }
 
-// Запускаем бота
+/* Запускаем бота
 bot.start((ctx) => ctx.reply('Привет! Я бот для отправки сигналов на вход в рынок.'));
 bot.launch();
-
+*/
 // Отправляем сообщение, если выполняются условия для входа в рынок
 setInterval(() => {
   const isRsiOversold = checkRsiOversold();
