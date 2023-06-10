@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const fs = require('fs');
 const { RSI, EMA, Stochastic, MACD } = require('technicalindicators');
 const data = JSON.parse(fs.readFileSync('price.json'));
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
