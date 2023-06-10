@@ -4,7 +4,9 @@ const { RSI, EMA, Stochastic, MACD } = require('technicalindicators');
 const data = JSON.parse(fs.readFileSync('price.json'));
 const token = '5995075949:AAHek1EL2dqZvJlIR3ssuFLkIsb3ZTgccIQ';
 const chatId = '-1001979484873';
-
+const volume = data.map(candle => parseFloat(candle.volume));
+const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
+const currentVolume = volume[volume.length - 1];
 const bot = new TelegramBot(token, { polling: false });
 
 let isSignalSent = false; // Переменная для хранения информации о том, было ли уже отправлено сообщение
