@@ -38,7 +38,7 @@ const trend = {
 
 
 const supportResistance = {
-  current: {
+  '1h': {
     support: parseFloat(indRes.BollingerBands.lower[indRes.BollingerBands.lower.length - 1]).toFixed(2),
     resistance: parseFloat(indRes.BollingerBands.upper[indRes.BollingerBands.upper.length - 1]).toFixed(2)
   },
@@ -131,12 +131,12 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
 const entryExitPoints = {
   buy: {
     support: supportResistance['4h'].support,
-    resistance: supportResistance['4h'].resistance,
+    resistance: supportResistance['1h'].resistance,
     ema: indRes.EMA[indRes.EMA.length - 1],
     psar: indRes.PSAR[indRes.PSAR.length - 1]
   },
   sell: {
-    support: supportResistance[`4h`].support,
+    support: supportResistance[`1h`].support,
     resistance: supportResistance['4h'].resistance,
     ema: indRes.EMA[indRes.EMA.length - 1],
     psar: indRes.PSAR[indRes.PSAR.length - 1]
