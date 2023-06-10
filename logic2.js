@@ -70,8 +70,8 @@ console.log('12-часовой тренд:', trend['12h']);
 console.log('24-часовой тренд:', trend['24h']);
 console.log('Глобальный тренд:', trend.global);
 
-console.log('Текущее сопротивление:', supportResistance.current.resistance);
-console.log('Текущая поддержка:', supportResistance.current.support);
+console.log('Текущее сопротивление:', supportResistance['1h'].resistance);
+console.log('Текущая поддержка:', supportResistance['1h'].support);
 console.log('Сопротивление 4 часа:', supportResistance['4h'].resistance);
 console.log('Поддержка 4 часа:', supportResistance['4h'].support);
 console.log('Сопротивление 12 часов:', supportResistance['12h'].resistance);
