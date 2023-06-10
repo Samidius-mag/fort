@@ -11,6 +11,19 @@ const bot = new TelegramBot(token, { polling: false });
 
 let isSignalSent = false; // Переменная для хранения информации о том, было ли уже отправлено сообщение
 
+// Функция для вычисления индикаторов
+function calculateIndicators(data) {
+  const close = data.map(candle => parseFloat(candle.close));
+  const macd = MACD.calculate({ values: close, fastPeriod: 12, slowPeriod: 26, signalPeriod: 9 });
+  const rsiPeriod = 14;
+  const rsiValues = RSI.calculate({ period: rsiPeriod, values: close });
+  const rsi = rsiValues.map(value => parseFloat(value.toFixed(2)));
+  const emaPeriod = 21;
+  const emaValues = EMA.calculate({ period: emaPeriod, values: close });
+  const ema = emaValues.map(value => parseFloat(value.toFixed(2)));
+  const stochastic = Stochastic.calculate({ high: data.map(candle => candle.high), low: data.map(candle => candle.low), close, period: 14, signalPeriod: 3 });
+  return { rsi, ema, stochastic, macd };
+}
 const indicators = calculateIndicators(data);
 const lastCandle = data[data.length - 1];
 const lastRsi = indicators.rsi[indicators.rsi.length - 1];
