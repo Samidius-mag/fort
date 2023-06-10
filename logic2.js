@@ -120,10 +120,10 @@ const buySell = {
 };
 
 if (buySell.RSI.buy && buySell.ROC.buy) {
-  console.log('Рекомендуется покупка, текущая цена:', currentPrice);
+  console.log('Рекомендуется покупка');
   
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
-  console.log('Рекомендуется продажа, текущая цена:', currentPrice);
+  console.log('Рекомендуется продажа');
   
 }
 
@@ -176,15 +176,15 @@ if (raschet.dano.srOby < raschet.dano.oby) {
 */
 console.log('Объем:', currentVolume.toFixed(2));
 if (averageNumberOfTrades < currentNumberOfTrades) {
-  console.log('Внимание! Превышение среднего числа сделок!');
+  console.log('Внимание! Превышение среднего числа сделок! Усиление движения!');
   console.log('Ср. сделки:', averageNumberOfTrades);
   console.log('Сделки:', currentNumberOfTrades);
 }
 
 if (currentCorrelation > correlation && averageVolume < currentVolume) {
-  console.log('Внимание! Превышено среднее значение корреляции! Чем ближе к 1.0 тем сильнее импульс!');
-  console.log('Ср. корреляция:', correlation.toFixed(8));
-  console.log('Корреляция:', currentCorrelation.toFixed(8));
+  console.log('Внимание! Превышено среднее значение модуля! Чем ближе к 1.0 тем вероятнее разворот!');
+  console.log('Ср. модуль:', correlation.toFixed(8));
+  console.log('Модуль:', currentCorrelation.toFixed(8));
 }
 /*
 if (averageVolume > currentVolume && currentVolume > 1200 && currentVolume < 1700) {
