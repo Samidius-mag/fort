@@ -130,14 +130,14 @@ if (buySell.RSI.buy && buySell.ROC.buy) {
 // Точки входа-выхода в сделку
 const entryExitPoints = {
   buy: {
-    support: supportResistance['4h'].support,
+    support: supportResistance['1h'].support,
     resistance: supportResistance['1h'].resistance,
     ema: indRes.EMA[indRes.EMA.length - 1],
     psar: indRes.PSAR[indRes.PSAR.length - 1]
   },
   sell: {
     support: supportResistance[`1h`].support,
-    resistance: supportResistance['4h'].resistance,
+    resistance: supportResistance['1h'].resistance,
     ema: indRes.EMA[indRes.EMA.length - 1],
     psar: indRes.PSAR[indRes.PSAR.length - 1]
   }
