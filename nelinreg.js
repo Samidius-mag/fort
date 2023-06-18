@@ -3,7 +3,7 @@ const fs = require('fs');
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 // Считаем средний объем за последние 100 свечей
-const averageVolume = data.slice(-100).reduce((sum, candle) => sum + candle.volume, 0) / 100;
+const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
 
 // Определяем текущий тренд
 const currentTrend = data.slice(-2)[0].close > data.slice(-2)[0].open ? 'up' : 'down';
