@@ -2,6 +2,8 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync('price.json'));
 
+const volume = data.map(candle => parseFloat(candle.volume));
+
 // Считаем средний объем за последние 100 свечей
 const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
 
