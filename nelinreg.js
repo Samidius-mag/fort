@@ -13,7 +13,7 @@ const lowVolumeCandles = data.filter(candle => candle.volume <= averageVolume);
 
 // Считаем коэффициент корреляции между объемом и изменением цены для каждой группы
 const highVolumeCorrelation = ss.sampleCorrelation(highVolumeCandles.map(candle => candle.volume), highVolumeCandles.map(candle => candle.close - candle.open));
-const lowVolumeCorrelation = correlation(lowVolumeCandles.map(candle => candle.volume), lowVolumeCandles.map(candle => candle.close - candle.open));
+const lowVolumeCorrelation = ss.sampleCorrelation(lowVolumeCandles.map(candle => candle.volume), lowVolumeCandles.map(candle => candle.close - candle.open));
 
 // Определяем закономерность между объемом, корреляцией и направлением движения рынка
 let trend;
