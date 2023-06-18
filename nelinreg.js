@@ -16,3 +16,5 @@ const highVolumeCandles = data.filter(candle => candle.volume > averageVolume).l
 console.log(`Средний объем за последние 100 свечей: ${averageVolume}`);
 console.log(`Текущий тренд: ${currentTrend}`);
 console.log(`Количество свечей с объемом выше среднего: ${highVolumeCandles}`);
+console.log(`Цены закрытий свечей с объемом выше среднего:`);
+highVolumeCandles.forEach(candle => console.log(candle.close));
