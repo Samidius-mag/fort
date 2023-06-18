@@ -15,6 +15,10 @@ function calculateCorrelation(data) {
   const sumX2 = data.reduce((sum, item) => sum + (item.volume ** 2), 0);
   const sumY2 = data.reduce((sum, item) => sum + ((item.close - item.open) ** 2), 0);
 
+  if (sumX === 0 || sumY === 0 || sumX2 === 0 || sumY2 === 0) {
+    return NaN;
+  }
+
   const numerator = (n * sumXY) - (sumX * sumY);
   const denominator = Math.sqrt((n * sumX2 - (sumX ** 2)) * (n * sumY2 - (sumY ** 2)));
 
