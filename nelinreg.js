@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const { correlation } = require('simple-statistics');
 const data = JSON.parse(fs.readFileSync('price.json'));
 
 const volume = data.map(candle => parseFloat(candle.volume));
