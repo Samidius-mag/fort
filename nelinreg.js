@@ -1,7 +1,7 @@
 const fs = require('fs');
-const { correlation } = require('simple-statistics');
+//const { correlation } = require('simple-statistics');
 const data = JSON.parse(fs.readFileSync('price.json'));
-
+const ss = require('simple-statistics');
 const volume = data.map(candle => parseFloat(candle.volume));
 
 // Считаем средний объем за последние 100 свечей
