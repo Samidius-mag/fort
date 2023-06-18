@@ -1,68 +1,62 @@
 const fs = require('fs');
-//const { correlation } = require('simple-statistics');
-const data = JSON.parse(fs.readFileSync('price.json'));
-const ss = require('simple-statistics');
-const volume = data.map(candle => parseFloat(candle.volume));
 
-// Считаем средний объем за последние 100 свечей
-const averageVolume = volume.reduce((acc, val) => acc + val, 0) / volume.length;
+const candles = JSON.parse(fs.readFileSync('price.json'));
 
-// Разделяем свечи на две группы: свечи с объемом выше среднего и свечи с объемом ниже или равным среднему
-const highVolumeCandles = data.filter(candle => candle.volume > averageVolume);
-const lowVolumeCandles = data.filter(candle => candle.volume <= averageVolume);
+// Разделение данных на две группы: положительные и отрицательные свечи
+const positiveCandles = candles.filter(candle => candle.close > candle.open);
+const negativeCandles = candles.filter(candle => candle.close < candle.open);
 
-// Считаем коэффициент корреляции между объемом и изменением цены для каждой группы
-const highVolumeCorrelation = ss.sampleCorrelation(highVolumeCandles.map(candle => candle.volume), highVolumeCandles.map(candle => candle.close - candle.open));
-const lowVolumeCorrelation = ss.sampleCorrelation(lowVolumeCandles.map(candle => candle.volume), lowVolumeCandles.map(candle => candle.close - candle.open));
+// Функция для вычисления корреляции между объемом и изменением цены
+function calculateCorrelation(data) {
+  const n = data.length;
+  const sumX = data.reduce((sum, item) => sum + item.volume, 0);
+  const sumY = data.reduce((sum, item) => sum + (item.close - item.open), 0);
+  const sumXY = data.reduce((sum, item) => sum + (item.volume * (item.close - item.open)), 0);
+  const sumX2 = data.reduce((sum, item) => sum + (item.volume ** 2), 0);
+  const sumY2 = data.reduce((sum, item) => sum + ((item.close - item.open) ** 2), 0);
 
-// Определяем закономерность между объемом, корреляцией и направлением движения рынка
-let trend;
-let correlationTrend;
-if (highVolumeCorrelation > lowVolumeCorrelation) {
-  correlationTrend = 'при увеличении объема корреляция между объемом и изменением цены увеличивается';
-  trend = data.slice(-2)[0].close > data.slice(-2)[0].open ? 'up' : 'down';
-  if (highVolumeCandles.filter(candle => candle.close > candle.open).length > highVolumeCandles.filter(candle => candle.close < candle.open).length) {
-    correlationTrend += ' и рынок склонен к росту цены';
-    if (trend === 'up') {
-      trend = 'подтверждается текущий тренд';
-    } else {
-      trend = 'текущий тренд может измениться на рост цены';
-    }
-  } else {
-    correlationTrend += ' и рынок склонен к спаду цены';
-    if (trend === 'down') {
-      trend = 'подтверждается текущий тренд';
-    } else {
-      trend = 'текущий тренд может измениться на спад цены';
-    }
-  }
-} else if (highVolumeCorrelation < lowVolumeCorrelation) {
-  correlationTrend = 'при увеличении объема корреляция между объемом и изменением цены уменьшается';
-  trend = data.slice(-2)[0].close > data.slice(-2)[0].open ? 'down' : 'up';
-  if (highVolumeCandles.filter(candle => candle.close > candle.open).length > highVolumeCandles.filter(candle => candle.close < candle.open).length) {
-    correlationTrend += ' и рынок склонен к спаду цены';
-    if (trend === 'down') {
-      trend = 'подтверждается текущий тренд';
-    } else {
-      trend = 'текущий тренд может измениться на спад цены';
-    }
-  } else {
-    correlationTrend += ' и рынок склонен к росту цены';
-    if (trend === 'up') {
-      trend = 'подтверждается текущий тренд';
-    } else {
-      trend = 'текущий тренд может измениться на рост цены';
-    }
-  }
-} else {
-  correlationTrend = 'нет закономерности между объемом и изменением цены';
-  trend = 'нет закономерности между объемом и направлением движения рынка';
+  const numerator = (n * sumXY) - (sumX * sumY);
+  const denominator = Math.sqrt((n * sumX2 - (sumX ** 2)) * (n * sumY2 - (sumY ** 2)));
+
+  return numerator / denominator;
 }
 
-console.log(`Средний объем: ${averageVolume}`);
-console.log(`Текущий тренд: ${data.slice(-2)[0].close > data.slice(-2)[0].open ? 'up' : 'down'}`);
-console.log(`Количество свечей с объемом выше среднего: ${highVolumeCandles.length}`);
-console.log(`Количество свечей с объемом ниже или равным среднему: ${lowVolumeCandles.length}`);
-console.log(`Коэффициент корреляции между объемом и изменением цены при объеме выше среднего: ${highVolumeCorrelation}`);
-console.log(`Коэффициент корреляции между объемом и изменением цены при объеме ниже или равном среднему: ${lowVolumeCorrelation}`);
-console.log(`Закономерность между объемом, корреляцией и направлением движения рынка: ${correlationTrend}, ${trend}`);
+// Вычисление корреляции для положительных и отрицательных свечей
+const positiveCorrelation = calculateCorrelation(positiveCandles);
+const negativeCorrelation = calculateCorrelation(negativeCandles);
+
+// Проверка на статистическую значимость корреляции
+const alpha = 0.05; // Уровень значимости
+const tCritical = 2.306; // Критическое значение t-статистики для alpha = 0.05 и n = 5000
+
+const positiveT = (positiveCorrelation * Math.sqrt(positiveCandles.length - 2)) / Math.sqrt(1 - (positiveCorrelation ** 2));
+const negativeT = (negativeCorrelation * Math.sqrt(negativeCandles.length - 2)) / Math.sqrt(1 - (negativeCorrelation ** 2));
+
+const positiveIsSignificant = Math.abs(positiveT) > tCritical;
+const negativeIsSignificant = Math.abs(negativeT) > tCritical;
+
+// Вывод результатов
+console.log(`Positive correlation: ${positiveCorrelation}`);
+console.log(`Negative correlation: ${negativeCorrelation}`);
+
+if (positiveIsSignificant) {
+  console.log('Positive correlation is significant');
+  if (positiveCorrelation > 0) {
+    console.log('When volume increases, price increases (bullish)');
+  } else {
+    console.log('When volume increases, price decreases (bearish)');
+  }
+} else {
+  console.log('Positive correlation is not significant');
+}
+
+if (negativeIsSignificant) {
+  console.log('Negative correlation is significant');
+  if (negativeCorrelation > 0) {
+    console.log('When volume increases, price decreases (bearish)');
+  } else {
+    console.log('When volume increases, price increases (bullish)');
+  }
+} else {
+  console.log('Negative correlation is not significant');
+}
