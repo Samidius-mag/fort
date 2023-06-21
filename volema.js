@@ -12,25 +12,24 @@ const candles = data.map(candle => ({
   volume: parseFloat(candle.volume),
 }));
 
-function calculateEMA(data, n) {
-  const k = 2 / (n + 1);
-  let ema = data[0].close;
-
-  for (let i = 1; i < data.length; i++) {
-    ema = (data[i].close - ema) * k + ema;
-  }
-
-  return ema;
+function calculateSMA(data, n) {
+  const sum = data.slice(-n).reduce((sum, candle) => sum + candle.close, 0);
+  return sum / n;
 }
 
-const ema17 = [];
-for (let i = 16; i < candles.length; i++) {
-  const data = candles.slice(i - 16, i + 1);
-  const value = calculateEMA(data, 17);
-  ema17.push(value);
+function calculateSD(data, n) {
+  const sma = calculateSMA(data, n);
+  const sum = data.slice(-n).reduce((sum, candle) => sum + Math.pow(candle.close - sma, 2), 0);
+  return Math.sqrt(sum / n);
 }
 
-const averageVolume = candles.reduce((sum, candle) => sum + candle.volume, 0) / candles.length;
+function calculateBollingerBands(data, n, k) {
+  const sma = calculateSMA(data, n);
+  const sd = calculateSD(data, n);
+  const upperBand = sma + k * sd;
+  const lowerBand = sma - k * sd;
+  return { upperBand, lowerBand };
+}
 
 let inTrade = false;
 let entryPrice = 0;
@@ -39,13 +38,15 @@ let capital = 100;
 let trades = 0;
 let successfulTrades = 0;
 
-for (let i = 17; i < candles.length; i++) {
-  if (!inTrade && candles[i].volume > 1200 && candles[i].close > ema17[i - 17]) {
+for (let i = 20; i < candles.length; i++) {
+  const { upperBand, lowerBand } = calculateBollingerBands(candles.slice(0, i), 20, 2);
+
+  if (!inTrade && candles[i].close <= lowerBand) {
     inTrade = true;
     entryPrice = candles[i].close;
   }
 
-  if (inTrade && candles[i].volume < averageVolume && candles[i].close < ema17[i - 17]) {
+  if (inTrade && candles[i].close >= upperBand) {
     inTrade = false;
     exitPrice = candles[i].close;
 
@@ -64,4 +65,3 @@ console.log(`Total trades: ${trades}`);
 console.log(`Successful trades: ${successfulTrades}`);
 console.log(`Unsuccessful trades: ${trades - successfulTrades}`);
 console.log(`Final capital: ${capital.toFixed(2)}`);
-console.log(`volume: ${averageVolume.toFixed(2)}`);
