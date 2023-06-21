@@ -64,3 +64,4 @@ console.log(`Total trades: ${trades}`);
 console.log(`Successful trades: ${successfulTrades}`);
 console.log(`Unsuccessful trades: ${trades - successfulTrades}`);
 console.log(`Final capital: ${capital.toFixed(2)}`);
+console.log(`volume: ${averageVolume.toFixed(2)}`);
