@@ -25,7 +25,7 @@ function calculateEMA(data, n) {
 
 const emaValues = {};
 
-for (let n = 10; n <= 20; n++) {
+for (let n of [17, 65, 80, 95, 200]) {
   const ema = [];
 
   for (let i = n - 1; i < candles.length; i++) {
@@ -37,24 +37,41 @@ for (let n = 10; n <= 20; n++) {
   emaValues[n] = ema;
 }
 
-const result = {};
+const result = {
+  totalTrades: 0,
+  successfulTrades: 0,
+  unsuccessfulTrades: 0,
+};
 
-for (let n = 10; n <= 20; n++) {
-  for (let i = n - 1; i < candles.length; i++) {
-    const data = candles.slice(i - n + 1, i + 1);
-    const ema = emaValues[n][i - n + 1];
+let inTrade = false;
+let entryPrice = 0;
+let exitPrice = 0;
 
-    if (candles[i].close > ema && candles[i].volume > 1000) {
-      if (!result[n]) {
-        result[n] = {
-          count: 1,
-          volume: candles[i].volume,
-        };
-      } else {
-        result[n].count++;
-        result[n].volume += candles[i].volume;
-      }
+for (let i = 200; i < candles.length; i++) {
+  const ema17 = emaValues[17][i - 17 + 1];
+  const ema65 = emaValues[65][i - 65 + 1];
+  const ema80 = emaValues[80][i - 80 + 1];
+  const ema95 = emaValues[95][i - 95 + 1];
+  const ema200 = emaValues[200][i - 200 + 1];
+
+  const averageVolume = (candles[i - 1].volume + candles[i - 2].volume + candles[i - 3].volume) / 3;
+
+  if (!inTrade && candles[i].volume > averageVolume && candles[i].close > ema17 && candles[i].close > ema65 && candles[i].close > ema80 && candles[i].close > ema95 && candles[i].close > ema200) {
+    inTrade = true;
+    entryPrice = candles[i].close;
+  }
+
+  if (inTrade && candles[i].close < ema17) {
+    inTrade = false;
+    exitPrice = candles[i].close;
+
+    if (exitPrice > entryPrice) {
+      result.successfulTrades++;
+    } else {
+      result.unsuccessfulTrades++;
     }
+
+    result.totalTrades++;
   }
 }
 
