@@ -45,7 +45,7 @@ for (let i = 17; i < candles.length; i++) {
     entryPrice = candles[i].close;
   }
 
-  if (inTrade && candles[i].volume < averageVolume) {
+  if (inTrade && candles[i].volume < averageVolume && candles[i].close < ema17[i - 17]) {
     inTrade = false;
     exitPrice = candles[i].close;
 
