@@ -25,7 +25,7 @@ function calculateEMA(data, n) {
 
 const emaValues = {};
 
-for (let n = 5; n <= 150; n += 5) {
+for (let n = 10; n <= 20; n++) {
   const ema = [];
 
   for (let i = n - 1; i < candles.length; i++) {
@@ -39,7 +39,7 @@ for (let n = 5; n <= 150; n += 5) {
 
 const result = {};
 
-for (let n = 5; n <= 150; n += 5) {
+for (let n = 10; n <= 20; n++) {
   for (let i = n - 1; i < candles.length; i++) {
     const data = candles.slice(i - n + 1, i + 1);
     const ema = emaValues[n][i - n + 1];
