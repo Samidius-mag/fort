@@ -23,56 +23,44 @@ function calculateEMA(data, n) {
   return ema;
 }
 
-const emaValues = {};
-
-for (let n of [17, 65, 80, 95, 200]) {
-  const ema = [];
-
-  for (let i = n - 1; i < candles.length; i++) {
-    const data = candles.slice(i - n + 1, i + 1);
-    const value = calculateEMA(data, n);
-    ema.push(value);
-  }
-
-  emaValues[n] = ema;
+const ema17 = [];
+for (let i = 16; i < candles.length; i++) {
+  const data = candles.slice(i - 16, i + 1);
+  const value = calculateEMA(data, 17);
+  ema17.push(value);
 }
 
-const result = {
-  totalTrades: 0,
-  successfulTrades: 0,
-  unsuccessfulTrades: 0,
-};
+const averageVolume = candles.reduce((sum, candle) => sum + candle.volume, 0) / candles.length;
 
 let inTrade = false;
 let entryPrice = 0;
 let exitPrice = 0;
+let capital = 100;
+let trades = 0;
+let successfulTrades = 0;
 
-for (let i = 200; i < candles.length; i++) {
-  const ema17 = emaValues[17][i - 17 + 1];
-  const ema65 = emaValues[65][i - 65 + 1];
-  const ema80 = emaValues[80][i - 80 + 1];
-  const ema95 = emaValues[95][i - 95 + 1];
-  const ema200 = emaValues[200][i - 200 + 1];
-
-  const averageVolume = (candles[i - 1].volume + candles[i - 2].volume + candles[i - 3].volume) / 3;
-
-  if (!inTrade && candles[i].volume > averageVolume && candles[i].close > ema17 && candles[i].close > ema65 && candles[i].close > ema80 && candles[i].close > ema95 && candles[i].close > ema200) {
+for (let i = 17; i < candles.length; i++) {
+  if (!inTrade && candles[i].volume > averageVolume && candles[i].close > ema17[i - 17]) {
     inTrade = true;
     entryPrice = candles[i].close;
   }
 
-  if (inTrade && candles[i].close < ema17) {
+  if (inTrade && candles[i].volume < averageVolume) {
     inTrade = false;
     exitPrice = candles[i].close;
 
-    if (exitPrice > entryPrice) {
-      result.successfulTrades++;
-    } else {
-      result.unsuccessfulTrades++;
+    const profit = (exitPrice - entryPrice) / entryPrice * capital;
+    capital += profit;
+
+    if (profit > 0) {
+      successfulTrades++;
     }
 
-    result.totalTrades++;
+    trades++;
   }
 }
 
-console.log(result);
+console.log(`Total trades: ${trades}`);
+console.log(`Successful trades: ${successfulTrades}`);
+console.log(`Unsuccessful trades: ${trades - successfulTrades}`);
+console.log(`Final capital: ${capital.toFixed(2)}`);
