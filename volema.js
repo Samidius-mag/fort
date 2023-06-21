@@ -1,4 +1,16 @@
-const data = require('./price.json');
+const fs = require('fs');
+
+const rawData = fs.readFileSync('price.json');
+const data = JSON.parse(rawData);
+
+const candles = data.map(candle => ({
+  time: new Date(candle.time),
+  open: parseFloat(candle.open),
+  high: parseFloat(candle.high),
+  low: parseFloat(candle.low),
+  close: parseFloat(candle.close),
+  volume: parseFloat(candle.volume),
+}));
 
 const capital = 100;
 const amountPerTrade = 0.01;
@@ -11,7 +23,7 @@ let lastLow = 0;
 
 const buyDip = (candle) => {
   const dip = 0.05; // 5% dip from last high
-  const high = parseFloat(candle.high);
+  const high = candle.high;
 
   if (lastHigh === 0) {
     lastHigh = high;
@@ -21,7 +33,7 @@ const buyDip = (candle) => {
   const threshold = lastHigh * (1 - dip);
 
   if (high < threshold) {
-    const close = parseFloat(candle.close);
+    const close = candle.close;
     const amount = amountPerTrade;
     const cost = amount * close;
     const fee = cost * commission;
@@ -31,6 +43,7 @@ const buyDip = (candle) => {
       balance -= totalCost;
       holdings += amount;
       console.log(`Bought ${amount} BTC at ${close}`);
+      console.log(`Balance: ${balance.toFixed(2)}`);
       return true;
     }
   }
@@ -40,7 +53,7 @@ const buyDip = (candle) => {
 
 const buyBreakout = (candle) => {
   const resistance = 60000; // resistance level
-  const close = parseFloat(candle.close);
+  const close = candle.close;
 
   if (close > resistance) {
     const amount = amountPerTrade;
@@ -52,6 +65,7 @@ const buyBreakout = (candle) => {
       balance -= totalCost;
       holdings += amount;
       console.log(`Bought ${amount} BTC at ${close}`);
+      console.log(`Balance: ${balance.toFixed(2)}`);
       return true;
     }
   }
@@ -61,7 +75,7 @@ const buyBreakout = (candle) => {
 
 const sellPeak = (candle) => {
   const peak = 0.1; // 10% peak from last low
-  const low = parseFloat(candle.low);
+  const low = candle.low;
 
   if (lastLow === 0) {
     lastLow = low;
@@ -71,7 +85,7 @@ const sellPeak = (candle) => {
   const threshold = lastLow * (1 + peak);
 
   if (low > threshold) {
-    const close = parseFloat(candle.close);
+    const close = candle.close;
     const amount = holdings * amountPerTrade;
     const revenue = amount * close;
     const fee = revenue * commission;
@@ -81,6 +95,7 @@ const sellPeak = (candle) => {
       balance += totalRevenue;
       holdings -= amount;
       console.log(`Sold ${amount} BTC at ${close}`);
+      console.log(`Balance: ${balance.toFixed(2)}`);
       return true;
     }
   }
@@ -90,7 +105,7 @@ const sellPeak = (candle) => {
 
 const sellBreakdown = (candle) => {
   const support = 50000; // support level
-  const close = parseFloat(candle.close);
+  const close = candle.close;
 
   if (close < support) {
     const amount = holdings * amountPerTrade;
@@ -102,6 +117,7 @@ const sellBreakdown = (candle) => {
       balance += totalRevenue;
       holdings -= amount;
       console.log(`Sold ${amount} BTC at ${close}`);
+      console.log(`Balance: ${balance.toFixed(2)}`);
       return true;
     }
   }
@@ -109,8 +125,8 @@ const sellBreakdown = (candle) => {
   return false;
 };
 
-for (let i = 0; i < data.length; i++) {
-  const candle = data[i];
+for (let i = 0; i < candles.length; i++) {
+  const candle = candles[i];
 
   if (buyDip(candle)) {
     continue;
@@ -128,8 +144,8 @@ for (let i = 0; i < data.length; i++) {
     continue;
   }
 
-  lastHigh = parseFloat(candle.high);
-  lastLow = parseFloat(candle.low);
+  lastHigh = candle.high;
+  lastLow = candle.low;
 }
 
 console.log(`Final balance: ${balance.toFixed(2)}`);
