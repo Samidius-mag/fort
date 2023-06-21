@@ -40,7 +40,7 @@ let trades = 0;
 let successfulTrades = 0;
 
 for (let i = 17; i < candles.length; i++) {
-  if (!inTrade && candles[i].volume > 1000 && candles[i].close > ema17[i - 17]) {
+  if (!inTrade && candles[i].volume > 1200 && candles[i].close > ema17[i - 17]) {
     inTrade = true;
     entryPrice = candles[i].close;
   }
