@@ -56,7 +56,7 @@ const supportResistance = {
   },
 };
 /*
-const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance 
+const isSideways = currentPrice >= supportResistance.current.support && currentPrice <= supportResistance.current.resistance
  && currentPrice <= priceData[4].high && currentPrice >=priceData[4].low ;
 if (isSideways) {
   //console.log('Тренд боковой', trend.current);
@@ -107,7 +107,7 @@ if (overboughtOversold.ROC.current > overboughtOversold.ROC.overbought) {
   console.log('[RO]Рынок перепродан');
 }
 
-// Рекомендации по покупке/продаже
+/*// Рекомендации по покупке/продаже
 const buySell = {
   RSI: {
     buy: overboughtOversold.RSI.current < overboughtOversold.RSI.oversold,
@@ -121,10 +121,10 @@ const buySell = {
 
 if (buySell.RSI.buy && buySell.ROC.buy) {
   console.log('Рекомендуется покупка');
-  
+
 } else if (buySell.RSI.sell && buySell.ROC.sell) {
   console.log('Рекомендуется продажа');
-  
+
 }
 
 // Точки входа-выхода в сделку
@@ -174,6 +174,7 @@ if (raschet.dano.srOby < raschet.dano.oby) {
 }
   
 */
+console.log('Ср. объем:', averageVolume.toFixed(2));
 console.log('Объем:', currentVolume.toFixed(2));
 if (averageNumberOfTrades < currentNumberOfTrades) {
   console.log('Внимание! Превышение среднего числа сделок! Усиление движения!');
